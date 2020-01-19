@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 class PersonRepository 
 {
     static findByName(name){
-        return this.findOne( {name}).select('name');
+        return this.findOne( {name});
     }
     static findByEmail(email){
         return this.findOne({email})
