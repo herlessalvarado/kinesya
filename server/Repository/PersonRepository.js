@@ -4,8 +4,11 @@ const mongoose = require('mongoose');
 
 class PersonRepository 
 {
+    static findByName(name){
+        return this.findOne( {name}).select('name');
+    }
     static findByEmail(email){
-        this.findOne({email});
+        return this.findOne({email})
     }
 } 
 personaSchema.loadClass(PersonRepository)

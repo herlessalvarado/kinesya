@@ -9,9 +9,7 @@ const app = express();
 (function(){
     const  connector = new  MongoDBConnector(envJson[environment].connectionString)
     connector.connectDB()
-    connector.executeMigrations()
     app.listen(envJson[environment].Port, () => console.log('Server Started'));
-
 })();
 
 
