@@ -1,8 +1,6 @@
 "use strict"
 
-const seed = require("../Migrations/DevSeed")
 const mongoose = require('mongoose');
-const Persona = require("../Repository/PersonRepository")
 
 var MongoDBConnector = class MongoDBConnector {
    

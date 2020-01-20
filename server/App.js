@@ -1,15 +1,19 @@
 "use strict"
 const express = require('express');
-const envJson = require('./AppSettings')
 const MongoDBConnector = require('./DBConnections/MongoDBConnector');
-const environment = process.env.Environment || 'Dev';
+const dotenv = require('dotenv');
+const userController = require('./Controllers/UserController');
 const app = express();
 
+dotenv.config();
+
+app.use(express.json());
+app.use(userController);
  
 (function(){
-    const  connector = new  MongoDBConnector(envJson[environment].connectionString)
-    connector.connectDB()
-    app.listen(envJson[environment].Port, () => console.log('Server Started'));
+    const  connector = new  MongoDBConnector(process.env.MONGODB_URL);
+    connector.connectDB();
+    app.listen(process.env.PORT, () => console.log(process.env.PORT));
 })();
 
 
