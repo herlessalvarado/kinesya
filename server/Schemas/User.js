@@ -33,7 +33,11 @@ const userSchema = mongoose.Schema({
             type: String,
             required: true
         }
-    }]
+    }],
+    profilePhoto: {
+        type: String
+    },
+    referencePhotos:[String]
 })
 
 module.exports = userSchema;
