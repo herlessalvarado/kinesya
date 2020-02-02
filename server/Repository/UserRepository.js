@@ -4,9 +4,6 @@ const jwt = require('jsonwebtoken');
 
 const userSchema = require('../Schemas/User');
 
-
-
-
 userSchema.pre('save', async function (next) {
     const user = this
     if (user.isModified('password')) {
