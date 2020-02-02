@@ -1,14 +1,16 @@
 const express = require('express');
 const User = require('../Repository/UserRepository');
 const auth = require('../Utils/JWTmiddleware');
-
+const upload = require('../Utils/UploadMiddleware').users
 const router = express.Router()
 
-router.post('/users', async (req, res) => {
+
+router.post('/users',async (req, res) =>{ 
     try {
         const user = new User(req.body)
         await user.save()
         const token = await user.generateAuthToken()
+        
         res.status(201).send({ user, token })
     } catch (error) {
         res.status(400).send(error)
@@ -28,6 +30,19 @@ router.post('/users/login', async(req, res) => {
         res.status(400).send(error)
     }
 })
+
+router.post('/users/profile',auth,upload,(req,res)=>{
+    try {
+        if(!req.files) throw new Error("There aren't any photos")
+        req.user.profilePhoto = req.files['profile'][0].path
+        req.user.referencePhotos = req.files['references'].map(photo => photo.path)
+        req.user.save()
+        res.status(201).send({message:'Photos has been uploaded successfully'})
+    } catch (error) {
+        res.status(401).send({error: error.message})
+    }
+})
+
 
 router.get('/users/me', auth, async(req, res) => {
     res.send(req.user);

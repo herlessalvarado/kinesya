@@ -7,7 +7,7 @@ const app = express();
 
 
 dotenv.config();
-
+app.use(express.static(process.env.PhotosFolder))
 app.use(express.json());
 app.use(userController);
 
