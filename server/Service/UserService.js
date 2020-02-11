@@ -75,5 +75,19 @@ class UserService{
             return serviceResult
         }
     }
+    async getAll(){
+        let serviceResult = new ServiceResult();
+        try {
+            var users = await User.find().select('name email age profilePhoto referencePhotos')
+            serviceResult.addData(users);
+        } catch (error) {
+            serviceResult.addError(error.message)
+        } finally{
+            return serviceResult
+        }
+
+
+
+    }
 }
 module.exports = new UserService()

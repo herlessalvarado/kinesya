@@ -12,6 +12,14 @@ router.post('/users',async (req, res) =>{
         res.status(400).send(result.errors)
 })
 
+router.get('/users',async (req,res) =>{
+    let result = await UserService.getAll();
+    if (result.success)
+        res.status(201).send(result.data)
+    else
+        res.status(400).send(result.errors)
+})
+
 router.post('/users/login', async(req, res) => {
     let result = await UserService.loginUser(req.body)
     if (result.success) {
