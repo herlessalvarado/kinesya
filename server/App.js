@@ -15,7 +15,7 @@ app.use(userController);
 (function(){
     const  connector = new  MongoDBConnector(process.env.DevCS);
     connector.connectDB();
-    app.listen(process.env.PORT, () => console.log(`Listening port on ${process.env.Port}`));
+    app.listen(process.env.PORT, () => console.log(`Listening port on ${process.env.PORT}`));
 })();
 
 
