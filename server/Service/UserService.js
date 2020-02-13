@@ -1,19 +1,7 @@
 const User = require('../Repository/UserRepository');
+const Employee = require('../Repository/EmployeeRepository');
 const ServiceResult = require('../Utils/ServiceResult')
 class UserService{
-    async createUser(requestUser) {
-        let serviceResult = new ServiceResult()
-        try {
-            let user = new User(requestUser)
-            await user.save()
-            let token = await user.generateAuthToken()
-            serviceResult.addData({user: user, token: token})
-        } catch (error) {
-            serviceResult.addError(error.message)
-        }finally{
-            return serviceResult
-        }
-    }
     async loginUser({email,password}){
         let serviceResult = new ServiceResult();
         try {
@@ -28,28 +16,6 @@ class UserService{
         }finally{
             return serviceResult
         }
-    }
-    async uploadPhotos({user,files}){
-        let serviceResult = new ServiceResult();
-        try {
-            if (Object.keys(files).length === 0)
-                throw new Error("There aren't any photos")
-            if (!!files.references)
-                user.referencePhotos = files.references.map(photo => photo.path)
-            if (!!files.profile)
-                user.profilePhoto = files.profile[0].path
-            await user.save()
-            serviceResult.addData({message:"Photos has been uploaded successfully"})
-        } catch (error) {
-            serviceResult.addError(error.message)
-        }finally{
-            return serviceResult
-        }
-    }
-    getUserInfo(requestUser){
-        let serviceResult = new ServiceResult();
-        serviceResult.addData(requestUser)
-        return serviceResult
     }
     async userLogOut({user,token}){
         let serviceResult = new ServiceResult();
@@ -75,19 +41,11 @@ class UserService{
             return serviceResult
         }
     }
-    async getAll(){
+    getUserInfo(requestUser){
         let serviceResult = new ServiceResult();
-        try {
-            var users = await User.find().select('name email age profilePhoto referencePhotos')
-            serviceResult.addData(users);
-        } catch (error) {
-            serviceResult.addError(error.message)
-        } finally{
-            return serviceResult
-        }
-
-
-
+        serviceResult.addData(requestUser)
+        return serviceResult
     }
+ 
 }
 module.exports = new UserService()
