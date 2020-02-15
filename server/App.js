@@ -3,6 +3,7 @@ const express = require('express');
 const MongoDBConnector = require('./DBConnections/MongoDBConnector');
 const dotenv = require('dotenv');
 const userController = require('./Controllers/UserController');
+const employeeController = require('./Controllers/EmployeeController');
 const app = express();
 
 
@@ -10,6 +11,7 @@ dotenv.config();
 app.use(express.static(process.env.PhotosFolder))
 app.use(express.json());
 app.use(userController);
+app.use(employeeController);
 
 
 (function(){
