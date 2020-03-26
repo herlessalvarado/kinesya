@@ -1,11 +1,15 @@
 import React from 'react';
-import Typography from '@material-ui/core/Typography';
+import Header from './components/Header';
+
+let sections: {title: string, url: string} [] = [
+  {title : "Login" , url : "#"},
+  {title : "Clients", url : "#"},
+  {title : "About", url : "#"}
+]
 
 function App() {
   return (
-    <Typography variant="h1" component="h2" gutterBottom>
-        PK main page
-      </Typography>
+    <Header title="PK" sections={sections}></Header>
   );
 }
 
