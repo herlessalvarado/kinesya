@@ -20,9 +20,10 @@ class Employee{
             if (Object.keys(files).length === 0)
                 throw new Error("There aren't any photos")
             if (!!files.references)
-                user.referencePhotos = files.references.map(photo => photo.path)
+                user.referencePhotos = files.references.map(photo => photo.filename)
             if (!!files.profile)
-                user.profilePhoto = files.profile[0].path
+
+                user.profilePhoto = files.profile[0].filename
             await user.save()
             serviceResult.addData({message:"Photos has been uploaded successfully"})
         } catch (error) {
