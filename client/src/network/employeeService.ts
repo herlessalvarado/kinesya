@@ -1,14 +1,11 @@
-export interface Employee{
-    name: string;
-    email: string;
-    description?: string;
-    price?: number;
-    longitude?: number;
-    latitude?: number;
-}
+import axios,{AxiosError,AxiosResponse} from 'axios';
 
-export class EmployeeService {
-    getEmployees(): Promise<Employee[]>{
-        return fetch('http://localhost:8000/employees').then(res => res.json());
+export default class EmployeeService<T> {
+    getEmployees(callback: (data:any) => void): void{
+        axios.get('/employees').then((response: AxiosResponse<Array<T>>) => {
+            callback(response.data);
+          } ).catch((err: AxiosError)=>{
+            console.log(err.response?.data);
+          })
     }
 }
