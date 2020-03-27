@@ -29,7 +29,7 @@ let sections: {title: string, url: string} [] = [
 export default function App() {
  
   const [employees, setEmployees] = useState(new Array<Profile>());
-  let employeeService = new EmployeeService();
+  let employeeService = new EmployeeService<Profile>();
   useEffect( ()=>{
    employeeService.getEmployees(setEmployees);
   },[employeeService]);
