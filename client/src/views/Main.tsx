@@ -1,20 +1,18 @@
 import React, { FC, useEffect, useState } from 'react';
 import ProfileCard from '../components/Card';
 import EmployeeService from '../network/employeeService';
-import axios from 'axios';
 
-axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 
 interface Profile{
-    name ?: string;
-    description ?: string;
-    price ?: Number; 
-    profilePhoto ?: string;
+    name : string;
+    description : string;
+    price : Number; 
+    profilePhoto : string;
 }
 
-const Main:FC<Profile> = (props : Profile) => {
+const Main:FC = () => {
     const [employees, setEmployees] = useState(new Array<Profile>());
-    let employeeService = new EmployeeService();
+    let employeeService = new EmployeeService<Profile>();
     useEffect( ()=>{
         employeeService.getEmployees(setEmployees);
     },[employeeService]);
