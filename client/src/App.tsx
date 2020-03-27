@@ -1,12 +1,13 @@
 import React from 'react';
-import Typography from '@material-ui/core/Typography';
+import {EmployeeService} from './network/employeeService'
 
-function App() {
-  return (
-    <Typography variant="h1" component="h2" gutterBottom>
-        PK main page
-      </Typography>
-  );
+export interface  State{
+  email?: string;
+  name?: string; 
+}
+export default class App extends React.Component{
+  state:State ={
+    name: ""
+  };
 }
 
-export default App;
