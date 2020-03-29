@@ -1,11 +1,14 @@
-import axios,{AxiosError,AxiosResponse} from 'axios';
+import axios,{AxiosResponse} from 'axios';
 
 export default class EmployeeService<T> {
-    getEmployees(callback: (data:any) => void): void{
-        axios.get('/employees').then((response: AxiosResponse<Array<T>>) => {
-            callback(response.data);
-          } ).catch((err: AxiosError)=>{
-            console.log(err.response?.data);
-          })
+    getEmployees(): Promise<Array<T>>{
+       return axios.get('/employees').then((res:AxiosResponse<Array<T>>)=>{
+         return res.data;
+       });
+    }
+    getEmployeeByToken(token: string): Promise<T>{
+      return axios.get('/users/me', {headers: {'Authorization': `Bearer ${token}`} }).then((res:AxiosResponse<T>)=>{
+        return res.data;
+      })
     }
 }
