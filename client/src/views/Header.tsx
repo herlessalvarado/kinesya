@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import Link from '@material-ui/core/Link';
+import {Link} from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   toolbar: {
@@ -50,14 +50,7 @@ const Header:FC<HeaderProps> = (props : HeaderProps) => {
       <Toolbar component="nav" variant="dense" className={classes.toolbarSecondary}>
       { props.sections ? props.sections.map((section: Section) => { 
           return(
-            <Link
-            color="inherit"
-            noWrap
-            key={section.title}
-            variant="body2"
-            href={section.url}
-            className={classes.toolbarLink}
-          >
+          <Link to={section.url}>
             {section.title}
           </Link>
           )
