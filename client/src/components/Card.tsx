@@ -8,10 +8,15 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
+
+//ACA EN MEDIA ES EN DONDE HE ESTADO INTENTANDO
 const useStyles = makeStyles({
   root: {
     maxWidth: 345,
   },
+  media: {
+    objectFit: 'contain',
+  }
 });
 
 interface CardProps {
@@ -29,10 +34,10 @@ const ProfileCard:FC<CardProps> = (props : CardProps) => {
       <CardActionArea>
         <CardMedia
           component="img"
-          alt="Contemplative Reptile"
-          height="140"
+          height= "200"
+          className={classes.media}
           image={props.image}
-          title="Contemplative Reptile"
+          title={props.name}
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
