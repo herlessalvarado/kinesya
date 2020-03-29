@@ -4,6 +4,7 @@ import EmployeeService from '../network/employeeService';
 import WhoreImg from '../assets/62.jpg';
 import Grid from '@material-ui/core/Grid';
 
+
 interface Profile{
     name : string;
     description : string;
@@ -14,9 +15,11 @@ interface Profile{
 const Main:FC = () => {
     const [employees, setEmployees] = useState(new Array<Profile>());
     let employeeService = new EmployeeService<Profile>();
-    useEffect( ()=>{
-        employeeService.getEmployees(setEmployees);
-    },[employeeService]);
+    useEffect( () =>{
+        employeeService.getEmployees().then((res: Profile[]) => {
+         setEmployees(res);
+        })
+    });
     return(
         <Grid container spacing={3}>  
         { employees ?
