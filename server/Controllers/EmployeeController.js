@@ -4,8 +4,10 @@ const auth = require('../Utils/JWTmiddleware');
 const upload = require('../Utils/UploadMiddleware').users
 const EmployeeService = require('../Service/EmployeeService')
 
+
 router.post('/employees',async (req, res) =>{
     let result = await EmployeeService.create(req.body);
+    
     if (result.success)
         res.status(201).send(result.data)
     else
@@ -28,6 +30,7 @@ router.post('/employees/profile',auth,upload, async (req,res)=>{
 })
 router.post('/users/login', async(req, res) => {
     let result = await EmployeeService.loginUser(req.body)
+    res.cookie('key',result.data.token,{ expires: new Date(Date.now() + 900000),httpOnly: true});
     if (result.success) {
         res.status(201).send(result.data)
     } else {
@@ -40,7 +43,8 @@ router.get('/employees/me', auth, async(req, res) => {
     res.status(201).send(result.data);
 })
 
-router.post('/employees/me/logout', auth, async (req, res) => {
+router.get('/employees/me/logout', auth, async (req, res) => {
+    res.clearCookie('key');
     let result = await EmployeeService.userLogOut(req)
     if (result.success) {
         res.status(201).send(result.data)

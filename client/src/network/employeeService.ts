@@ -6,8 +6,13 @@ export default class EmployeeService<T> {
          return res.data;
        });
     }
-    getEmployeeByToken(token: string): Promise<T>{
-      return axios.get('/users/me', {headers: {'Authorization': `Bearer ${token}`} }).then((res:AxiosResponse<T>)=>{
+    getEmployeeByToken(): Promise<T>{
+      return axios.get('/employees/me').then((res:AxiosResponse<T>)=>{
+        return res.data;
+      })
+    }
+    logInEmployee(email: string, password: string): Promise<T>{
+      return axios.post('/employees/login', {email, password}).then((res: AxiosResponse<T>)=>{
         return res.data;
       })
     }

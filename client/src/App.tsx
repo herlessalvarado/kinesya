@@ -12,6 +12,7 @@ let sections: {title: string, url: string} [] = [
 ]
 
 axios.defaults.baseURL = process.env.REACT_APP_API_URL;
+axios.defaults.withCredentials = true;
 
 export default function App() {
   
