@@ -26,7 +26,7 @@ router.post('/employees/profile',auth,upload, async (req,res)=>{
         res.status(400).send(result.errors)
     }
 })
-router.post('/users/login', async(req, res) => {
+router.post('/employees/login', async(req, res) => {
     let result = await EmployeeService.loginUser(req.body)
     if (result.success) {
         res.status(201).send(result.data)

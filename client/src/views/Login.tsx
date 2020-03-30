@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -12,6 +12,7 @@ import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import EmployeeService from '../network/employeeService';
 import LoginGirl from '../assets/loginGirl.jpg';
 
 function Copyright() {
@@ -58,8 +59,37 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+interface Info {
+  email : string,
+  name : string,
+  kind : string,
+}
+
+interface User {
+  token : string,
+  user : Info,
+}
+
 export default function SignInSide() {
   const classes = useStyles();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [currentUser, setCurrentUser] = useState<User>();
+
+  const handleEmail = (event : any) => {
+    setEmail(event.target.value);
+  };
+
+  const handlePassword = (event : any) => {
+    setPassword(event.target.value);
+  };
+
+  const logIn = (e : string, pass : string) => {
+    let employeeService = new EmployeeService<User>();
+    employeeService.logInEmployee(e,pass).then((res:User) => {
+      setCurrentUser(res);
+    })
+  }
 
   return (
     <Grid container component="main" className={classes.root}>
@@ -84,6 +114,7 @@ export default function SignInSide() {
               name="email"
               autoComplete="email"
               autoFocus
+              onChange={handleEmail}
             />
             <TextField
               variant="outlined"
@@ -95,17 +126,18 @@ export default function SignInSide() {
               type="password"
               id="password"
               autoComplete="current-password"
+              onChange={handlePassword}
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="Recuérdame"
             />
             <Button
-              type="submit"
               fullWidth
               variant="contained"
               color="primary"
               className={classes.submit}
+              onClick={() => {logIn(email,password)}}
             >
               Entrar
             </Button>

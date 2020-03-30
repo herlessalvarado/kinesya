@@ -11,4 +11,10 @@ export default class EmployeeService<T> {
         return res.data;
       })
     }
+    logInEmployee(email: string, password: string): Promise<T>{
+      return axios.post('/employees/login', {email, password}).then((res: AxiosResponse<T>)=>{
+        console.log(res.data);
+        return res.data;
+      })
+    }
 }
