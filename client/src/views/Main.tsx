@@ -1,7 +1,8 @@
 import React, { FC, useEffect, useState } from 'react';
 import ProfileCard from '../components/Card';
 import EmployeeService from '../network/employeeService';
-
+import WhoreImg from '../assets/62.jpg';
+import Grid from '@material-ui/core/Grid';
 
 
 interface Profile{
@@ -21,12 +22,14 @@ const Main:FC = () => {
         })
     },[]);
     return(
-        <div>
-        {
-            employees?.map((employee,index) => (
-              <ProfileCard key={index} name={employee.name} image={process.env.REACT_APP_API_URL + employee.profilePhoto}  description={employee.description} price={employee.price} ></ProfileCard>
-            )) }
-        </div>
+        <Grid container spacing={3}>  
+        { employees ?
+            employees.map((employee,index) => (
+            <Grid item xs={6} sm={3}>
+              <ProfileCard key={index} name={employee.name} image={WhoreImg}  description={employee.description} price={employee.price} ></ProfileCard>
+            </Grid>
+            )) : null}
+        </Grid>
     )
 }
 
