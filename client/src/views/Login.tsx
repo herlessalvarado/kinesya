@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -15,7 +16,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import EmployeeService from '../network/employeeService';
 import LoginGirl from '../assets/loginGirl.jpg';
 import { LoginContext } from '../context/loginContext';
-import {Link as RLink} from 'react-router-dom';
+
+import Toast from '../components/Toast';
+import { AxiosError } from 'axios';
 
 function Copyright() {
   return (
@@ -76,6 +79,8 @@ export default function SignInSide() {
   const classes = useStyles();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [openToast, setOpenToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
   const [currentUser, setCurrentUser] = useState<User>();
 
   const handleEmail = (event : any) => {
@@ -85,24 +90,27 @@ export default function SignInSide() {
   const handlePassword = (event : any) => {
     setPassword(event.target.value);
   };
+  const handCloseToast = () =>{
+    setOpenToast(false);
+  }
 
-  const updateContext = (token : string) => {
-    if(token){
+  const updateContext = () => {
       return <LoginContext.Provider value={
         {
           isAuthenticated : true,
         }
       }>
       </LoginContext.Provider>
-    }
   }
 
   const logIn = (e : string, pass : string) => {
     let employeeService = new EmployeeService<User>();
     employeeService.logInEmployee(e,pass).then((res:User) => {
       setCurrentUser(res);
-      console.log(res);
-      updateContext(res.token);
+      updateContext();
+    }).catch((err: AxiosError)=>{
+      setToastMessage(err.response?.data);
+      setOpenToast(true);
     })
   }
 
@@ -156,6 +164,10 @@ export default function SignInSide() {
             >
               Entrar
             </Button>
+            {
+            openToast && 
+            <Toast key="alert" open={openToast} handleClose={handCloseToast} message={toastMessage} ></Toast>
+            }
             <Grid container>
               <Grid item xs>
                 <Link href="#" variant="body2">

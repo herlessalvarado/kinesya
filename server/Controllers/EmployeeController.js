@@ -30,7 +30,7 @@ router.post('/employees/profile',auth,upload, async (req,res)=>{
 })
 router.post('/employees/login', async(req, res) => {
     let result = await EmployeeService.loginUser(req.body)
-    res.cookie('key',result.data.token,{ expires: new Date(Date.now() + 900000),httpOnly: true});
+    
     if (result.success) {
         res.status(201).send(result.data)
     } else {
