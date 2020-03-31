@@ -15,24 +15,29 @@ axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 axios.defaults.withCredentials = true;
 
 export default function App() {
-  const [auth,setAuth] = useState(true);
+  const [auth,setAuth] = useState(false);
+  const onAuth = ()=>{
+    setAuth(true);
+  }
   //falta que el context consumer se guarde en auth para poder usarlo
   return (
-    <Router>
-      <Switch>
-        <Route exact path = "/">
-          <Home></Home>
-        </Route>
-        <Route path="/login">
-          <Login></Login>
-        </Route>
-        <PrivateRoute
-    path='/dashboard'
-    isAuthenticated={auth}
-    component={Dashboard}
-/>
-      </Switch>
-    </Router>
+    <LoginContext.Provider value={{isAuthenticated: auth}}>
+      <Router>
+        <Switch>
+          <Route exact path = "/">
+            <Home></Home>
+          </Route>
+          <Route path="/login">
+            <Login onClick={onAuth}></Login>
+          </Route>
+          <PrivateRoute
+      path='/dashboard'
+      isAuthenticated={auth}
+      component={Dashboard}
+      />
+        </Switch>
+      </Router>
+    </LoginContext.Provider>
   );
 }
 

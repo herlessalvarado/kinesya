@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-
+import React,{ useState, useContext,FC } from 'react';
+import { Redirect } from "react-router-dom";
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -74,11 +74,15 @@ interface User {
   token : string,
   user : Info,
 }
+interface LoginProps{
+  onClick: () => void
+}
 
-export default function SignInSide() {
+const Login:FC<LoginProps> = (props: LoginProps) =>{
   const classes = useStyles();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const auth = useContext(LoginContext);
   const [openToast, setOpenToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
   const [currentUser, setCurrentUser] = useState<User>();
@@ -94,20 +98,11 @@ export default function SignInSide() {
     setOpenToast(false);
   }
 
-  const updateContext = () => {
-      return <LoginContext.Provider value={
-        {
-          isAuthenticated : true,
-        }
-      }>
-      </LoginContext.Provider>
-  }
-
   const logIn = (e : string, pass : string) => {
     let employeeService = new EmployeeService<User>();
     employeeService.logInEmployee(e,pass).then((res:User) => {
       setCurrentUser(res);
-      updateContext();
+      props.onClick();
     }).catch((err: AxiosError)=>{
       setToastMessage(err.response?.data);
       setOpenToast(true);
@@ -155,6 +150,9 @@ export default function SignInSide() {
               control={<Checkbox value="remember" color="primary" />}
               label="Recuérdame"
             />
+            {
+             auth.isAuthenticated && <Redirect to="/dashboard" />
+            }
             <Button
               fullWidth
               variant="contained"
@@ -168,6 +166,7 @@ export default function SignInSide() {
             openToast && 
             <Toast key="alert" open={openToast} handleClose={handCloseToast} message={toastMessage} ></Toast>
             }
+            
             <Grid container>
               <Grid item xs>
                 <Link href="#" variant="body2">
@@ -189,3 +188,4 @@ export default function SignInSide() {
     </Grid>
   );
 }
+export default Login
