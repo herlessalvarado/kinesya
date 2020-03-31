@@ -48,9 +48,9 @@ const Header:FC<HeaderProps> = (props : HeaderProps) => {
         </Typography>
       </Toolbar>
       <Toolbar component="nav" variant="dense" className={classes.toolbarSecondary}>
-      { props.sections ? props.sections.map((section: Section) => { 
+      { props.sections ? props.sections.map((section: Section, index) => { 
           return(
-          <Link to={section.url}>
+          <Link key={index} to={section.url}>
             {section.title}
           </Link>
           )

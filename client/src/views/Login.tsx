@@ -14,6 +14,8 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import EmployeeService from '../network/employeeService';
 import LoginGirl from '../assets/loginGirl.jpg';
+import { LoginContext } from '../context/loginContext';
+import {Link as RLink} from 'react-router-dom';
 
 function Copyright() {
   return (
@@ -84,10 +86,23 @@ export default function SignInSide() {
     setPassword(event.target.value);
   };
 
+  const updateContext = (token : string) => {
+    if(token){
+      return <LoginContext.Provider value={
+        {
+          isAuthenticated : true,
+        }
+      }>
+      </LoginContext.Provider>
+    }
+  }
+
   const logIn = (e : string, pass : string) => {
     let employeeService = new EmployeeService<User>();
     employeeService.logInEmployee(e,pass).then((res:User) => {
       setCurrentUser(res);
+      console.log(res);
+      updateContext(res.token);
     })
   }
 
