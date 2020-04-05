@@ -4,7 +4,6 @@ import EmployeeService from '../network/employeeService';
 import WhoreImg from '../assets/62.jpg';
 import Grid from '@material-ui/core/Grid';
 
-
 interface Profile{
     name : string;
     description : string;
@@ -15,6 +14,7 @@ interface Profile{
 const Main:FC = () => {
     const [employees, setEmployees] = useState(new Array<Profile>());
     let employeeService = new EmployeeService<Profile>();
+    const path = "http://localhost:8000/"
 
     useEffect( () =>{
         employeeService.getEmployees().then((res: Profile[]) => {
@@ -26,7 +26,7 @@ const Main:FC = () => {
         { employees ?
             employees.map((employee,index) => (
             <Grid key={index} item xs={6} sm={3}>
-              <ProfileCard name={employee.name} description={employee.description} price={employee.price} ></ProfileCard>
+              <ProfileCard name={employee.name} description={employee.description} image={path+employee.profilePhoto} price={employee.price} ></ProfileCard>
             </Grid>
             )) : null}
         </Grid>

@@ -50,7 +50,7 @@ const Header:FC<HeaderProps> = (props : HeaderProps) => {
       <Toolbar component="nav" variant="dense" className={classes.toolbarSecondary}>
       { props.sections ? props.sections.map((section: Section, index) => { 
           return(
-          <Link key={index} to={section.url}>
+          <Link key={index} to={section.url} style={{ color: 'inherit', textDecoration: 'inherit'}}>
             {section.title}
           </Link>
           )

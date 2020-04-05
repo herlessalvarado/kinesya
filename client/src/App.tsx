@@ -19,7 +19,6 @@ export default function App() {
   const onAuth = ()=>{
     setAuth(true);
   }
-  //falta que el context consumer se guarde en auth para poder usarlo
   return (
     <LoginContext.Provider value={{isAuthenticated: auth}}>
       <Router>
