@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, FormEvent, ChangeEvent } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import AppBar from '@material-ui/core/AppBar';
@@ -66,15 +66,34 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Checkout() {
   const classes = useStyles();
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
+  const [age, setAge] = useState(18);
+  const [price, setPrice] = useState(100);
   const [profile, setProfile] = useState('');
   const [file, setFile] = useState();
   var aux: Array<any> = [];
+
+  const handleName = (event: ChangeEvent<HTMLInputElement>) => {
+    setName(event.target.value);
+  }
+
+  const handleDescription = (event: ChangeEvent<HTMLInputElement>) => {
+    setDescription(event.target.value);
+  }
+
+  const handleAge = (event: ChangeEvent<HTMLInputElement>) => {
+    setAge(parseInt(event.target.value, 10));
+  }
+
+  const handlePrice = (event: ChangeEvent<HTMLInputElement>) => {
+    setPrice(parseInt(event.target.value, 10));
+  }
 
   const handleProfile = (event: any) => {
     setProfile(URL.createObjectURL(event.target.files[0]))
   };
 
-  //check this handle
   const handleChange = (event : any) => {
     const arrFiles = Array.from(event.target.files);
     const files = arrFiles.map((file, index) => {
@@ -109,6 +128,7 @@ export default function Checkout() {
             label="Nombre"
             fullWidth
             autoComplete="fname"
+            onChange={handleName}
           />
         </Grid>
         <Grid item xs={12}>
@@ -119,6 +139,7 @@ export default function Checkout() {
           rows="4"
           variant="outlined"
           fullWidth
+          onChange={handleDescription}
         />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -135,7 +156,9 @@ export default function Checkout() {
             }
         }}
         fullWidth
+        value={age}
         variant="outlined"
+        onChange={handleAge}
         />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -143,6 +166,9 @@ export default function Checkout() {
           <InputLabel htmlFor="standard-adornment-amount">Precio</InputLabel>
           <Input
             id="standard-adornment-amount"
+            type="number"
+            value={price}
+            onChange={handlePrice}
             startAdornment={<InputAdornment position="start">S/.</InputAdornment>}
           />
         </FormControl>
