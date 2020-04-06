@@ -46,7 +46,7 @@ class Employee{
     async getAll(){
         let serviceResult = new ServiceResult();
         try {
-            var users = await EmployeeRepository.find()
+            var users = await EmployeeRepository.find({isPublic: true});
             serviceResult.addData(users);
         } catch (error) {
             serviceResult.addError(error.message)

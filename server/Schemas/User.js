@@ -27,6 +27,10 @@ const userSchema = mongoose.Schema({
         min: 18,
         max: 99
     },
+    isPublic:{
+        type: Boolean,
+        default: false
+    },
     tokens: [{
         token: {
             type: String,
