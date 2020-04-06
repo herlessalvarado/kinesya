@@ -1,4 +1,4 @@
-import React, { useState, FormEvent, ChangeEvent, useEffect, useRef } from 'react';
+import React, { useState,  ChangeEvent, useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import AppBar from '@material-ui/core/AppBar';
@@ -14,7 +14,7 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import Input from '@material-ui/core/Input';
 import CardMedia from '@material-ui/core/CardMedia';
 import EmployeeService from '../network/employeeService';
-import { AxiosError, AxiosResponse } from 'axios';
+import { AxiosError } from 'axios';
 import { Button } from '@material-ui/core';
 import FormData from 'form-data'
 import { ToastSuccessful } from '../components/Toast';
@@ -24,7 +24,7 @@ interface Employee{
   description?: string,
   age?:number,
   price?: number,
-  profilePhoto?: string,
+  profilePhoto: string,
   referencePhotos: Array<string>
 
 }
@@ -79,6 +79,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const MIN_AGE = 18;
+const MAX_AGE = 99;
+const MIN_PRICE = 0.0;
+
 interface Photo {
   url?: string,
   file?: any
@@ -90,22 +94,25 @@ export default function Checkout() {
   const [description, setDescription] = useState('');
   const [openToast, setOpenToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
-  const [age, setAge] = useState(18);
-  const [price, setPrice] = useState(100);
-  const [profile, setProfile] = useState<Photo>({});
+  const [age, setAge] = useState(MIN_AGE);
+  const [price, setPrice] = useState(MIN_PRICE);
+  const [profile, setProfile] = useState<Photo | undefined>();
   const [references, setReferences] = useState(Array<Photo>());
   const employeeService = new EmployeeService<Employee>();
   
   useEffect(()=>{
     employeeService.getEmployeeByToken().then((res)=>{
-      setAge(res.age!)
-      setPrice(res.price!)
-      setProfile({url: process.env.REACT_APP_API_URL!+res.profilePhoto})
-      setReferences(res.referencePhotos?.map((photo?:string):Photo =>({
-        url: process.env.REACT_APP_API_URL!+photo
-      })));
-      setDescription(res.description!)
-      setName(res.name!)
+      
+      setAge(res.age || MIN_AGE)
+      setPrice(res.price || MIN_PRICE)
+      if(!!res.profilePhoto)
+        setProfile({url: process.env.REACT_APP_API_URL!+res.profilePhoto})
+      if(res.referencePhotos.length > 0)
+        setReferences(res.referencePhotos?.map((photo?:string):Photo =>({
+          url: process.env.REACT_APP_API_URL!+photo
+        })));
+      setDescription(res.description || "")
+      setName(res.name || "")
     })
   },[])
 
@@ -140,13 +147,13 @@ export default function Checkout() {
       url: window.URL.createObjectURL(photo)
     }))
     
-    setReferences(references.concat(_references));
+    setReferences(references?.concat(_references));
   };
 
   const update = () => {
     let formData = new FormData();
-    formData.append('profile',profile.file);
-    references.forEach((photo)=>{formData.append('references',photo.file)})
+    formData.append('profile',profile?.file);
+    references?.forEach((photo)=>{formData.append('references',photo.file)})
     formData.append('name',name);
     formData.append('description',description);
     formData.append('age',age);
@@ -212,7 +219,7 @@ export default function Checkout() {
           }}
           InputProps={{
             inputProps: { 
-                max: 99, min: 18 
+                max: MAX_AGE, min: MIN_AGE 
             }
         }}
         fullWidth
@@ -246,7 +253,7 @@ export default function Checkout() {
         <Input id="assets" name="assets" type="file" onChange={handleProfile} />
         </Grid>
         {
-          !!profile ? <Grid item xs={12}>
+          !!profile? <Grid item xs={12}>
           <CardMedia
           component="img"
           height= "200"

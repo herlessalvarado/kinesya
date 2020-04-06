@@ -1,4 +1,4 @@
-import React,{ useState, useContext,FC, useEffect } from 'react';
+import React,{ useState, useContext,FC, useEffect, useRef } from 'react';
 import { Redirect, useHistory } from "react-router-dom";
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -79,6 +79,7 @@ interface User {
 
 const Login:FC = (props) =>{
   const classes = useStyles();
+
   const history = useHistory();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -163,10 +164,8 @@ const Login:FC = (props) =>{
             >
               Entrar
             </Button>
-            {
-            openToast && 
-            <Toast key="alert" open={openToast} handleClose={handCloseToast} message={toastMessage} ></Toast>
-            }
+            <Toast   key="alert" open={openToast} handleClose={handCloseToast} message={toastMessage} ></Toast>
+
             
             <Grid container>
               <Grid item xs>
@@ -175,7 +174,7 @@ const Login:FC = (props) =>{
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link href="/register" variant="body2">
                   {"¿No tienes una cuenta? Regístrate"}
                 </Link>
               </Grid>

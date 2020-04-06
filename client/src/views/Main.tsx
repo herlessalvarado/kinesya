@@ -1,7 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import ProfileCard from '../components/Card';
 import EmployeeService from '../network/employeeService';
-import WhoreImg from '../assets/62.jpg';
 import Grid from '@material-ui/core/Grid';
 
 interface Profile{
@@ -14,7 +13,7 @@ interface Profile{
 const Main:FC = () => {
     const [employees, setEmployees] = useState(new Array<Profile>());
     let employeeService = new EmployeeService<Profile>();
-    const path = "http://localhost:8000/"
+    const path = process.env.REACT_APP_API_URL!;
 
     useEffect( () =>{
         employeeService.getEmployees().then((res: Profile[]) => {
