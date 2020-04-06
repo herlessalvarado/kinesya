@@ -9,6 +9,7 @@ import {
 import Login from './views/Login';
 import PrivateRoute from './routing/PrivateRoute';
 import Dashboard from './views/Dashboard';
+import SignUp from './views/SignUp'
 
 interface Props{
   auth: boolean;
@@ -33,6 +34,9 @@ const App:FC<Props> =  function App(props) {
           >
             <Dashboard></Dashboard>
           </PrivateRoute>
+        <Route exact path ="/register">
+          <SignUp></SignUp>
+        </Route>
         </Switch>
       </Router>
   );

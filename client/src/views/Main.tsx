@@ -3,7 +3,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import ProfileCard from '../components/Card';
 import CompleteCard from '../components/CompleteCard';
 import EmployeeService from '../network/employeeService';
-import WhoreImg from '../assets/62.jpg';
 import Grid from '@material-ui/core/Grid';
 import Modal from '@material-ui/core/Modal';
 
@@ -27,7 +26,6 @@ const Main:FC = () => {
     const classes = useStyles();
     const [employees, setEmployees] = useState(new Array<Profile>());
     let employeeService = new EmployeeService<Profile>();
-    const path = "http://localhost:8000/"
     const [open, setOpen] = useState(false);
   
     const handleOpen = () => {
@@ -37,6 +35,7 @@ const Main:FC = () => {
     const handleClose = () => {
       setOpen(false);
     };
+    const path = process.env.REACT_APP_API_URL!;
 
     useEffect( () =>{
         employeeService.getEmployees().then((res: Profile[]) => {

@@ -16,6 +16,11 @@ export default class EmployeeService<T> {
         return res.data;
       })
     }
+    signUp(email:string, password: string): Promise<string>{
+      return axios.post('/employees', {email,password}).then((res: AxiosResponse<any>) => {
+        return res.data.message;
+      })
+    }
     updateEmployee(formData: any): Promise<string>{
       return axios.put('/employees', formData).then((res: AxiosResponse<any>) => {
         return res.data.message;

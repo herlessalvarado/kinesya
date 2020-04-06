@@ -7,8 +7,10 @@ const EmployeeService = require('../Service/EmployeeService')
 
 router.post('/employees',async (req, res) =>{
     let result = await EmployeeService.create(req.body);
-    if (result.success)
+    if (result.success){
+        res.cookie("key",result.data.token,{httpOnly: true})
         res.status(201).send(result.data)
+    }
     else
         res.status(400).send(result.errors)
 })
