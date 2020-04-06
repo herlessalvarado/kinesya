@@ -16,4 +16,12 @@ export default class EmployeeService<T> {
         return res.data;
       })
     }
+    updateEmployee(formData: any): Promise<T>{
+      return axios.put('/employees', formData, {
+        headers: {
+         'content-type': 'multipart/form-data'
+        }}).then((res: AxiosResponse<T>) => {
+        return res.data;
+      })
+    }
 }

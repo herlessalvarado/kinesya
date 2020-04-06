@@ -13,6 +13,10 @@ import FormControl from '@material-ui/core/FormControl';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Input from '@material-ui/core/Input';
 import CardMedia from '@material-ui/core/CardMedia';
+import EmployeeService from '../network/employeeService';
+import { AxiosError } from 'axios';
+import { Button } from '@material-ui/core';
+import FormData from 'form-data'
 
 function Copyright() {
   return (
@@ -72,6 +76,8 @@ export default function Checkout() {
   const [price, setPrice] = useState(100);
   const [profile, setProfile] = useState('');
   const [file, setFile] = useState();
+  var arrProf: any;
+  var arrFiles: any;
   var aux: Array<any> = [];
 
   const handleName = (event: ChangeEvent<HTMLInputElement>) => {
@@ -91,17 +97,34 @@ export default function Checkout() {
   }
 
   const handleProfile = (event: any) => {
-    setProfile(URL.createObjectURL(event.target.files[0]))
+    arrProf = event.target.files[0];
+    setProfile(URL.createObjectURL(event.target.files[0]));
   };
 
   const handleChange = (event : any) => {
-    const arrFiles = Array.from(event.target.files);
-    const files = arrFiles.map((file, index) => {
+    arrFiles = Array.from(event.target.files);
+    const files = arrFiles.map((file: any, index: any) => {
         const src = window.URL.createObjectURL(file);
         aux.push(src);
     })
     setFile(aux);
   };
+
+  const update = (name: string, description: string, age: number, price: number, profilePhoto: any, referencePhotos: any) => {
+    let formData = new FormData();
+    formData.append('profile',profile,{contentType: 'image/jpeg'});
+    // formData.append('references',arrFiles,{contentType: 'image/jpeg'});
+    formData.append('name',name);
+    formData.append('description',description);
+    formData.append('age',age);
+    formData.append('price',age);
+    let employeeService = new EmployeeService();
+    employeeService.updateEmployee(formData).then(res => {
+      console.log(res);
+    }).catch((err: AxiosError)=>{
+      return err.message
+    })
+  }
 
 
   return (
@@ -172,6 +195,7 @@ export default function Checkout() {
             startAdornment={<InputAdornment position="start">S/.</InputAdornment>}
           />
         </FormControl>
+        {console.log(profile)}
         </Grid>
         <Grid container spacing={3}>
           <Grid item xs={12} sm={6}>
@@ -219,6 +243,12 @@ export default function Checkout() {
             }) : null
         }
         </Grid>
+      </Grid>
+      <Grid item xs={12}>
+        <Button
+        onClick={() => update(name,description,age,price,profile,file)}>
+          Publicar
+        </Button>
       </Grid>
         </Paper>
         <Copyright />

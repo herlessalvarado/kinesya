@@ -7,7 +7,6 @@ const EmployeeService = require('../Service/EmployeeService')
 
 router.post('/employees',async (req, res) =>{
     let result = await EmployeeService.create(req.body);
-    
     if (result.success)
         res.status(201).send(result.data)
     else
@@ -20,8 +19,9 @@ router.get('/employees',async (req,res) =>{
     else
         res.status(400).send(result.errors)
 })
-router.post('/employees/profile',auth,upload, async (req,res)=>{
-    let result = await EmployeeService.uploadPhotos(req)
+
+router.put('/employees',auth,upload, async (req,res)=>{
+    let result = await EmployeeService.updateUser(req);
     if (result.success) {
         res.status(201).send(result.data)
     } else {
@@ -32,6 +32,7 @@ router.post('/employees/login', async(req, res) => {
     let result = await EmployeeService.loginUser(req.body)
     
     if (result.success) {
+        res.cookie("key",result.data.token,{httpOnly: true})
         res.status(201).send(result.data)
     } else {
         res.status(400).send(result.errors)
