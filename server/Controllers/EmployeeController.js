@@ -57,6 +57,7 @@ router.get('/employees/me/logout', auth, async (req, res) => {
 })
 
 router.post('/employees/me/logoutall', auth, async(req, res) => {
+    res.clearCookie('key');
     let result = await EmployeeService.userLogOutAll(req)
     if (result.success) {
         res.status(201).send(result.data)

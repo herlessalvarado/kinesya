@@ -1,8 +1,10 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import {Link} from 'react-router-dom';
+import Button from '@material-ui/core/Button';
+import { AuthOff } from '../cache/CookieManager';
 
 const useStyles = makeStyles((theme) => ({
   toolbar: {
@@ -33,6 +35,12 @@ interface HeaderProps {
 
 const Header:FC<HeaderProps> = (props : HeaderProps) => {
   const classes = useStyles();
+  const [aux, setAux] = useState(false);
+  const Logout = () => {
+    AuthOff();
+    setAux(true);
+  }
+  
   return (
     <React.Fragment>
       <Toolbar className={classes.toolbar}>
@@ -51,7 +59,12 @@ const Header:FC<HeaderProps> = (props : HeaderProps) => {
       { props.sections ? props.sections.map((section: Section, index) => { 
           return(
           <Link key={index} to={section.url} style={{ color: 'inherit', textDecoration: 'inherit'}}>
+            {(section.title == 'Logout') ? <Button onClick={() => {Logout()}}>
             {section.title}
+            </Button> : 
+            <Button>
+            {section.title}
+            </Button>}
           </Link>
           )
          }) : null}

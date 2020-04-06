@@ -26,4 +26,9 @@ export default class EmployeeService<T> {
         return res.data.message;
       })
     }
+    logOutEmployee(): Promise<string>{
+      return axios.post('/employees/me/logoutall').then((res: AxiosResponse<any>) => {
+        return res.data.message;
+      })
+    }
 }
