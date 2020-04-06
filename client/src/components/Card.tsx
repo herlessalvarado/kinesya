@@ -46,11 +46,11 @@ const ProfileCard:FC<CardProps> = (props : CardProps) => {
           </Typography>
         </CardContent>
       </CardActionArea>
-      {/* <CardActions>
+      <CardActions>
         <Button size="small" color="primary">
           {props.price}
         </Button>
-      </CardActions> */}
+      </CardActions>
     </Card>
   );
 }

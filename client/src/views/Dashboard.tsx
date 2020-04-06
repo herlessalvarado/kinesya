@@ -151,6 +151,7 @@ export default function Checkout() {
     formData.append('description',description);
     formData.append('age',age);
     formData.append('price',price);
+    formData.append('isPublic',true);
     employeeService.updateEmployee(formData).then((message) => {
     setToastMessage(message);
     setOpenToast(true);
