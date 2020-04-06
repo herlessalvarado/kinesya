@@ -1,4 +1,4 @@
-import React,{FC} from 'react';
+import React,{FC, useEffect, useRef} from 'react';
 import Alert,{Color} from '@material-ui/lab/Alert';
 import Snackbar from '@material-ui/core/Snackbar';
 import { makeStyles, Theme } from '@material-ui/core/styles';
@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     const classes = useStyles();
     return (
       <div className={classes.root}>
-        <Snackbar open={props.open} autoHideDuration={6000} anchorOrigin={{vertical: 'top', horizontal:'right'}} onClose={props.handleClose}>
+        <Snackbar  open={props.open} autoHideDuration={6000} anchorOrigin={{vertical: 'top', horizontal:'right'}} onClose={props.handleClose}>
           <Alert onClose={props.handleClose} severity="success">
             {props.message}
           </Alert>

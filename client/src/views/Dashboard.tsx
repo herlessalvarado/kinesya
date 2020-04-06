@@ -1,4 +1,4 @@
-import React, { useState, FormEvent, ChangeEvent } from 'react';
+import React, { useState, FormEvent, ChangeEvent, useEffect, useRef } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import AppBar from '@material-ui/core/AppBar';
@@ -14,9 +14,20 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import Input from '@material-ui/core/Input';
 import CardMedia from '@material-ui/core/CardMedia';
 import EmployeeService from '../network/employeeService';
-import { AxiosError } from 'axios';
+import { AxiosError, AxiosResponse } from 'axios';
 import { Button } from '@material-ui/core';
 import FormData from 'form-data'
+import { ToastSuccessful } from '../components/Toast';
+
+interface Employee{
+  name?: string,
+  description?: string,
+  age?:number,
+  price?: number,
+  profilePhoto?: string,
+  referencePhotos: Array<string>
+
+}
 
 function Copyright() {
   return (
@@ -68,17 +79,35 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+interface Photo {
+  url?: string,
+  file?: any
+}
+
 export default function Checkout() {
   const classes = useStyles();
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
+  const [openToast, setOpenToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
   const [age, setAge] = useState(18);
   const [price, setPrice] = useState(100);
-  const [profile, setProfile] = useState('');
-  const [file, setFile] = useState();
-  var arrProf: any;
-  var arrFiles: any;
-  var aux: Array<any> = [];
+  const [profile, setProfile] = useState<Photo>({});
+  const [references, setReferences] = useState(Array<Photo>());
+  const employeeService = new EmployeeService<Employee>();
+  
+  useEffect(()=>{
+    employeeService.getEmployeeByToken().then((res)=>{
+      setAge(res.age!)
+      setPrice(res.price!)
+      setProfile({url: process.env.REACT_APP_API_URL!+res.profilePhoto})
+      setReferences(res.referencePhotos?.map((photo?:string):Photo =>({
+        url: process.env.REACT_APP_API_URL!+photo
+      })));
+      setDescription(res.description!)
+      setName(res.name!)
+    })
+  },[])
 
   const handleName = (event: ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
@@ -97,35 +126,41 @@ export default function Checkout() {
   }
 
   const handleProfile = (event: any) => {
-    arrProf = event.target.files[0];
-    setProfile(URL.createObjectURL(event.target.files[0]));
+    
+    setProfile({
+      file: event.target.files[0],
+      url: window.URL.createObjectURL(event.target.files[0])
+    });
   };
 
   const handleChange = (event : any) => {
-    arrFiles = Array.from(event.target.files);
-    const files = arrFiles.map((file: any, index: any) => {
-        const src = window.URL.createObjectURL(file);
-        aux.push(src);
-    })
-    setFile(aux);
+    
+    let _references = Array.from(event.target.files).map((photo):Photo => ({
+      file: photo,
+      url: window.URL.createObjectURL(photo)
+    }))
+    
+    setReferences(references.concat(_references));
   };
 
-  const update = (name: string, description: string, age: number, price: number, profilePhoto: any, referencePhotos: any) => {
+  const update = () => {
     let formData = new FormData();
-    formData.append('profile',profile,{contentType: 'image/jpeg'});
-    // formData.append('references',arrFiles,{contentType: 'image/jpeg'});
+    formData.append('profile',profile.file);
+    references.forEach((photo)=>{formData.append('references',photo.file)})
     formData.append('name',name);
     formData.append('description',description);
     formData.append('age',age);
-    formData.append('price',age);
-    let employeeService = new EmployeeService();
-    employeeService.updateEmployee(formData).then(res => {
-      console.log(res);
+    formData.append('price',price);
+    employeeService.updateEmployee(formData).then((message) => {
+    setToastMessage(message);
+    setOpenToast(true);
     }).catch((err: AxiosError)=>{
       return err.message
     })
   }
-
+  const handCloseToast = () =>{
+    setOpenToast(false);
+  }
 
   return (
     <React.Fragment>
@@ -150,6 +185,7 @@ export default function Checkout() {
             name="Name"
             label="Nombre"
             fullWidth
+            value={name}
             autoComplete="fname"
             onChange={handleName}
           />
@@ -162,6 +198,7 @@ export default function Checkout() {
           rows="4"
           variant="outlined"
           fullWidth
+          value = {description}
           onChange={handleDescription}
         />
         </Grid>
@@ -183,6 +220,9 @@ export default function Checkout() {
         variant="outlined"
         onChange={handleAge}
         />
+
+        <ToastSuccessful  key="alert" open={openToast} handleClose={handCloseToast} message={toastMessage} ></ToastSuccessful>
+        
         </Grid>
         <Grid item xs={12} sm={6}>
         <FormControl fullWidth>
@@ -195,7 +235,6 @@ export default function Checkout() {
             startAdornment={<InputAdornment position="start">S/.</InputAdornment>}
           />
         </FormControl>
-        {console.log(profile)}
         </Grid>
         <Grid container spacing={3}>
           <Grid item xs={12} sm={6}>
@@ -204,15 +243,15 @@ export default function Checkout() {
             </Typography>
           </Grid>
           <Grid item xs={12} sm={6}>
-        <Input id="assets" name="assets" type="file" onChange={handleProfile} fullWidth/>
+        <Input id="assets" name="assets" type="file" onChange={handleProfile} />
         </Grid>
         {
-          profile ? <Grid item xs={12}>
+          !!profile ? <Grid item xs={12}>
           <CardMedia
           component="img"
           height= "200"
           className={classes.media}
-          image={profile} 
+          image={profile.url} 
           />
         </Grid> : null
         }
@@ -225,28 +264,27 @@ export default function Checkout() {
             </Typography>
           </Grid>
           <Grid item xs={12} sm={6}>
-        <Input id="assets2" name="assets2" type="file" inputProps={{ multiple: true }} onChange={handleChange} fullWidth/>
+        <Input id="assets2" name="assets2" type="file" inputProps={{ multiple: true }}  onChange={handleChange} />
           </Grid>
         </Grid>
         <Grid container spacing={3}>
         {
-            file ? file.map((f: any,index: any) => {
-                return(
-                <Grid key={index} item xs={12} sm={3}>
+         references?.map((photo: Photo,index:number)=>(
+          <Grid key={index} item xs={12} sm={3}>
                     <CardMedia
                        component="img"
                        height= "200"
                        className={classes.media}
-                       image={f} 
+                       image={photo.url} 
                     />
-                </Grid>)
-            }) : null
+            </Grid>
+         ))
         }
         </Grid>
       </Grid>
       <Grid item xs={12}>
         <Button
-        onClick={() => update(name,description,age,price,profile,file)}>
+        onClick={update}>
           Publicar
         </Button>
       </Grid>
