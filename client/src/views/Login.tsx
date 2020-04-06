@@ -1,5 +1,5 @@
-import React,{ useState, useContext,FC } from 'react';
-import { Redirect } from "react-router-dom";
+import React,{ useState, useContext,FC, useEffect } from 'react';
+import { Redirect, useHistory } from "react-router-dom";
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -10,12 +10,13 @@ import Link from '@material-ui/core/Link';
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
+import {checkAuth,AuthOn} from '../cache/CookieManager'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import EmployeeService from '../network/employeeService';
 import LoginGirl from '../assets/loginGirl.jpg';
-import { LoginContext } from '../context/loginContext';
+
 
 import Toast from '../components/Toast';
 import { AxiosError } from 'axios';
@@ -74,15 +75,13 @@ interface User {
   token : string,
   user : Info,
 }
-interface LoginProps{
-  onClick: () => void
-}
 
-const Login:FC<LoginProps> = (props: LoginProps) =>{
+
+const Login:FC = (props) =>{
   const classes = useStyles();
+  const history = useHistory();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const auth = useContext(LoginContext);
   const [openToast, setOpenToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
   const [currentUser, setCurrentUser] = useState<User>();
@@ -98,11 +97,15 @@ const Login:FC<LoginProps> = (props: LoginProps) =>{
     setOpenToast(false);
   }
 
+  useEffect(()=>{
+    if (!!checkAuth())
+      history.push("/dashboard")
+  })
   const logIn = (e : string, pass : string) => {
     let employeeService = new EmployeeService<User>();
     employeeService.logInEmployee(e,pass).then((res:User) => {
       setCurrentUser(res);
-      props.onClick();
+      AuthOn();
     }).catch((err: AxiosError)=>{
       setToastMessage(err.response?.data);
       setOpenToast(true);
@@ -150,9 +153,7 @@ const Login:FC<LoginProps> = (props: LoginProps) =>{
               control={<Checkbox value="remember" color="primary" />}
               label="Recuérdame"
             />
-            {
-             auth.isAuthenticated && <Redirect to="/dashboard" />
-            }
+
             <Button
               fullWidth
               variant="contained"

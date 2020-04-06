@@ -73,8 +73,7 @@ export default function Checkout() {
   const handleProfile = (event: any) => {
     setProfile(URL.createObjectURL(event.target.files[0]))
   };
-
-  //check this handle
+  
   const handleChange = (event : any) => {
     const arrFiles = Array.from(event.target.files);
     const files = arrFiles.map((file, index) => {

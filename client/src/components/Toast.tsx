@@ -18,8 +18,6 @@ const useStyles = makeStyles((theme: Theme) => ({
   
   const ToastError:FC<ToastProps> = function CustomizedSnackbars(props: ToastProps) {
     const classes = useStyles();
-
-  
     return (
       <div className={classes.root}>
         <Snackbar open={props.open} autoHideDuration={6000} anchorOrigin={{vertical: 'top', horizontal:'right'}} onClose={props.handleClose}>

@@ -1,13 +1,24 @@
 import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
-
-const PrivateRoute = ({component, isAuthenticated, ...rest}: any) => {
-    const routeComponent = (props: any) => (
-        isAuthenticated
-            ? React.createElement(component, props)
-            : <Redirect to={{pathname: '/login'}}/>
+import {checkAuth} from '../cache/CookieManager'
+const PrivateRoute = ({ children,  redirect, ...rest }:any) => {
+    return (
+      <Route
+        {...rest}
+        render={({ location }) =>
+        checkAuth() ? (
+            children
+          ) : (
+            <Redirect
+              to={{
+                pathname: redirect,
+                state: { from: location }
+              }}
+            />
+          )
+        }
+      />
     );
-    return <Route {...rest} render={routeComponent}/>;
-};
+  }
 
 export default PrivateRoute;

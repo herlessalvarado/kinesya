@@ -14,23 +14,34 @@ class Employee{
             return serviceResult
         }
     }
-    async uploadPhotos({user,files}){
+    async updateUser(req){
         let serviceResult = new ServiceResult();
         try {
-            if (Object.keys(files).length === 0)
-                throw new Error("There aren't any photos")
-            if (!!files.references)
-                user.referencePhotos = files.references.map(photo => photo.filename)
-            if (!!files.profile)
-
-                user.profilePhoto = files.profile[0].filename
-            await user.save()
-            serviceResult.addData({message:"Photos has been uploaded successfully"})
+            await this.updateUserInfo(req.body, req.user);
+            if (!!req.files)
+                this.uploadPhotos(req)
+            serviceResult.addData({ message: "User info has been updated" });
         } catch (error) {
             serviceResult.addError(error.message)
-        }finally{
+        }finally
+        {
             return serviceResult
         }
+        
+    }
+    async updateUserInfo(newUser, user) {
+        Object.keys(newUser).forEach((prop) => {
+            user[prop] = newUser[prop];
+        });
+        await user.save();
+    }
+
+    async uploadPhotos({user,files}){
+        if (!!files.references)
+            user.referencePhotos = files.references.map(photo => photo.filename)
+        if (!!files.profile)
+            user.profilePhoto = files.profile[0].filename
+        await user.save()
     }
     async getAll(){
         let serviceResult = new ServiceResult();

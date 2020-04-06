@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, FC } from 'react';
 import Home from './views/Home';
 import axios from 'axios';
 import {
@@ -9,34 +9,33 @@ import {
 import Login from './views/Login';
 import PrivateRoute from './routing/PrivateRoute';
 import Dashboard from './views/Dashboard';
-import { LoginContext } from './context/loginContext';
+
+interface Props{
+  auth: boolean;
+}
 
 axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 axios.defaults.withCredentials = true;
 
-export default function App() {
-  const [auth,setAuth] = useState(false);
-  const onAuth = ()=>{
-    setAuth(true);
-  }
+const App:FC<Props> =  function App(props) {
   return (
-    <LoginContext.Provider value={{isAuthenticated: auth}}>
       <Router>
         <Switch>
-          <Route exact path = "/">
+          <Route exact path = "/" >
             <Home></Home>
           </Route>
-          <Route path="/login">
-            <Login onClick={onAuth}></Login>
+          <Route exact path ="/login">
+            <Login></Login>
           </Route>
           <PrivateRoute
-      path='/dashboard'
-      isAuthenticated={auth}
-      component={Dashboard}
-      />
+          path='/dashboard'
+          redirect ="/"
+          >
+            <Dashboard></Dashboard>
+          </PrivateRoute>
         </Switch>
       </Router>
-    </LoginContext.Provider>
   );
 }
 
+export default App;
