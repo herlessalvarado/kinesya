@@ -1,31 +1,45 @@
-import React from 'react';
-import Header from './views/Header';
-import { CssBaseline } from '@material-ui/core';
-import Container from '@material-ui/core/Container';
-import Main from './views/Main';
+import React, { useState, useEffect, FC } from 'react';
+import Home from './views/Home';
 import axios from 'axios';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+} from "react-router-dom";
+import Login from './views/Login';
+import PrivateRoute from './routing/PrivateRoute';
+import Dashboard from './views/Dashboard';
+import SignUp from './views/SignUp'
 
-let sections: {title: string, url: string} [] = [
-  {title : "Login" , url : "#"},
-  {title : "Clients", url : "#"},
-  {title : "About", url : "#"}
-]
+interface Props{
+  auth: boolean;
+}
 
 axios.defaults.baseURL = process.env.REACT_APP_API_URL;
+axios.defaults.withCredentials = true;
 
-export default function App() {
-  
+const App:FC<Props> =  function App(props) {
   return (
-    <React.Fragment>
-      <CssBaseline>
-      <Container maxWidth="lg">
-        <Header title="PK" sections={sections}></Header>
-        <main>
-          <Main></Main>
-        </main>
-    </Container>
-    </CssBaseline>
-    </React.Fragment>
+      <Router>
+        <Switch>
+          <Route exact path = "/" >
+            <Home></Home>
+          </Route>
+          <Route exact path ="/login">
+            <Login></Login>
+          </Route>
+          <PrivateRoute
+          path='/dashboard'
+          redirect ="/"
+          >
+            <Dashboard></Dashboard>
+          </PrivateRoute>
+        <Route exact path ="/register">
+          <SignUp></SignUp>
+        </Route>
+        </Switch>
+      </Router>
   );
 }
 
+export default App;

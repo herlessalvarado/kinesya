@@ -1,11 +1,34 @@
-import axios,{AxiosError,AxiosResponse} from 'axios';
+import axios,{AxiosResponse} from 'axios';
 
 export default class EmployeeService<T> {
-    getEmployees(callback: (data:any) => void): void{
-        axios.get('/employees').then((response: AxiosResponse<Array<T>>) => {
-            callback(response.data);
-          } ).catch((err: AxiosError)=>{
-            console.log(err.response?.data);
-          })
+    getEmployees(): Promise<Array<T>>{
+       return axios.get('/employees').then((res:AxiosResponse<Array<T>>)=>{
+         return res.data;
+       });
+    }
+    getEmployeeByToken(): Promise<T>{
+      return axios.get('/employees/me').then((res:AxiosResponse<T>)=>{
+        return res.data;
+      })
+    }
+    logInEmployee(email: string, password: string): Promise<T>{
+      return axios.post('/employees/login', {email, password}).then((res: AxiosResponse<T>)=>{
+        return res.data;
+      })
+    }
+    signUp(email:string, password: string): Promise<string>{
+      return axios.post('/employees', {email,password}).then((res: AxiosResponse<any>) => {
+        return res.data.message;
+      })
+    }
+    updateEmployee(formData: any): Promise<string>{
+      return axios.put('/employees', formData).then((res: AxiosResponse<any>) => {
+        return res.data.message;
+      })
+    }
+    logOutEmployee(): Promise<string>{
+      return axios.post('/employees/me/logoutall').then((res: AxiosResponse<any>) => {
+        return res.data.message;
+      })
     }
 }

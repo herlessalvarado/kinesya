@@ -1,8 +1,12 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import Link from '@material-ui/core/Link';
+import {Link , useHistory} from 'react-router-dom';
+
+import Button from '@material-ui/core/Button';
+import { AuthOff } from '../cache/CookieManager';
+import EmployeeService from '../network/employeeService';
 
 const useStyles = makeStyles((theme) => ({
   toolbar: {
@@ -32,10 +36,20 @@ interface HeaderProps {
 }
 
 const Header:FC<HeaderProps> = (props : HeaderProps) => {
+  const employee = new EmployeeService();
+  const history = useHistory();
   const classes = useStyles();
+  const [aux, setAux] = useState(false);
+  const Logout = () => {
+    AuthOff();
+    setAux(true);
+    employee.logOutEmployee()
+  }
+  
   return (
     <React.Fragment>
       <Toolbar className={classes.toolbar}>
+
         <Typography
           component="h2"
           variant="h5"
@@ -44,21 +58,25 @@ const Header:FC<HeaderProps> = (props : HeaderProps) => {
           noWrap
           className={classes.toolbarTitle}
         >
+
           {props.title}
+      
+            
+
+          
         </Typography>
+
       </Toolbar>
       <Toolbar component="nav" variant="dense" className={classes.toolbarSecondary}>
-      { props.sections ? props.sections.map((section: Section) => { 
+      { props.sections ? props.sections.map((section: Section, index) => { 
           return(
-            <Link
-            color="inherit"
-            noWrap
-            key={section.title}
-            variant="body2"
-            href={section.url}
-            className={classes.toolbarLink}
-          >
+          <Link key={index} to={section.url} style={{ color: 'inherit', textDecoration: 'inherit'}}>
+            {(section.title == 'Logout') ? <Button onClick={() => {Logout()}}>
             {section.title}
+            </Button> : 
+            <Button>
+            {section.title}
+            </Button>}
           </Link>
           )
          }) : null}

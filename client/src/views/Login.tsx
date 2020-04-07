@@ -1,4 +1,5 @@
-import React from 'react';
+import React,{ useState, useContext,FC, useEffect, useRef } from 'react';
+import { Redirect, useHistory } from "react-router-dom";
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -9,16 +10,22 @@ import Link from '@material-ui/core/Link';
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
+import {checkAuth,AuthOn} from '../cache/CookieManager'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import EmployeeService from '../network/employeeService';
 import LoginGirl from '../assets/loginGirl.jpg';
+
+
+import Toast from '../components/Toast';
+import { AxiosError } from 'axios';
 
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {'Copyright © '}
-      <Link color="inherit" href="#">
+      <Link color="inherit" href="/">
         PK
       </Link>{' '}
       {new Date().getFullYear()}
@@ -58,8 +65,53 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignInSide() {
+interface Info {
+  email : string,
+  name : string,
+  kind : string,
+}
+
+interface User {
+  token : string,
+  user : Info,
+}
+
+
+const Login:FC = (props) =>{
   const classes = useStyles();
+
+  const history = useHistory();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [openToast, setOpenToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+  const [currentUser, setCurrentUser] = useState<User>();
+
+  const handleEmail = (event : any) => {
+    setEmail(event.target.value);
+  };
+
+  const handlePassword = (event : any) => {
+    setPassword(event.target.value);
+  };
+  const handCloseToast = () =>{
+    setOpenToast(false);
+  }
+
+  useEffect(()=>{
+    if (!!checkAuth())
+      history.push("/dashboard")
+  })
+  const logIn = (e : string, pass : string) => {
+    let employeeService = new EmployeeService<User>();
+    employeeService.logInEmployee(e,pass).then((res:User) => {
+      setCurrentUser(res);
+      AuthOn();
+    }).catch((err: AxiosError)=>{
+      setToastMessage(err.response?.data);
+      setOpenToast(true);
+    })
+  }
 
   return (
     <Grid container component="main" className={classes.root}>
@@ -84,6 +136,7 @@ export default function SignInSide() {
               name="email"
               autoComplete="email"
               autoFocus
+              onChange={handleEmail}
             />
             <TextField
               variant="outlined"
@@ -95,20 +148,25 @@ export default function SignInSide() {
               type="password"
               id="password"
               autoComplete="current-password"
+              onChange={handlePassword}
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="Recuérdame"
             />
+
             <Button
-              type="submit"
               fullWidth
               variant="contained"
               color="primary"
               className={classes.submit}
+              onClick={() => {logIn(email,password)}}
             >
               Entrar
             </Button>
+            <Toast   key="alert" open={openToast} handleClose={handCloseToast} message={toastMessage} ></Toast>
+
+            
             <Grid container>
               <Grid item xs>
                 <Link href="#" variant="body2">
@@ -116,7 +174,7 @@ export default function SignInSide() {
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link href="/register" variant="body2">
                   {"¿No tienes una cuenta? Regístrate"}
                 </Link>
               </Grid>
@@ -130,3 +188,4 @@ export default function SignInSide() {
     </Grid>
   );
 }
+export default Login

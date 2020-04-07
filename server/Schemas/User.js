@@ -4,7 +4,6 @@ const validator = require('validator');
 const userSchema = mongoose.Schema({
     name: {
         type: String,
-        required: true,
         trim: true
     },
     email: {
@@ -27,6 +26,10 @@ const userSchema = mongoose.Schema({
         type: Number,
         min: 18,
         max: 99
+    },
+    isPublic:{
+        type: Boolean,
+        default: false
     },
     tokens: [{
         token: {
