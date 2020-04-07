@@ -5,6 +5,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Paper from '@material-ui/core/Paper';
 import Link from '@material-ui/core/Link';
+import {Link  as Link2, useHistory} from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
@@ -176,7 +177,9 @@ export default function Checkout() {
       <AppBar position="absolute" color="default" className={classes.appBar}>
         <Toolbar>
           <Typography variant="h6" color="inherit" noWrap>
-            Pk
+          <Link2 to="/" style={{ color: 'inherit', textDecoration: 'inherit'}}>
+            PK
+          </Link2>
           </Typography>
         </Toolbar>
       </AppBar>

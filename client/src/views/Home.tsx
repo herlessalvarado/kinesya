@@ -30,7 +30,6 @@ export default function Home() {
     <React.Fragment>
       <CssBaseline>
       <Container maxWidth="lg">
-        {console.log(auth)}
         {auth ? <Header title="PK" sections={sections2}></Header> : <Header title="PK" sections={sections}></Header> }
         <main>
           <Main></Main>

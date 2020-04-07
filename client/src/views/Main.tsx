@@ -24,11 +24,13 @@ const useStyles = makeStyles((theme) => ({
 
 const Main:FC = () => {
     const classes = useStyles();
+    const [selectedEmployee,setSelectedEmployee] = useState<Profile>();
     const [employees, setEmployees] = useState(new Array<Profile>());
     let employeeService = new EmployeeService<Profile>();
     const [open, setOpen] = useState(false);
   
-    const handleOpen = () => {
+    const handleOpen = (employee:Profile) => {
+      setSelectedEmployee(employee);
       setOpen(true);
     };
   
@@ -48,21 +50,22 @@ const Main:FC = () => {
         { employees ?
             employees.map((employee,index) => (
             <React.Fragment>
-            <Grid key={index} item xs={6} sm={3} onClick={handleOpen}>
+            <Grid key={index} item xs={6} sm={3} onClick={()=>{handleOpen(employee)}}>
               <ProfileCard name={employee.name} description={employee.description} image={path+employee.profilePhoto} price={employee.price} ></ProfileCard>
             </Grid>
-            <Modal
+            
+          </React.Fragment>
+            )) : null}
+        </Grid>
+        <Modal
             className={classes.modal}
             open={open}
             onClose={handleClose}
             aria-labelledby="simple-modal-title"
             aria-describedby="simple-modal-description"
           >
-            <CompleteCard name={employee.name} description={employee.description} profile={path+employee.profilePhoto} price={employee.price} references={employee.referencePhotos}></CompleteCard>
+            <CompleteCard  name={selectedEmployee?.name} description={selectedEmployee?.description} profile={path+selectedEmployee?.profilePhoto} price={selectedEmployee?.price} references={selectedEmployee?.referencePhotos}></CompleteCard>
           </Modal>
-          </React.Fragment>
-            )) : null}
-        </Grid>
         
         
       </React.Fragment>
