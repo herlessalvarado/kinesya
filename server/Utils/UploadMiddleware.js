@@ -6,7 +6,7 @@ const storage = multer.diskStorage(
             cb(null,process.env.PhotosFolder)
         },
         filename: function (req,file,cb){
-            cb(null, req.user.email+file.originalname)
+            cb(null, Date.now()+file.originalname)
         } 
     }
 );

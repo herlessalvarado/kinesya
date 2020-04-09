@@ -10,7 +10,7 @@ var MongoDBConnector = class MongoDBConnector {
     }
     async connectDB () {
         try {
-            await mongoose.connect(this.connectionString, { useUnifiedTopology: true, useNewUrlParser: true  })
+            await mongoose.connect(this.connectionString, { useUnifiedTopology: true, useNewUrlParser: true, useCreateIndex: true   })
             console.log(`DB Connect ${this.connectionString} `)
         } catch (error) {
             console.log(error.message)            
