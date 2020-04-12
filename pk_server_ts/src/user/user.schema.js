@@ -1,14 +1,18 @@
-import mongoose from 'mongoose';
-import validator from 'validator';
-
-export const userSchema = new mongoose.Schema({
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var mongoose_1 = __importDefault(require("mongoose"));
+var validator_1 = __importDefault(require("validator"));
+exports.userSchema = new mongoose_1.default.Schema({
     email: {
         type: String,
         required: true,
         unique: true,
         lowercase: true,
-        validate:{
-            validator: validator.isEmail,
+        validate: {
+            validator: validator_1.default.isEmail,
             message: '{VALUE} is not a valid email',
             isAsync: false
         }
@@ -22,12 +26,12 @@ export const userSchema = new mongoose.Schema({
         type: String,
         trim: true
     },
-    age:{
+    age: {
         type: Number,
         min: 18,
         max: 99
     },
-    description :{
+    description: {
         type: String
     },
     price: {
@@ -40,17 +44,17 @@ export const userSchema = new mongoose.Schema({
     location: {
         type: String,
     },
-    profilePhoto:{
+    profilePhoto: {
         type: String
     },
-    isPublic:{
+    isPublic: {
         type: Boolean,
-        default : false
+        default: false
     },
-    referencePhotos:[String],
+    referencePhotos: [String],
     tokens: [{
-        token: {
-            type: String,
-        }
-    }]
+            token: {
+                type: String,
+            }
+        }]
 });

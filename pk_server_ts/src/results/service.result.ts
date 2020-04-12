@@ -1,16 +1,19 @@
 export class ServiceResult{
     success: boolean;
-    errors: Array<Error>;
+    private _errors: Array<Error>;
     data: any;
     constructor(){
         this.success = true;
-        this.errors = [];
+        this._errors = [];
     }
     addError(error: Error){
         this.success = false;
-        this.errors.push(error);
+        this._errors.push(error);
     }
     addData(data: any){
         this.data = data;
+    }
+    getErrorMessages(){
+        return {message: this._errors.map((error)=>(error.message))}
     }
 }

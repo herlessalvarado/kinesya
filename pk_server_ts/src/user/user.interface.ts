@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose, { Model } from 'mongoose';
 
 export interface IUser extends mongoose.Document {
     email ?: string;
@@ -10,7 +10,11 @@ export interface IUser extends mongoose.Document {
     phone ?: number;
     location ?: string;
     tokens ?: [{token: string}];
+    isPublic ?:boolean;
     profilePhoto ?: string,
     referencePhotos ?: [string],
-    generateAuthToken():any;
+    generateAuthToken(): Promise<string>
 };
+export interface IUserModel extends Model<IUser>{
+    findByCredentials: ({email, password}:IUser) => Promise<IUser>
+ }
