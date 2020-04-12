@@ -16,5 +16,4 @@ export class ServiceResult{
     getErrorMessages(){
         return {message: this._errors.map((error)=>(error.message))}
     }
-
 }

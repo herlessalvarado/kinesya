@@ -1,7 +1,5 @@
 import mongoose, { Model } from 'mongoose';
 
-
-
 export interface IUser extends mongoose.Document {
     email ?: string;
     password ?: string;
@@ -19,4 +17,4 @@ export interface IUser extends mongoose.Document {
 };
 export interface IUserModel extends Model<IUser>{
     findByCredentials: ({email, password}:IUser) => Promise<IUser>
-  }
+ }
