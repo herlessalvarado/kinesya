@@ -37,11 +37,8 @@ export const userSchema = new mongoose.Schema({
     phone: {
         type: Number,
     },
-    latitude: {
+    location: {
         type: String,
-    },
-    longitude:{
-        type:String,
     },
     profilePhoto:{
         type: String

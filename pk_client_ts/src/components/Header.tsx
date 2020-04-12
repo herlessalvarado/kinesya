@@ -54,7 +54,7 @@ export default function Header(props: HeaderProps) {
         }else{
             return(
                 <React.Fragment>
-                    <Link to='/' style={{ color: 'inherit', textDecoration: 'inherit'}}>
+                    <Link to='/login' style={{ color: 'inherit', textDecoration: 'inherit'}}>
                         <Button className={classes.button} onClick={AuthOff}>
                             Cerrar sesión
                         </Button>

@@ -68,8 +68,7 @@ var UserService = /** @class */ (function () {
         user.isPublic = true;
         user.price = req.body.price;
         user.description = req.body.description;
-        user.longitude = req.body.longitude;
-        user.latitude = req.body.latitude;
+        user.location = req.body.location;
         user.phone = req.body.phone;
     };
     UserService.prototype.create = function (req, res) {

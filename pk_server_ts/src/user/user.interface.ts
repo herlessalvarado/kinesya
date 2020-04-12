@@ -10,8 +10,7 @@ export interface IUser extends mongoose.Document {
     description ?: string;
     price ?: number;
     phone ?: number;
-    latitude ?: string;
-    longitude?:string;
+    location ?: string;
     tokens ?: [{token: string}];
     isPublic ?:boolean;
     profilePhoto ?: string,

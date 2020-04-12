@@ -41,10 +41,7 @@ exports.userSchema = new mongoose_1.default.Schema({
     phone: {
         type: Number,
     },
-    latitude: {
-        type: String,
-    },
-    longitude: {
+    location: {
         type: String,
     },
     profilePhoto: {
