@@ -42,6 +42,7 @@ UserRouter.get('/users/me', auth, async(req: Request, res: Response) => {
         res.status(200).send(result.data);
     }else{
         res.status(400).send(result.getErrorMessages());
+    }
 });
 
 UserRouter.get('/users', async(req: Request, res: Response) => {
