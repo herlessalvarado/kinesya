@@ -16,6 +16,7 @@ import FormData from 'form-data';
 import Header from '../components/Header';
 import Copyright from '../components/Copyright';
 import UserService from '../network/UserService';
+import {ToastSuccessful} from '../components/Toast'
 
 interface User{
   name?: string,
@@ -84,6 +85,8 @@ interface Photo {
 
 export default function Dashboard() {
   const classes = useStyles();
+  const [openToast, setOpenToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [age, setAge] = useState(MIN_AGE);
@@ -91,7 +94,9 @@ export default function Dashboard() {
   const [profile, setProfile] = useState<Photo | undefined>();
   const [references, setReferences] = useState(Array<Photo>());
   const userService = new UserService<User>();
-  
+  const handCloseToast = () =>{
+    setOpenToast(false);
+}
   useEffect(()=>{
     userService.getUserByToken().then((res)=>{
       setAge(res.age || MIN_AGE)
@@ -151,7 +156,8 @@ export default function Dashboard() {
     formData.append('price',price);
     formData.append('isPublic',true);
     userService.updateUser(formData).then((message) => {
-        console.log(message)
+      setToastMessage(message);
+      setOpenToast(true);
     }).catch((err: AxiosError)=>{
       return err.message
     })
@@ -255,6 +261,9 @@ export default function Dashboard() {
         <Input id="assets2" name="assets2" type="file" inputProps={{ multiple: true }}  onChange={handleChange} />
           </Grid>
         </Grid>
+        <ToastSuccessful
+        key="alert" open={openToast} handleClose={handCloseToast} message={toastMessage}
+        ></ToastSuccessful>
         <Grid container spacing={3}>
         {
          references?.map((photo: Photo,index:number)=>(

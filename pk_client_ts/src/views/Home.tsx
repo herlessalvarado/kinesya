@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import Header from '../components/Header';
 import SearchBar from '../components/SearchBar';
@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export default function Home(){
     const classes = useStyles();
-
+    const modalRef = useRef();
     const userService = new UserService<Profile>();
     const [users, setUsers] = useState(new Array<Profile>());
     const [open, setOpen] = useState(false);
@@ -63,16 +63,17 @@ export default function Home(){
                 <Container maxWidth="lg">
                 <React.Fragment>
                     <Grid container spacing={3}>  
-                    { users ?
-                        users.map((user,index) => (
-                        <React.Fragment>
-                        <Grid key={index} item xs={6} sm={3} onClick={()=>{handleOpen(user)}}>
+                    { 
+                        users?.map((user,index) => (
+                        <React.Fragment key={index}>
+                        <Grid  item xs={6} sm={3} onClick={()=>{handleOpen(user)}}>
                         <SmallCard name={user.name} location={user.location} image={path+user.profilePhoto} phone={user.phone} ></SmallCard>
                         </Grid>    
                     </React.Fragment>
-                        )) : null}
+                        )) }
                     </Grid>
                     <Modal
+                    ref={modalRef}
                         className={classes.modal}
                         open={open}
                         onClose={handleClose}

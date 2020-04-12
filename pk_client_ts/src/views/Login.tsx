@@ -11,6 +11,8 @@ import Copyrigth from '../components/Copyright';
 import UserService from '../network/UserService';
 import { useHistory } from 'react-router-dom';
 import { AuthOn, checkAuth } from '../cache/CookieManager'
+import {  AxiosError } from 'axios';
+import Toast from '../components/Toast';
 
 const theme = createMuiTheme({
     palette: {
@@ -56,10 +58,22 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function Login(){
     const classes = useStyles();
     const history = useHistory();
-
+    const [openToast, setOpenToast] = useState(false);
+    const [toastMessage, setToastMessage] = useState("");
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
+    const handCloseToast = (event?:React.SyntheticEvent, reason?: string) =>{
+        if (reason === 'clickaway') {
+            return;
+          }
+        setOpenToast(false);
+    }
+    const cleanFields = ()=>
+    {
+        setEmail('');
+        setPassword('');
+    }
     const handleEmail = (event : ChangeEvent<HTMLInputElement>) => {
         setEmail(event.target.value);
     };
@@ -76,8 +90,11 @@ export default function Login(){
     const LogIn = (email: string, password: string) => {
         const userService = new UserService();
         userService.logInUser(email,password).then((res) => {
-            console.log(res);
+            cleanFields();
             AuthOn();
+        }).catch((err:AxiosError)=>{
+            setToastMessage(err.response?.data?.message);
+            setOpenToast(true);
         });
     };
 
@@ -100,6 +117,7 @@ export default function Login(){
                                     id="email"
                                     label="Correo electrónico"
                                     name="email"
+                                    autoComplete="email"
                                     autoFocus
                                     onChange={handleEmail}
                                 />
@@ -117,6 +135,7 @@ export default function Login(){
                                 />
                             </form>
                         </ThemeProvider>
+                        <Toast key="alert" open={openToast} handleClose={handCloseToast} message={toastMessage} ></Toast>
                         <Button 
                             fullWidth 
                             variant="contained" 
