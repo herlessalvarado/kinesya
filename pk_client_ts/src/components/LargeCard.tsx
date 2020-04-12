@@ -8,44 +8,45 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
+import { ButtonBase, TextField } from '@material-ui/core';
 
 const useStyles = makeStyles((theme: Theme) =>
-    createStyles({
-        card: {
-            maxWidth: "50%",
-          },
-          root: {
-            display: 'flex',
-          },
-          details: {
-            display: 'flex',
-            flexDirection: 'column',
-          },
-          content: {
-            flex: '1 0 auto',
-          },
-          cover: {
-            width: 151,
-          },
-          controls: {
-            display: 'flex',
-            alignItems: 'center',
-            paddingLeft: theme.spacing(1),
-            paddingBottom: theme.spacing(1),
-          },
-          playIcon: {
-            height: 38,
-            width: 38,
-          },
-          media: {
-              width: 200,
-              height: 400,
-              objectFit: 'cover',
-          },
-          ref: {
-              objectFit: 'contain',
-          },
-    })
+createStyles({
+  root: {
+    flexGrow: 1,
+
+  },
+  card: {
+    padding: theme.spacing(0.2),
+    height : '40vw',
+    overflowY:'auto',
+    overflowX:'hidden',
+    margin: 'auto',
+    width: '50vw',
+    '&::-webkit-scrollbar': {
+      width: '0.5em'
+    },
+    '&::-webkit-scrollbar-track': {
+      boxShadow: 'inset 0 0 6px rgba(0,0,0,0.00)',
+      webkitBoxShadow: 'inset 0 0 6px rgba(0,0,0,0.00)'
+    },
+    '&::-webkit-scrollbar-thumb': {
+      backgroundColor: 'rgba(0,0,0,.1)',
+      outline: '1px solid slategrey'
+    }
+  
+  },
+  textField:{
+    margin:'1.5vh'
+  },
+
+  img: {
+    width: '100%',
+    objectFit: 'cover',
+    height: '100%',
+  },
+}),
   );
 
 interface CardProps {
@@ -61,61 +62,50 @@ interface CardProps {
 
 export default function LargeCard (props : CardProps){
   const classes = useStyles();
-  const path = process.env.REACT_APP_API_URL;
+  const path = process.env.REACT_APP_API_URL!;
+
 
   return (
-    <Card className={classes.card}>
-        <div className={classes.root}>
-      <CardActionArea className={classes.details}>
+    
+      <Card className={classes.card}>
         <CardContent>
-          <Typography gutterBottom variant="h5" component="h2">
-            {props.name}
-          </Typography>
-          <Typography variant="body2" color="textSecondary" component="p">
-            {props.description}
-          </Typography>
-          <Typography variant="body2" color="textSecondary" component="p">
-            {props.location}
-          </Typography>
-        </CardContent>
-        <CardActions>
-        <Button size="small">
-          {props.price}
-        </Button>
-        <Button size="small">
-          {props.phone}
-        </Button>
-      </CardActions>
-      </CardActionArea>
-      <CardMedia
-          component="img"
-          height= "200"
-          className={classes.media}
-          image={props.profile}
-          title={props.name}
-        />
-      </div>
-      <div>
-          <Typography variant="h5">
-              Fotos
-          </Typography>
-          <Grid container spacing={3}>
-        { props.references ?
-            props.references.map((reference,index) => (
-            <Grid key={index} item xs={3} sm={3}>
-              <CardMedia
-          component="img"
-          height= "200"
-          width= "200"
-          className={classes.ref}
-          image={path+reference}
-        />
+        <Grid container spacing={2}>
+            <Grid item sm md={6} container alignItems="center" >
+              <ButtonBase>
+                <img className={classes.img}  alt="complex" src={`${props.profile}`} />
+              </ButtonBase>
             </Grid>
-            )) : <Grid><Typography variant="h6">
-                No hay mas fotos</Typography>
-                </Grid>}
-        </Grid>
-      </div>
-    </Card>
+            <Grid item md={6} sm container  >
+              <Grid item xs={12} container alignContent='center'>
+              <Typography variant="h5" component="h2">
+                {props.name}
+              </Typography>
+              </Grid>
+              <Grid item xs={12} container alignContent='center'>
+              <Typography variant="h5" component="h2">
+                {props.name}
+              </Typography>
+              </Grid>
+              <Grid item xs={12} container alignContent='center'>
+              <Typography  variant="h5" component="h2">
+                {props.name}
+              </Typography>
+              </Grid>
+            </Grid>
+          </Grid>
+          <Grid container spacing={2} wrap="wrap">
+            {
+              props.references?.map((reference,index)=>(
+                <Grid item sm md={6}>
+                  <ButtonBase>
+                    <img key={index} className={classes.img} alt="complex" src={path + reference} />
+                  </ButtonBase>
+                </Grid>
+              ))
+            }
+          </Grid>
+        </CardContent>
+      </Card>
+
   );
 };

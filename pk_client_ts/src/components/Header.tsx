@@ -4,8 +4,10 @@ import { CssBaseline } from '@material-ui/core';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { checkAuth, AuthOff } from '../cache/CookieManager';
+import UserService from '../network/UserService';
+import { AxiosError } from 'axios';
 
 const useStyles = makeStyles((theme: Theme)=>
   createStyles({
@@ -37,6 +39,17 @@ interface HeaderProps{
 
 export default function Header(props: HeaderProps) {
     const classes = useStyles();
+    const history = useHistory();   
+    const user = new UserService();
+    function logOut(){
+        user.logOutUser().then((message)=>{
+            AuthOff();
+            history.push('/login')
+            
+        }).catch((err:AxiosError)=>{
+            alert(err);
+        })
+    }
     function buttons(){
         if (!checkAuth()){
         return  <React.Fragment>
@@ -55,7 +68,7 @@ export default function Header(props: HeaderProps) {
             return(
                 <React.Fragment>
                     <Link to='/login' style={{ color: 'inherit', textDecoration: 'inherit'}}>
-                        <Button className={classes.button} onClick={AuthOff}>
+                        <Button className={classes.button} onClick={logOut}>
                             Cerrar sesión
                         </Button>
                     </Link>

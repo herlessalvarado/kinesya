@@ -130,7 +130,6 @@ export default function Login(){
                                     type="password"
                                     label="Contraseña"
                                     name="password"
-                                    autoFocus
                                     onChange={handlePassword}
                                 />
                             </form>

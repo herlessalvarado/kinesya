@@ -14,6 +14,7 @@ const useStyles = makeStyles((theme: Theme)=>
             maxWidth: 345,
         },
         media:{
+
             objectFit: 'contain',
         },
         button:{
@@ -37,6 +38,7 @@ export default function SmallCard(props: CardProps){
         <Card  className={classes.root}>
           <CardActionArea>
             <CardMedia
+              height="400vh"
               component="img"
               className={classes.media}
               image={props.image}
