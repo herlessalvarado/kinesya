@@ -1,8 +1,8 @@
-import React,{FC, useEffect, useRef} from 'react';
-import Alert,{Color} from '@material-ui/lab/Alert';
+import React,{ FC } from 'react';
+import Alert from '@material-ui/lab/Alert';
 import Snackbar from '@material-ui/core/Snackbar';
 import { makeStyles, Theme } from '@material-ui/core/styles';
-import { Collapse } from '@material-ui/core';
+
 interface ToastProps{
     message ?: string,
     open : boolean,

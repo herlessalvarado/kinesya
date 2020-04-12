@@ -80,7 +80,7 @@ export default function Home(){
                         aria-labelledby="simple-modal-title"
                         aria-describedby="simple-modal-description"
                     >
-                        <LargeCard  name={selectedUser?.name} description={selectedUser?.description} profile={path+selectedUser?.profilePhoto} price={selectedUser?.price} references={selectedUser?.referencePhotos}></LargeCard>
+                        <LargeCard  name={selectedUser?.name} description={selectedUser?.description} profile={path+selectedUser?.profilePhoto} price={selectedUser?.price} phone={selectedUser?.phone} references={selectedUser?.referencePhotos}></LargeCard>
                     </Modal>
                 </React.Fragment>
                 </Container>

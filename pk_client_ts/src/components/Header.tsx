@@ -5,7 +5,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom';
-import { checkAuth } from '../cache/CookieManager';
+import { checkAuth, AuthOff } from '../cache/CookieManager';
 
 const useStyles = makeStyles((theme: Theme)=>
   createStyles({
@@ -38,7 +38,7 @@ interface HeaderProps{
 export default function Header(props: HeaderProps) {
     const classes = useStyles();
     function buttons(){
-        if (!checkAuth())
+        if (!checkAuth()){
         return  <React.Fragment>
                 <Link to='/login' style={{ color: 'inherit', textDecoration: 'inherit'}}>
                     <Button className={classes.button}>
@@ -51,6 +51,17 @@ export default function Header(props: HeaderProps) {
                     </Button>
                 </Link>
             </React.Fragment>
+        }else{
+            return(
+                <React.Fragment>
+                    <Link to='/' style={{ color: 'inherit', textDecoration: 'inherit'}}>
+                        <Button className={classes.button} onClick={AuthOff}>
+                            Cerrar sesión
+                        </Button>
+                    </Link>
+                </React.Fragment>
+            )
+        }
         
     }
     return(

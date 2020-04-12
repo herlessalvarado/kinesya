@@ -24,6 +24,7 @@ interface User{
   description?: string,
   price?: number,
   phone?: number,
+  location?: string,
   profilePhoto: string,
   referencePhotos: Array<string>
 }
@@ -91,6 +92,8 @@ export default function Dashboard() {
   const [description, setDescription] = useState('');
   const [age, setAge] = useState(MIN_AGE);
   const [price, setPrice] = useState(MIN_PRICE);
+  const [phone, setPhone] = useState<number>(51);
+  const [location, setLocation] = useState('');
   const [profile, setProfile] = useState<Photo | undefined>();
   const [references, setReferences] = useState(Array<Photo>());
   const userService = new UserService<User>();
@@ -101,6 +104,8 @@ export default function Dashboard() {
     userService.getUserByToken().then((res)=>{
       setAge(res.age || MIN_AGE)
       setPrice(res.price || MIN_PRICE)
+      setPhone(res.phone || 51)
+      setLocation(res.location || "")
       if(!!res.profilePhoto)
         setProfile({url: process.env.REACT_APP_API_URL!+res.profilePhoto})
       if(res.referencePhotos.length > 0)
@@ -125,7 +130,15 @@ export default function Dashboard() {
   }
 
   const handlePrice = (event: ChangeEvent<HTMLInputElement>) => {
-    setPrice(parseInt(event.target.value, 10));
+    setPrice(parseInt(event.target.value, 10) || price);
+  }
+
+  const handlePhone = (event: ChangeEvent<HTMLInputElement>) => {
+    setPhone(parseInt(event.target.value, 10) || phone);
+  }
+
+  const handleLocation = (event: ChangeEvent<HTMLInputElement>) => {
+    setLocation(event.target.value);
   }
 
   const handleProfile = (event: any) => {
@@ -154,6 +167,8 @@ export default function Dashboard() {
     formData.append('description',description);
     formData.append('age',age);
     formData.append('price',price);
+    formData.append('phone',phone);
+    formData.append('location',location);
     formData.append('isPublic',true);
     userService.updateUser(formData).then((message) => {
       setToastMessage(message);
@@ -229,6 +244,30 @@ export default function Dashboard() {
             startAdornment={<InputAdornment position="start">S/.</InputAdornment>}
           />
         </FormControl>
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <TextField
+              required
+              id="phone"
+              name="Phone"
+              label="Teléfono"
+              fullWidth
+              value={phone}
+              autoComplete="fphone"
+              onChange={handlePhone}
+            />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <TextField
+              required
+              id="location"
+              name="Location"
+              label="Ubicación"
+              fullWidth
+              value={location}
+              autoComplete="flocation"
+              onChange={handleLocation}
+            />
         </Grid>
         <Grid container spacing={3} className={classes.grid}>
           <Grid item xs={12} sm={6}>

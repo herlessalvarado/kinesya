@@ -1,4 +1,4 @@
-import axios,{AxiosResponse} from 'axios';
+import axios from 'axios';
 
 export default class UserService<T> {
     async getUsers(): Promise<Array<T>>{
