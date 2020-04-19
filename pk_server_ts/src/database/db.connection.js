@@ -49,7 +49,12 @@ var MongoConnection = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, mongoose_1.default.connect(this.connectionString, { useUnifiedTopology: true, useNewUrlParser: true, useCreateIndex: true })];
+                        return [4 /*yield*/, mongoose_1.default.connect(this.connectionString, {
+                                useUnifiedTopology: true,
+                                useNewUrlParser: true,
+                                useCreateIndex: true,
+                                useFindAndModify: false,
+                            })];
                     case 1:
                         _a.sent();
                         console.log("Connected to MongoDB");
@@ -67,4 +72,3 @@ var MongoConnection = /** @class */ (function () {
     return MongoConnection;
 }());
 exports.default = MongoConnection;
-;

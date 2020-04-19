@@ -42,15 +42,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var mongoose_1 = __importDefault(require("mongoose"));
 var bcryptjs_1 = __importDefault(require("bcryptjs"));
 var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+var tokenManager_1 = require("../utils/tokenManager");
 var user_schema_1 = require("../user/user.schema");
-user_schema_1.userSchema.pre('save', function (next) {
+user_schema_1.userSchema.pre("save", function (next) {
     return __awaiter(this, void 0, void 0, function () {
         var user, _a;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
                     user = this;
-                    if (!user.isModified('password')) return [3 /*break*/, 2];
+                    if (!user.isModified("password")) return [3 /*break*/, 2];
                     _a = user;
                     return [4 /*yield*/, bcryptjs_1.default.hash(user.password, 8)];
                 case 1:
@@ -63,22 +64,21 @@ user_schema_1.userSchema.pre('save', function (next) {
         });
     });
 });
-user_schema_1.userSchema.methods.generateAuthToken = function () {
-    return __awaiter(this, void 0, void 0, function () {
-        var user, token;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    user = this;
-                    token = jsonwebtoken_1.default.sign({ _id: user._id }, process.env.JWT_KEY);
-                    user.tokens = user.tokens.concat({ token: token });
-                    return [4 /*yield*/, user.save()];
-                case 1:
-                    _a.sent();
-                    return [2 /*return*/, token];
-            }
-        });
+user_schema_1.userSchema.methods.removeRefreshToken = function () {
+    var user = this;
+    user.refresh_token = undefined;
+    user.save();
+};
+user_schema_1.userSchema.methods.verifyRefreshToken = function () {
+    var result = true;
+    var user = this;
+    jsonwebtoken_1.default.verify(user.refresh_token, process.env.JWT_KEY, function (err) {
+        if (!!err) {
+            user.removeRefreshToken();
+            result = false;
+        }
     });
+    return result;
 };
 user_schema_1.userSchema.statics.findByCredentials = function (_a) {
     var email = _a.email, password = _a.password;
@@ -90,17 +90,33 @@ user_schema_1.userSchema.statics.findByCredentials = function (_a) {
                 case 1:
                     user = _b.sent();
                     if (!user) {
-                        throw new Error('Invalid login credentials');
+                        throw new Error("Invalid login credentials");
                     }
                     return [4 /*yield*/, bcryptjs_1.default.compare(password, user.password)];
                 case 2:
                     isPasswordMatch = _b.sent();
                     if (!isPasswordMatch) {
-                        throw new Error('Invalid login credentials');
+                        throw new Error("Invalid login credentials");
                     }
                     return [2 /*return*/, user];
             }
         });
     });
 };
-exports.User = mongoose_1.default.model('User', user_schema_1.userSchema);
+user_schema_1.userSchema.statics.findByRefreshToken = function (refresh_token, projection) { return __awaiter(void 0, void 0, void 0, function () {
+    var user, payload;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                user = null;
+                if (!!!refresh_token) return [3 /*break*/, 2];
+                payload = tokenManager_1.getClaimsFromToken(refresh_token);
+                return [4 /*yield*/, exports.User.findById(payload.id, projection)];
+            case 1:
+                user = _a.sent();
+                _a.label = 2;
+            case 2: return [2 /*return*/, user];
+        }
+    });
+}); };
+exports.User = mongoose_1.default.model("User", user_schema_1.userSchema);

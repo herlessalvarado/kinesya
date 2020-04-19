@@ -1,112 +1,141 @@
-import { Request,Response } from 'express';
-import { User } from '../repository/user.repository';
-import { IUser } from '../user/user.interface';
-import { ServiceResult } from '../results/service.result';
+import { PROTECTED_FIELDS } from "../utils/constants_variables"
+import { User } from "../repository/user.repository"
+import { IUser } from "../user/user.interface"
+import { ServiceResult } from "../results/service.result"
+import { createStandardToken, createRefreshToken, getClaimsFromToken } from "../utils/tokenManager"
 
-export class UserService{
-
-    private async uploadPhotos(req:Request){
-
-        const files = req.files as { [fieldname: string]: Express.Multer.File[] };
-        if(!!files.references){
-            req.body.user.referencePhotos = files.references.map((photo: any) => photo.filename)
+export class UserService {
+    private async uploadUserPhotos(user: IUser, photos: any) {
+        const files = photos as {
+            [fieldname: string]: Express.Multer.File[]
         }
-        if(!!files.profile){
-            req.body.user.profilePhoto = files.profile[0].filename;
+        if (!!files.references) {
+            user.referencePhotos = files.references.map(
+                (photo: Express.Multer.File): string => photo.filename
+            )
         }
-        await req.body.user.save();
-    }
-    private mapReqbodyToUser(user: IUser, req:Request) {
-        user.name = req.body.name;
-        user.age = req.body.age;
-        user.isPublic = true;
-        user.price = req.body.price;
-        user.description = req.body.description;
-        user.location = req.body.location;
-        user.phone = req.body.phone;
+        if (!!files.profile) {
+            user.profilePhoto = files.profile[0].filename
+        }
+        await user.save()
     }
 
-
-    async create(req: Request,res:Response): Promise<ServiceResult> {
-        const serviceResult = new ServiceResult();
-        try{
-            const user = new User(req.body as IUser);
-            await user.save();
-            const token = await user.generateAuthToken();
-            res.cookie('key',token,{httpOnly:true});
-            serviceResult.addData("The user has been created");
-        }catch(error){
-
-            serviceResult.addError(error as Error);
-        }finally{
-            return serviceResult;
-        }
-    };
-    async logIn(req: Request,res:Response): Promise<ServiceResult>{
-        const serviceResult = new ServiceResult();
-        
-        try{
-            const user:IUser = req.body.user;
-            const token = await user.generateAuthToken();
-            res.cookie('key',token,{httpOnly:true})
-            
-            serviceResult.addData({message:"The user has been logged successfully"});
-        }catch(error){
-            serviceResult.addError(error as Error);
-        }finally{
-            return serviceResult;
-        }
-    };
-    async getUser(user: IUser): Promise<ServiceResult>{
-        const serviceResult = new ServiceResult();
-        try{
-            serviceResult.addData(user);
-        }catch(error){
-            serviceResult.addError(error as Error);
-        }finally{
-            return serviceResult;
-        }
-    };
-    async getAll(): Promise<ServiceResult>{
-        const serviceResult = new ServiceResult();
-        try{
-            const users = await User.find({isPublic:true});
-            serviceResult.addData(users);
-        }catch(error){
-            serviceResult.addError(error as Error);
-        }finally{
-            return serviceResult;
-        }
-    };
-    async updateUser(req: Request): Promise<ServiceResult>{
-        const user = req.body.user as IUser;
-        const serviceResult = new ServiceResult();
-
-        try{
-            this.mapReqbodyToUser(user, req);
-            await user.save();
-            if (!!req.files)
-                this.uploadPhotos(req);
-            serviceResult.addData({message:"User updated"});
-        }catch(error){
-            serviceResult.addError(error as Error);
-        }finally{
-            return serviceResult;
-        }
+    async getUserByToken(token: string | undefined): Promise<IUser | null> {
+        return await User.findByRefreshToken(token)
+    }
+    async getUserByTokenForResponse(token: string | undefined): Promise<IUser | null> {
+        return await User.findByRefreshToken(token, PROTECTED_FIELDS)
     }
 
-
-    async logOut(req: Request): Promise<ServiceResult>{
-        let serviceResult = new ServiceResult();
+    async create(requestUser: IUser): Promise<ServiceResult> {
+        const serviceResult = new ServiceResult()
         try {
-            req.body.user.tokens.splice(0, req.body.user.tokens.length);
-            await req.body.user.save();
-            serviceResult.addData({message:"The user has been logout"})
+            const user: IUser = await User.create(requestUser)
+            const refresh_token = createRefreshToken(user)
+            const token = createStandardToken(user)
+            user.refresh_token = refresh_token
+            await user.save()
+            serviceResult.addData({
+                token,
+                refresh_token,
+            })
         } catch (error) {
-            serviceResult.addError(error as Error);
-        }finally{
-            return serviceResult;
+            serviceResult.addError(error as Error)
+        } finally {
+            return serviceResult
         }
-
     }
-};
+    async logIn(requestUser: IUser): Promise<ServiceResult> {
+        const serviceResult = new ServiceResult()
+        try {
+            const user: IUser = await User.findByCredentials(requestUser)
+            const refresh_token = createRefreshToken(user)
+            const token = createStandardToken(user)
+            user.refresh_token = refresh_token
+            await user.save()
+            serviceResult.addData({
+                token,
+                refresh_token,
+            })
+        } catch (error) {
+            serviceResult.addError(error as Error)
+        } finally {
+            return serviceResult
+        }
+    }
+    async getUser(token: string | undefined): Promise<ServiceResult> {
+        const serviceResult = new ServiceResult()
+        try {
+            const user = await this.getUserByTokenForResponse(token)
+            serviceResult.addData(user)
+        } catch (error) {
+            serviceResult.addError(error as Error)
+        } finally {
+            return serviceResult
+        }
+    }
+    async getAll(): Promise<ServiceResult> {
+        const serviceResult = new ServiceResult()
+        try {
+            const users = await User.find({ isPublic: true }, PROTECTED_FIELDS)
+            serviceResult.addData(users)
+        } catch (error) {
+            serviceResult.addError(error as Error)
+        } finally {
+            return serviceResult
+        }
+    }
+    async updateUser(token: string, newUser: IUser, photos: any): Promise<ServiceResult> {
+        let serviceResult = new ServiceResult()
+        let userID = getClaimsFromToken(token).id
+        const user = await User.findOneAndUpdate({ _id: userID }, newUser)
+        try {
+            if (user === null) throw new Error("This User doesnt exists")
+            if (!!photos) this.uploadUserPhotos(user, photos)
+            serviceResult.addData({
+                message: "User updated",
+            })
+        } catch (error) {
+            serviceResult.addError(error as Error)
+        } finally {
+            return serviceResult
+        }
+    }
+
+    async logOut(token: string | undefined): Promise<ServiceResult> {
+        let serviceResult = new ServiceResult()
+        const user = await this.getUserByToken(token)
+        try {
+            if (user === null) throw new Error("This user doesnt exists")
+            else user.removeRefreshToken()
+            serviceResult.addData({
+                message: "The refresh token has been removed!",
+            })
+        } catch (error) {
+            serviceResult.addError(error as Error)
+        } finally {
+            return serviceResult
+        }
+    }
+
+    async generateToken(refresh_token: string | undefined) {
+        let serviceResult = new ServiceResult()
+        const user = await this.getUserByToken(refresh_token)
+        try {
+            if (
+                user === null ||
+                refresh_token !== user!.refresh_token ||
+                !user!.verifyRefreshToken()
+            )
+                throw new Error("Invalid Refresh Token")
+            serviceResult.addData({
+                token: createStandardToken(user),
+                refresh_token: user.refresh_token,
+            })
+        } catch (error) {
+            serviceResult.addError(error)
+        } finally {
+            return serviceResult
+        }
+    }
+}

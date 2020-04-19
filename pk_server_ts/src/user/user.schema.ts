@@ -1,5 +1,5 @@
-import mongoose from 'mongoose';
-import validator from 'validator';
+import mongoose from "mongoose"
+import validator from "validator"
 
 export const userSchema = new mongoose.Schema({
     email: {
@@ -7,32 +7,32 @@ export const userSchema = new mongoose.Schema({
         required: true,
         unique: true,
         lowercase: true,
-        validate:{
+        validate: {
             validator: validator.isEmail,
-            message: '{VALUE} is not a valid email',
-            isAsync: false
-        }
+            message: "{VALUE} is not a valid email",
+            isAsync: false,
+        },
     },
     password: {
         type: String,
         required: true,
-        minLength: 6
+        minLength: 6,
     },
     name: {
         type: String,
-        trim: true
+        trim: true,
     },
-    age:{
+    age: {
         type: Number,
         min: 18,
-        max: 99
+        max: 99,
     },
-    description :{
-        type: String
+    description: {
+        type: String,
     },
     price: {
         type: Number,
-        min: 50
+        min: 50,
     },
     phone: {
         type: Number,
@@ -40,17 +40,15 @@ export const userSchema = new mongoose.Schema({
     location: {
         type: String,
     },
-    profilePhoto:{
-        type: String
+    profilePhoto: {
+        type: String,
     },
-    isPublic:{
+    isPublic: {
         type: Boolean,
-        default : false
+        default: false,
     },
-    referencePhotos:[String],
-    tokens: [{
-        token: {
-            type: String,
-        }
-    }]
-});
+    referencePhotos: [String],
+    refresh_token: {
+        type: String,
+    },
+})

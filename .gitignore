@@ -107,5 +107,7 @@ dist/
 # Temporary folders
 tmp/
 temp/
+# Prettier Settings
+.prettierrc.json
 
 # End of https://www.gitignore.io/api/node
