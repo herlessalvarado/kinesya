@@ -57,7 +57,7 @@ interface CardProps {
     references?: Array<string>
 }
 
-export default React.forwardRef((props:CardProps,ref)=>{
+export default React.forwardRef((props: CardProps, ref) => {
     const classes = useStyles()
     const path = process.env.REACT_APP_API_URL!
     return (
@@ -100,7 +100,7 @@ export default React.forwardRef((props:CardProps,ref)=>{
                 </Grid>
                 <Grid container spacing={2} wrap="wrap">
                     {props.references?.map((reference, index) => (
-                        <Grid item sm md={6}>
+                        <Grid item sm md={6} key={index}>
                             <ButtonBase>
                                 <img
                                     key={index}
@@ -116,5 +116,3 @@ export default React.forwardRef((props:CardProps,ref)=>{
         </Card>
     )
 })
-
-

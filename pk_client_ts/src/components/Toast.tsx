@@ -17,7 +17,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
 }))
 
-
 const ToastError: FC<ToastProps> = function CustomizedSnackbars(props: ToastProps) {
     const classes = useStyles()
     return (

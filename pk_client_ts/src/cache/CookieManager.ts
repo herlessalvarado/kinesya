@@ -9,7 +9,7 @@ export function getRefreshToken() {
 }
 
 export function getUserName() {
-    const payload = jwt.decode(getJWT()!) as {[key:string] :string};
+    const payload = jwt.decode(getJWT()!) as { [key: string]: string }
     return payload.username
 }
 export function AuthOn(token: string, refreshToken: string) {
