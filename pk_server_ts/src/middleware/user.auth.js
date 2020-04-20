@@ -55,7 +55,9 @@ exports.auth = function (req, res, next) { return __awaiter(void 0, void 0, void
                 throw new Error("Invalid Token");
         }
         catch (error) {
-            res.status(401).send({ message: error.message });
+            res.status(401).send({
+                message: error.message,
+            });
         }
         return [2 /*return*/];
     });

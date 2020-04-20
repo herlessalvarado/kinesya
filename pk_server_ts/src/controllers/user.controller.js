@@ -162,7 +162,7 @@ exports.UserRouter.post("/users/me/logout", function (req, res) { return __await
         }
     });
 }); });
-exports.UserRouter.post("/token", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+exports.UserRouter.post("/users/token", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var refresh_token, result;
     return __generator(this, function (_a) {
         switch (_a.label) {

@@ -103,7 +103,10 @@ var UserService = /** @class */ (function () {
                         return [4 /*yield*/, user.save()];
                     case 3:
                         _a.sent();
-                        serviceResult.addData({ token: token, refresh_token: refresh_token });
+                        serviceResult.addData({
+                            token: token,
+                            refresh_token: refresh_token,
+                        });
                         return [3 /*break*/, 6];
                     case 4:
                         error_1 = _a.sent();
@@ -134,7 +137,10 @@ var UserService = /** @class */ (function () {
                         return [4 /*yield*/, user.save()];
                     case 3:
                         _a.sent();
-                        serviceResult.addData({ token: token, refresh_token: refresh_token });
+                        serviceResult.addData({
+                            token: token,
+                            refresh_token: refresh_token,
+                        });
                         return [3 /*break*/, 6];
                     case 4:
                         error_2 = _a.sent();
@@ -212,7 +218,9 @@ var UserService = /** @class */ (function () {
                                 throw new Error("This User doesnt exists");
                             if (!!photos)
                                 this.uploadUserPhotos(user, photos);
-                            serviceResult.addData({ message: "User updated" });
+                            serviceResult.addData({
+                                message: "User updated",
+                            });
                         }
                         catch (error) {
                             serviceResult.addError(error);
@@ -240,7 +248,9 @@ var UserService = /** @class */ (function () {
                                 throw new Error("This user doesnt exists");
                             else
                                 user.removeRefreshToken();
-                            serviceResult.addData({ message: "The refresh token has been removed!" });
+                            serviceResult.addData({
+                                message: "The refresh token has been removed!",
+                            });
                         }
                         catch (error) {
                             serviceResult.addError(error);

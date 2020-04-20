@@ -80,7 +80,7 @@ UserRouter.post("/users/me/logout", async (req: Request, res: Response) => {
     }
 })
 
-UserRouter.post("/token", async (req: Request, res: Response) => {
+UserRouter.post("/users/token", async (req: Request, res: Response) => {
     const refresh_token = req.body.refresh_token
     const result = await userService.generateToken(refresh_token)
     if (result.success) res.status(201).send(result.data)
