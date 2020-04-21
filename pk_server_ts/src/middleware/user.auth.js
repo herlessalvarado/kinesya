@@ -40,58 +40,25 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-var user_repository_1 = require("../repository/user.repository");
-var service_result_1 = require("../results/service.result");
-function getUserByToken(token) {
-    return __awaiter(this, void 0, void 0, function () {
-        var data;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    data = jsonwebtoken_1.default.verify(token, process.env.JWT_KEY);
-                    return [4 /*yield*/, user_repository_1.User.findOne({ _id: data, 'tokens.token': token })];
-                case 1: return [2 /*return*/, _a.sent()];
-            }
-        });
-    });
-}
 exports.auth = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var serviceResult, token, user, error_1, message;
-    var _a, _b;
-    return __generator(this, function (_c) {
-        switch (_c.label) {
-            case 0:
-                serviceResult = new service_result_1.ServiceResult();
-                _c.label = 1;
-            case 1:
-                _c.trys.push([1, 6, , 7]);
-                token = ((_a = req.cookies) === null || _a === void 0 ? void 0 : _a.key) || ((_b = req.header('Authorization')) === null || _b === void 0 ? void 0 : _b.replace('Bearer ', ''));
-                user = void 0;
-                if (!!!token) return [3 /*break*/, 3];
-                return [4 /*yield*/, getUserByToken(token)];
-            case 2:
-                user = _c.sent();
-                return [3 /*break*/, 5];
-            case 3: return [4 /*yield*/, user_repository_1.User.findByCredentials(req.body)];
-            case 4:
-                user = _c.sent();
-                _c.label = 5;
-            case 5:
-                if (serviceResult.success) {
-                    req.body.user = user;
-                    next();
-                }
-                else {
-                    res.status(401).send(serviceResult.getErrorMessages());
-                }
-                return [3 /*break*/, 7];
-            case 6:
-                error_1 = _c.sent();
-                res.clearCookie('key');
-                message = error_1.message;
-                res.status(401).send({ message: message });
-                return [3 /*break*/, 7];
-            case 7: return [2 /*return*/];
+    var token;
+    var _a;
+    return __generator(this, function (_b) {
+        token = (_a = req.header("Authorization")) === null || _a === void 0 ? void 0 : _a.replace("Bearer ", "");
+        try {
+            if (!!token) {
+                jsonwebtoken_1.default.verify(token, process.env.JWT_KEY);
+                req.body.token = token;
+                next();
+            }
+            else
+                throw new Error("Invalid Token");
         }
+        catch (error) {
+            res.status(401).send({
+                message: error.message,
+            });
+        }
+        return [2 /*return*/];
     });
 }); };

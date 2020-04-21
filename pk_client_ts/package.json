@@ -2,6 +2,13 @@
   "name": "pk_client_ts",
   "version": "0.1.0",
   "private": true,
+  "prettier": {
+    "trailingComma": "es5",
+    "printWidth": 100,
+    "tabWidth": 4,
+    "semi": false,
+    "singleQuote": false
+  },
   "dependencies": {
     "@material-ui/core": "^4.9.9",
     "@material-ui/icons": "^4.9.1",
@@ -13,6 +20,7 @@
     "@types/form-data": "^2.5.0",
     "@types/jest": "^24.9.1",
     "@types/js-cookie": "^2.2.6",
+    "@types/jsonwebtoken": "^8.3.9",
     "@types/material-ui": "^0.21.7",
     "@types/node": "^12.12.34",
     "@types/react": "^16.9.32",
@@ -22,6 +30,8 @@
     "env-cmd": "^10.1.0",
     "form-data": "^3.0.0",
     "js-cookie": "^2.2.1",
+    "jsonwebtoken": "^8.5.1",
+    "prettier": "^2.0.4",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.1.2",
@@ -29,8 +39,9 @@
     "typescript": "^3.7.5"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "npm run format && react-scripts start",
     "build": "react-scripts build",
+    "format": "prettier --write src/**/*.{ts,tsx}",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "build:staging": "env-cmd -f .env.staging npm run build"

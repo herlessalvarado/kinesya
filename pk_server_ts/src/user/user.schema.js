@@ -13,30 +13,30 @@ exports.userSchema = new mongoose_1.default.Schema({
         lowercase: true,
         validate: {
             validator: validator_1.default.isEmail,
-            message: '{VALUE} is not a valid email',
-            isAsync: false
-        }
+            message: "{VALUE} is not a valid email",
+            isAsync: false,
+        },
     },
     password: {
         type: String,
         required: true,
-        minLength: 6
+        minLength: 6,
     },
     name: {
         type: String,
-        trim: true
+        trim: true,
     },
     age: {
         type: Number,
         min: 18,
-        max: 99
+        max: 99,
     },
     description: {
-        type: String
+        type: String,
     },
     price: {
         type: Number,
-        min: 50
+        min: 50,
     },
     phone: {
         type: Number,
@@ -45,16 +45,14 @@ exports.userSchema = new mongoose_1.default.Schema({
         type: String,
     },
     profilePhoto: {
-        type: String
+        type: String,
     },
     isPublic: {
         type: Boolean,
-        default: false
+        default: false,
     },
     referencePhotos: [String],
-    tokens: [{
-            token: {
-                type: String,
-            }
-        }]
+    refresh_token: {
+        type: String,
+    },
 });

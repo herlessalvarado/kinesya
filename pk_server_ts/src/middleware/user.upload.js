@@ -10,7 +10,7 @@ var storage = multer_1.default.diskStorage({
     },
     filename: function (req, file, cb) {
         cb(null, Date.now() + file.originalname);
-    }
+    },
 });
 var fileFilter = function (req, file, cb) {
     if (file.mimetype === "image/jpg" ||
@@ -22,4 +22,10 @@ var fileFilter = function (req, file, cb) {
         cb(new Error("Image uploaded is not of type jpg/jpeg or png"), false);
     }
 };
-exports.upload = multer_1.default({ storage: storage, fileFilter: fileFilter }).fields([{ name: 'profile', maxCount: 1 }, { name: 'references', maxCount: 4 }]);
+exports.upload = multer_1.default({
+    storage: storage,
+    fileFilter: fileFilter,
+}).fields([
+    { name: "profile", maxCount: 1 },
+    { name: "references", maxCount: 4 },
+]);

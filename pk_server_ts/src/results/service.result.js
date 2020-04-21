@@ -13,7 +13,9 @@ var ServiceResult = /** @class */ (function () {
         this.data = data;
     };
     ServiceResult.prototype.getErrorMessages = function () {
-        return { message: this._errors.map(function (error) { return (error.message); }) };
+        return {
+            message: this._errors.map(function (error) { return error.message; }),
+        };
     };
     return ServiceResult;
 }());

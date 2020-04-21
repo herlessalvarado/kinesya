@@ -36,25 +36,27 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+var constants_variables_1 = require("../utils/constants_variables");
 var user_repository_1 = require("../repository/user.repository");
 var service_result_1 = require("../results/service.result");
+var tokenManager_1 = require("../utils/tokenManager");
 var UserService = /** @class */ (function () {
     function UserService() {
     }
-    UserService.prototype.uploadPhotos = function (req) {
+    UserService.prototype.uploadUserPhotos = function (user, photos) {
         return __awaiter(this, void 0, void 0, function () {
             var files;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        files = req.files;
+                        files = photos;
                         if (!!files.references) {
-                            req.body.user.referencePhotos = files.references.map(function (photo) { return photo.filename; });
+                            user.referencePhotos = files.references.map(function (photo) { return photo.filename; });
                         }
                         if (!!files.profile) {
-                            req.body.user.profilePhoto = files.profile[0].filename;
+                            user.profilePhoto = files.profile[0].filename;
                         }
-                        return [4 /*yield*/, req.body.user.save()];
+                        return [4 /*yield*/, user.save()];
                     case 1:
                         _a.sent();
                         return [2 /*return*/];
@@ -62,18 +64,29 @@ var UserService = /** @class */ (function () {
             });
         });
     };
-    UserService.prototype.mapReqbodyToUser = function (user, req) {
-        user.name = req.body.name;
-        user.age = req.body.age;
-        user.isPublic = true;
-        user.price = req.body.price;
-        user.description = req.body.description;
-        user.location = req.body.location;
-        user.phone = req.body.phone;
-    };
-    UserService.prototype.create = function (req, res) {
+    UserService.prototype.getUserByToken = function (token) {
         return __awaiter(this, void 0, void 0, function () {
-            var serviceResult, user, token, error_1;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, user_repository_1.User.findByRefreshToken(token)];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    UserService.prototype.getUserByTokenForResponse = function (token) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, user_repository_1.User.findByRefreshToken(token, constants_variables_1.PROTECTED_FIELDS)];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    UserService.prototype.create = function (requestUser) {
+        return __awaiter(this, void 0, void 0, function () {
+            var serviceResult, user, refresh_token, token, error_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -81,15 +94,19 @@ var UserService = /** @class */ (function () {
                         _a.label = 1;
                     case 1:
                         _a.trys.push([1, 4, 5, 6]);
-                        user = new user_repository_1.User(req.body);
-                        return [4 /*yield*/, user.save()];
+                        return [4 /*yield*/, user_repository_1.User.create(requestUser)];
                     case 2:
-                        _a.sent();
-                        return [4 /*yield*/, user.generateAuthToken()];
+                        user = _a.sent();
+                        refresh_token = tokenManager_1.createRefreshToken(user);
+                        token = tokenManager_1.createStandardToken(user);
+                        user.refresh_token = refresh_token;
+                        return [4 /*yield*/, user.save()];
                     case 3:
-                        token = _a.sent();
-                        res.cookie('key', token, { httpOnly: true });
-                        serviceResult.addData("The user has been created");
+                        _a.sent();
+                        serviceResult.addData({
+                            token: token,
+                            refresh_token: refresh_token,
+                        });
                         return [3 /*break*/, 6];
                     case 4:
                         error_1 = _a.sent();
@@ -101,57 +118,43 @@ var UserService = /** @class */ (function () {
             });
         });
     };
-    ;
-    UserService.prototype.logIn = function (req, res) {
+    UserService.prototype.logIn = function (requestUser) {
         return __awaiter(this, void 0, void 0, function () {
-            var serviceResult, user, token, error_2;
+            var serviceResult, user, refresh_token, token, error_2;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         serviceResult = new service_result_1.ServiceResult();
                         _a.label = 1;
                     case 1:
-                        _a.trys.push([1, 3, 4, 5]);
-                        user = req.body.user;
-                        return [4 /*yield*/, user.generateAuthToken()];
+                        _a.trys.push([1, 4, 5, 6]);
+                        return [4 /*yield*/, user_repository_1.User.findByCredentials(requestUser)];
                     case 2:
-                        token = _a.sent();
-                        res.cookie('key', token, { httpOnly: true });
-                        serviceResult.addData({ message: "The user has been logged successfully" });
-                        return [3 /*break*/, 5];
+                        user = _a.sent();
+                        refresh_token = tokenManager_1.createRefreshToken(user);
+                        token = tokenManager_1.createStandardToken(user);
+                        user.refresh_token = refresh_token;
+                        return [4 /*yield*/, user.save()];
                     case 3:
+                        _a.sent();
+                        serviceResult.addData({
+                            token: token,
+                            refresh_token: refresh_token,
+                        });
+                        return [3 /*break*/, 6];
+                    case 4:
                         error_2 = _a.sent();
                         serviceResult.addError(error_2);
-                        return [3 /*break*/, 5];
-                    case 4: return [2 /*return*/, serviceResult];
-                    case 5: return [2 /*return*/];
+                        return [3 /*break*/, 6];
+                    case 5: return [2 /*return*/, serviceResult];
+                    case 6: return [2 /*return*/];
                 }
             });
         });
     };
-    ;
-    UserService.prototype.getUser = function (user) {
+    UserService.prototype.getUser = function (token) {
         return __awaiter(this, void 0, void 0, function () {
-            var serviceResult;
-            return __generator(this, function (_a) {
-                serviceResult = new service_result_1.ServiceResult();
-                try {
-                    serviceResult.addData(user);
-                }
-                catch (error) {
-                    serviceResult.addError(error);
-                }
-                finally {
-                    return [2 /*return*/, serviceResult];
-                }
-                return [2 /*return*/];
-            });
-        });
-    };
-    ;
-    UserService.prototype.getAll = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var serviceResult, users, error_3;
+            var serviceResult, user, error_3;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -159,10 +162,10 @@ var UserService = /** @class */ (function () {
                         _a.label = 1;
                     case 1:
                         _a.trys.push([1, 3, 4, 5]);
-                        return [4 /*yield*/, user_repository_1.User.find({ isPublic: true })];
+                        return [4 /*yield*/, this.getUserByTokenForResponse(token)];
                     case 2:
-                        users = _a.sent();
-                        serviceResult.addData(users);
+                        user = _a.sent();
+                        serviceResult.addData(user);
                         return [3 /*break*/, 5];
                     case 3:
                         error_3 = _a.sent();
@@ -174,25 +177,20 @@ var UserService = /** @class */ (function () {
             });
         });
     };
-    ;
-    UserService.prototype.updateUser = function (req) {
+    UserService.prototype.getAll = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var user, serviceResult, error_4;
+            var serviceResult, users, error_4;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        user = req.body.user;
                         serviceResult = new service_result_1.ServiceResult();
                         _a.label = 1;
                     case 1:
                         _a.trys.push([1, 3, 4, 5]);
-                        this.mapReqbodyToUser(user, req);
-                        return [4 /*yield*/, user.save()];
+                        return [4 /*yield*/, user_repository_1.User.find({ isPublic: true }, constants_variables_1.PROTECTED_FIELDS)];
                     case 2:
-                        _a.sent();
-                        if (!!req.files)
-                            this.uploadPhotos(req);
-                        serviceResult.addData({ message: "User updated" });
+                        users = _a.sent();
+                        serviceResult.addData(users);
                         return [3 /*break*/, 5];
                     case 3:
                         error_4 = _a.sent();
@@ -204,28 +202,94 @@ var UserService = /** @class */ (function () {
             });
         });
     };
-    UserService.prototype.logOut = function (req) {
+    UserService.prototype.updateUser = function (token, newUser, photos) {
         return __awaiter(this, void 0, void 0, function () {
-            var serviceResult, error_5;
+            var serviceResult, userID, user;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         serviceResult = new service_result_1.ServiceResult();
-                        _a.label = 1;
+                        userID = tokenManager_1.getClaimsFromToken(token).id;
+                        return [4 /*yield*/, user_repository_1.User.findOneAndUpdate({ _id: userID }, newUser)];
                     case 1:
-                        _a.trys.push([1, 3, 4, 5]);
-                        req.body.user.tokens.splice(0, req.body.user.tokens.length);
-                        return [4 /*yield*/, req.body.user.save()];
-                    case 2:
-                        _a.sent();
-                        serviceResult.addData({ message: "The user has been logout" });
-                        return [3 /*break*/, 5];
-                    case 3:
-                        error_5 = _a.sent();
-                        serviceResult.addError(error_5);
-                        return [3 /*break*/, 5];
-                    case 4: return [2 /*return*/, serviceResult];
-                    case 5: return [2 /*return*/];
+                        user = _a.sent();
+                        try {
+                            if (user === null)
+                                throw new Error("This User doesnt exists");
+                            if (!!photos)
+                                this.uploadUserPhotos(user, photos);
+                            serviceResult.addData({
+                                message: "User updated",
+                            });
+                        }
+                        catch (error) {
+                            serviceResult.addError(error);
+                        }
+                        finally {
+                            return [2 /*return*/, serviceResult];
+                        }
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    UserService.prototype.logOut = function (token) {
+        return __awaiter(this, void 0, void 0, function () {
+            var serviceResult, user;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        serviceResult = new service_result_1.ServiceResult();
+                        return [4 /*yield*/, this.getUserByToken(token)];
+                    case 1:
+                        user = _a.sent();
+                        try {
+                            if (user === null)
+                                throw new Error("This user doesnt exists");
+                            else
+                                user.removeRefreshToken();
+                            serviceResult.addData({
+                                message: "The refresh token has been removed!",
+                            });
+                        }
+                        catch (error) {
+                            serviceResult.addError(error);
+                        }
+                        finally {
+                            return [2 /*return*/, serviceResult];
+                        }
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    UserService.prototype.generateToken = function (refresh_token) {
+        return __awaiter(this, void 0, void 0, function () {
+            var serviceResult, user;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        serviceResult = new service_result_1.ServiceResult();
+                        return [4 /*yield*/, this.getUserByToken(refresh_token)];
+                    case 1:
+                        user = _a.sent();
+                        try {
+                            if (user === null ||
+                                refresh_token !== user.refresh_token ||
+                                !user.verifyRefreshToken())
+                                throw new Error("Invalid Refresh Token");
+                            serviceResult.addData({
+                                token: tokenManager_1.createStandardToken(user),
+                                refresh_token: user.refresh_token,
+                            });
+                        }
+                        catch (error) {
+                            serviceResult.addError(error);
+                        }
+                        finally {
+                            return [2 /*return*/, serviceResult];
+                        }
+                        return [2 /*return*/];
                 }
             });
         });
@@ -233,4 +297,3 @@ var UserService = /** @class */ (function () {
     return UserService;
 }());
 exports.UserService = UserService;
-;

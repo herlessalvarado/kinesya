@@ -48,11 +48,11 @@ exports.UserRouter = express_1.default.Router();
 /*
     CREATE USER
                 */
-exports.UserRouter.post('/users', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+exports.UserRouter.post("/users", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var result;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, userService.create(req, res)];
+            case 0: return [4 /*yield*/, userService.create(req.body)];
             case 1:
                 result = _a.sent();
                 if (result.success) {
@@ -68,11 +68,11 @@ exports.UserRouter.post('/users', function (req, res) { return __awaiter(void 0,
 /*
     LOGIN USER
                 */
-exports.UserRouter.post('/users/login', user_auth_1.auth, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+exports.UserRouter.post("/users/login", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var result;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, userService.logIn(req, res)];
+            case 0: return [4 /*yield*/, userService.logIn(req.body)];
             case 1:
                 result = _a.sent();
                 if (result.success) {
@@ -88,11 +88,11 @@ exports.UserRouter.post('/users/login', user_auth_1.auth, function (req, res) { 
 /*
     GET USER
                 */
-exports.UserRouter.get('/users/me', user_auth_1.auth, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+exports.UserRouter.get("/users/me", user_auth_1.auth, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var result;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, userService.getUser(req.body.user)];
+            case 0: return [4 /*yield*/, userService.getUser(req.body.token)];
             case 1:
                 result = _a.sent();
                 if (result.success) {
@@ -105,7 +105,7 @@ exports.UserRouter.get('/users/me', user_auth_1.auth, function (req, res) { retu
         }
     });
 }); });
-exports.UserRouter.get('/users', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+exports.UserRouter.get("/users", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var result;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -125,11 +125,11 @@ exports.UserRouter.get('/users', function (req, res) { return __awaiter(void 0, 
 /*
     UPDATE USER
                 */
-exports.UserRouter.put('/users', [user_upload_1.upload, user_auth_1.auth], function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+exports.UserRouter.put("/users", [user_upload_1.upload, user_auth_1.auth], function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var result;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, userService.updateUser(req)];
+            case 0: return [4 /*yield*/, userService.updateUser(req.body.token, req.body, req.files)];
             case 1:
                 result = _a.sent();
                 if (result.success) {
@@ -145,20 +145,36 @@ exports.UserRouter.put('/users', [user_upload_1.upload, user_auth_1.auth], funct
 /*
     LOG OUT USER
                 */
-exports.UserRouter.post('/users/me/logout', user_auth_1.auth, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+exports.UserRouter.post("/users/me/logout", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var result;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, userService.logOut(req)];
+            case 0: return [4 /*yield*/, userService.logOut(req.body.refresh_token)];
             case 1:
                 result = _a.sent();
                 if (result.success) {
-                    res.clearCookie("key");
                     res.status(200).send(result.data);
                 }
                 else {
                     res.status(500).send(result.getErrorMessages());
                 }
+                return [2 /*return*/];
+        }
+    });
+}); });
+exports.UserRouter.post("/users/token", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var refresh_token, result;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                refresh_token = req.body.refresh_token;
+                return [4 /*yield*/, userService.generateToken(refresh_token)];
+            case 1:
+                result = _a.sent();
+                if (result.success)
+                    res.status(201).send(result.data);
+                else
+                    res.status(401).send(result.getErrorMessages());
                 return [2 /*return*/];
         }
     });
