@@ -1,45 +1,34 @@
-import React, { useState, useEffect, FC } from 'react';
-import Home from './views/Home';
-import axios from 'axios';
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-} from "react-router-dom";
-import Login from './views/Login';
-import PrivateRoute from './routing/PrivateRoute';
-import Dashboard from './views/Dashboard';
-import SignUp from './views/SignUp'
+import React from "react"
+import axios from "axios"
+import PrivateRoute from "./routing/PrivateRoute"
+import Home from "./views/Home"
+import Login from "./views/Login"
+import Register from "./views/Register"
+import Dashboard from "./views/Dashboard"
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom"
 
-interface Props{
-  auth: boolean;
+axios.defaults.baseURL = process.env.REACT_APP_API_URL
+axios.defaults.withCredentials = true
+
+function App() {
+    return (
+        <Router>
+            <Switch>
+                <Route exact path="/">
+                    <Home />
+                </Route>
+                <Route path="/login">
+                    <Login />
+                </Route>
+                <Route path="/register">
+                    <Register />
+                </Route>
+                <PrivateRoute path="/dashboard" redirect="/login">
+                    <Dashboard />
+                </PrivateRoute>
+            </Switch>
+        </Router>
+    )
 }
 
-axios.defaults.baseURL = process.env.REACT_APP_API_URL;
-axios.defaults.withCredentials = true;
-
-const App:FC<Props> =  function App(props) {
-  return (
-      <Router>
-        <Switch>
-          <Route exact path = "/" >
-            <Home></Home>
-          </Route>
-          <Route exact path ="/login">
-            <Login></Login>
-          </Route>
-          <PrivateRoute
-          path='/dashboard'
-          redirect ="/"
-          >
-            <Dashboard></Dashboard>
-          </PrivateRoute>
-        <Route exact path ="/register">
-          <SignUp></SignUp>
-        </Route>
-        </Switch>
-      </Router>
-  );
-}
-
-export default App;
+export default App
