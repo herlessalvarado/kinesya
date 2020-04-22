@@ -18,6 +18,7 @@ import { useHistory } from "react-router-dom"
 import { getJWT } from "../cache/CookieManager"
 import { AxiosError } from "axios"
 import Toast from "../components/Toast"
+import Link from "@material-ui/core/Link"
 import { logInUser } from "../network/UserService"
 
 const theme = createMuiTheme({
@@ -105,13 +106,13 @@ export default function Login() {
     return (
         <Grid container component="main" className={classes.root}>
             <CssBaseline>
+            <ThemeProvider theme={theme}>
                 <Grid item xs={false} sm={4} md={7} className={classes.image} />
                 <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
                     <div className={classes.paper}>
                         <Typography component="h1" variant="h5" className={classes.typography}>
                             Kinesya
                         </Typography>
-                        <ThemeProvider theme={theme}>
                             <form className={classes.form} autoComplete="off">
                                 <TextField
                                     variant="outlined"
@@ -140,7 +141,6 @@ export default function Login() {
                                     onChange={handlePassword}
                                 />
                             </form>
-                        </ThemeProvider>
                         <Toast
                             key="alert"
                             open={openToast}
@@ -157,9 +157,17 @@ export default function Login() {
                         >
                             Iniciar sesión
                         </Button>
+                        <Grid container>
+                            <Grid item>
+                            <Link href="/register" variant="body2">
+                                {"¿No tienes cuenta? Regístrate"}
+                            </Link>
+                            </Grid>
+                        </Grid>
                         <Copyrigth></Copyrigth>
                     </div>
                 </Grid>
+                </ThemeProvider>
             </CssBaseline>
         </Grid>
     )
