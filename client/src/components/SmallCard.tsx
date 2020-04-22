@@ -32,6 +32,12 @@ interface CardProps {
 export default function SmallCard(props: CardProps) {
     const classes = useStyles()
 
+    const whatsappMessage = (number: Number) => {
+        var url = `https://api.whatsapp.com/send?phone=${number}&text=Hola!%20Vi%20su%20anuncio%20en%20Kinesya,%20estoy%20interesado%20en%20su%20servicio.`;
+        var win = window.open(url, '_blank');
+        win!.focus();
+    }
+
     return (
         <Card className={classes.root}>
             <CardActionArea>
@@ -52,7 +58,7 @@ export default function SmallCard(props: CardProps) {
                 </CardContent>
             </CardActionArea>
             <CardActions>
-                <Button size="large" className={classes.button}>
+                <Button size="large" className={classes.button} onClick={()=>whatsappMessage(props.phone!)}>
                     {props.phone}
                 </Button>
             </CardActions>
