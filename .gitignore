@@ -110,4 +110,15 @@ temp/
 # Prettier Settings
 .prettierrc.json
 
+# VS Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+# Local History for Visual Studio Code
+.history/
+
 # End of https://www.gitignore.io/api/node
