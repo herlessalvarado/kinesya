@@ -2,18 +2,18 @@
 	"name": "pk_server_ts",
 	"version": "1.0.0",
 	"description": "",
-  "main": "index.js",
-  "prettier":{
-    "trailingComma": "es5",
-    "printWidth": 100,
-    "tabWidth": 4,
-    "semi": false,
-    "singleQuote": false
-  },
+	"main": "index.js",
+	"prettier": {
+		"trailingComma": "es5",
+		"printWidth": 100,
+		"tabWidth": 4,
+		"semi": false,
+		"singleQuote": false
+	},
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"start": "npm run format && tsc && node src/index.js",
-		"format": "prettier --write src/**/*.{ts,tsx}"
+		"format": "prettier --write src/**/*.ts"
 	},
 	"keywords": [],
 	"author": "",

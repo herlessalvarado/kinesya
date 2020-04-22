@@ -7,6 +7,7 @@ import {
     ThemeProvider,
 } from "@material-ui/core/styles"
 import CssBaseline from "@material-ui/core/CssBaseline"
+import MenuItem from "@material-ui/core/MenuItem"
 import Paper from "@material-ui/core/Paper"
 import Typography from "@material-ui/core/Typography"
 import Grid from "@material-ui/core/Grid"
@@ -24,6 +25,7 @@ import Copyright from "../components/Copyright"
 import { getUserByToken, updateUser } from "../network/UserService"
 import { ToastSuccessful } from "../components/Toast"
 import { useHistory } from "react-router-dom"
+import { Districts } from "../utils/constants";
 
 interface User {
     name?: string
@@ -101,7 +103,7 @@ export default function Dashboard() {
     const [price, setPrice] = useState(MIN_PRICE)
     const [phone, setPhone] = useState<number>(51)
     const mountedRef = useRef(true)
-    const [location, setLocation] = useState("")
+    const [location, setLocation] = useState("Seleccionar")
     const [profile, setProfile] = useState<Photo | undefined>()
     const [references, setReferences] = useState(Array<Photo>())
     const history = useHistory()
@@ -160,9 +162,9 @@ export default function Dashboard() {
         setPhone(parseInt(event.target.value, 10) || phone)
     }
 
-    const handleLocation = (event: ChangeEvent<HTMLInputElement>) => {
-        setLocation(event.target.value)
-    }
+    const handleLocation = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setLocation(event.target.value);
+      };
 
     const handleProfile = (event: any) => {
         setProfile({
@@ -289,16 +291,21 @@ export default function Dashboard() {
                                 />
                             </Grid>
                             <Grid item xs={12} sm={6}>
-                                <TextField
-                                    required
-                                    id="location"
-                                    name="Location"
-                                    label="Ubicación"
-                                    fullWidth
-                                    value={location}
-                                    autoComplete="flocation"
-                                    onChange={handleLocation}
-                                />
+                            <TextField
+                                id="location"
+                                fullWidth
+                                select
+                                label="Select"
+                                value={location}
+                                onChange={handleLocation}
+                                helperText="Selecciona tu distrito"
+                                >
+                                {Districts.map((option) => (
+                                    <MenuItem key={option.value} value={option.value}>
+                                    {option.label}
+                                    </MenuItem>
+                                ))}
+                            </TextField>
                             </Grid>
                             <Grid container spacing={3} className={classes.grid}>
                                 <Grid item xs={12} sm={6}>
