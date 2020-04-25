@@ -4,7 +4,9 @@ import { CssBaseline, fade } from "@material-ui/core"
 import Toolbar from "@material-ui/core/Toolbar"
 import InputBase from "@material-ui/core/InputBase"
 import SearchIcon from "@material-ui/icons/Search"
-
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import {Districts} from '../utils/constants'
+import TextField from "@material-ui/core/TextField"
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
@@ -21,6 +23,7 @@ const useStyles = makeStyles((theme: Theme) =>
             },
         },
         search: {
+            display: "flex",
             position: "relative",
             borderRadius: theme.shape.borderRadius,
             border: `1px solid #BF953F`,
@@ -34,12 +37,12 @@ const useStyles = makeStyles((theme: Theme) =>
                 marginLeft: theme.spacing(1),
                 width: "auto",
             },
+            alignItems: "center",
         },
         searchIcon: {
             padding: theme.spacing(0, 2),
             height: "100%",
-            position: "absolute",
-            pointerEvents: "none",
+            position: "relative",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -65,22 +68,26 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export default function SearchBar() {
     const classes = useStyles()
-
     return (
         <React.Fragment>
             <CssBaseline>
                 <Toolbar className={classes.root}>
                     <div className={classes.search}>
-                        <div className={classes.searchIcon}>
+                        <span className={classes.searchIcon} >
                             <SearchIcon />
-                        </div>
-                        <InputBase
-                            placeholder="Search…"
-                            classes={{
-                                root: classes.inputRoot,
-                                input: classes.inputInput,
+                        </span>
+
+
+                        <Autocomplete
+                            id="combo-box-demo"
+                            options={Districts}
+                            freeSolo
+                            getOptionLabel={(option) => option.value}
+                            style={{ width: 300 }}
+                            renderInput={(params) => {
+                                console.log(params);
+                                return <TextField {...params}  placeholder="Search..."/>
                             }}
-                            inputProps={{ "aria-label": "search" }}
                         />
                     </div>
                 </Toolbar>
