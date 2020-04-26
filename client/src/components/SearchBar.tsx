@@ -2,7 +2,6 @@ import React from "react"
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles"
 import { CssBaseline, fade } from "@material-ui/core"
 import Toolbar from "@material-ui/core/Toolbar"
-import InputBase from "@material-ui/core/InputBase"
 import SearchIcon from "@material-ui/icons/Search"
 import Autocomplete from "@material-ui/lab/Autocomplete"
 import { Districts } from "../utils/constants"
@@ -53,7 +52,6 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         inputInput: {
             padding: theme.spacing(1, 1, 1, 0),
-            // vertical padding + font size from searchIcon
             paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
             transition: theme.transitions.create("width"),
             width: "100%",

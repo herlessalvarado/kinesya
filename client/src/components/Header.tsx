@@ -58,9 +58,7 @@ export default function Header(props: HeaderProps) {
             return (
                 <React.Fragment>
                     <Link to="/dashboard" style={{ color: "inherit", textDecoration: "inherit" }}>
-                        <Button className={classes.button}>
-                            Perfil
-                        </Button>
+                        <Button className={classes.button}>Perfil</Button>
                     </Link>
                     <Link to="/login" style={{ color: "inherit", textDecoration: "inherit" }}>
                         <Button className={classes.button} onClick={logOut}>

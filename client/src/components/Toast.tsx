@@ -1,7 +1,7 @@
-import React, { FC } from "react"
+import React, { FC, useRef, useEffect } from "react"
 import Alert from "@material-ui/lab/Alert"
-import Snackbar from "@material-ui/core/Snackbar"
 import { makeStyles, Theme } from "@material-ui/core/styles"
+import styled, { keyframes } from "styled-components"
 
 interface ToastProps {
     message?: string
@@ -17,37 +17,57 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
 }))
 
+const animation = keyframes`
+    from {
+        transform: scale(0)
+    }
+    to {
+        transform : scale(1) 
+    } 
+`
+
+const StyledAlert = styled(Alert)`
+    animation: ${animation} 0.2s linear;
+    position: fixed;
+    top: 24px;
+    left: auto;
+    right: 24px;
+` as typeof Alert
+
 const ToastError: FC<ToastProps> = function CustomizedSnackbars(props: ToastProps) {
     const classes = useStyles()
+    const ref = useRef(null)
+    useEffect(() => {
+        if (ref.current !== null) {
+            setTimeout(props.handleClose, 6000)
+        }
+    })
+
     return (
         <div className={classes.root}>
-            <Snackbar
-                open={props.open}
-                autoHideDuration={3000}
-                anchorOrigin={{ vertical: "top", horizontal: "right" }}
-                onClose={props.handleClose}
-            >
-                <Alert onClose={props.handleClose} severity="error">
+            {props.open && (
+                <StyledAlert ref={ref} onClose={props.handleClose} severity="error">
                     {props.message}
-                </Alert>
-            </Snackbar>
+                </StyledAlert>
+            )}
         </div>
     )
 }
 export const ToastSuccessful: FC<ToastProps> = function CustomizedSnackbars(props: ToastProps) {
     const classes = useStyles()
+    const ref = useRef(null)
+    useEffect(() => {
+        if (ref.current !== null) {
+            setTimeout(props.handleClose, 6000)
+        }
+    })
     return (
         <div className={classes.root}>
-            <Snackbar
-                open={props.open}
-                autoHideDuration={3000}
-                anchorOrigin={{ vertical: "top", horizontal: "right" }}
-                onClose={props.handleClose}
-            >
-                <Alert onClose={props.handleClose} severity="success">
+            {props.open && (
+                <StyledAlert ref={ref} onClose={props.handleClose} severity="success">
                     {props.message}
-                </Alert>
-            </Snackbar>
+                </StyledAlert>
+            )}
         </div>
     )
 }

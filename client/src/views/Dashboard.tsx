@@ -25,7 +25,7 @@ import Copyright from "../components/Copyright"
 import { getUserByToken, updateUser } from "../network/UserService"
 import { ToastSuccessful } from "../components/Toast"
 import { useHistory } from "react-router-dom"
-import { Districts } from "../utils/constants";
+import { Districts } from "../utils/constants"
 
 interface User {
     name?: string
@@ -163,8 +163,8 @@ export default function Dashboard() {
     }
 
     const handleLocation = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setLocation(event.target.value);
-      };
+        setLocation(event.target.value)
+    }
 
     const handleProfile = (event: any) => {
         setProfile({
@@ -291,21 +291,21 @@ export default function Dashboard() {
                                 />
                             </Grid>
                             <Grid item xs={12} sm={6}>
-                            <TextField
-                                id="location"
-                                fullWidth
-                                select
-                                label="Select"
-                                value={location}
-                                onChange={handleLocation}
-                                helperText="Selecciona tu distrito"
+                                <TextField
+                                    id="location"
+                                    fullWidth
+                                    select
+                                    label="Select"
+                                    value={location}
+                                    onChange={handleLocation}
+                                    helperText="Selecciona tu distrito"
                                 >
-                                {Districts.map((option) => (
-                                    <MenuItem key={option.value} value={option.value}>
-                                    {option.label}
-                                    </MenuItem>
-                                ))}
-                            </TextField>
+                                    {Districts.map((option) => (
+                                        <MenuItem key={option.value} value={option.value}>
+                                            {option.label}
+                                        </MenuItem>
+                                    ))}
+                                </TextField>
                             </Grid>
                             <Grid container spacing={3} className={classes.grid}>
                                 <Grid item xs={12} sm={6}>

@@ -171,4 +171,4 @@ export const Districts = [
         value: "Villa María del Triunfo",
         label: "Villa María del Triunfo",
     },
-  ];
+]
