@@ -28,6 +28,33 @@ const useStyles = makeStyles((theme: Theme) =>
             alignItems: "center",
             justifyContent: "center",
         },
+        container: {
+            borderSizing: "contenxt-box",
+            textAlign: "center",
+            width: "100%",
+            columns: "4",
+            columnGap: "0.2vw",
+            [theme.breakpoints.down("md")]: {
+                columns: "4",
+            },
+            [theme.breakpoints.down("sm")]: {
+                columns: "3",
+            },
+            [theme.breakpoints.down("xs")]: {
+                columns: "2",
+            },
+        },
+        box: {
+            width: "100%",
+            padding: "1vw",
+            overflow: "hidden",
+            breakInside: "avoid",
+            "& img": {
+                objectFit: "contain",
+                height: "100%",
+                width: "100%",
+            },
+        },
     })
 )
 
@@ -60,53 +87,44 @@ export default function Home() {
         <div>
             <Header title="Kinesya"></Header>
             <SearchBar></SearchBar>
-            <main>
-                <Container maxWidth="lg">
-                    <React.Fragment>
-                        <Grid container spacing={3}>
-                            {users?.map((user, index) => (
-                                <React.Fragment key={index}>
-                                    <Grid
-                                        item
-                                        xs={6}
-                                        sm={3}
-                                        onClick={() => {
-                                            handleOpen(user)
-                                        }}
-                                    >
-                                        <SmallCard
-                                            name={user.name}
-                                            location={user.location}
-                                            image={path + user.profilePhoto}
-                                            phone={user.phone}
-                                        ></SmallCard>
-                                    </Grid>
-                                </React.Fragment>
-                            ))}
-                        </Grid>
-                        <Modal
-                            className={classes.modal}
-                            open={open}
-                            onClose={handleClose}
-                            aria-labelledby="simple-modal-title"
-                            aria-describedby="simple-modal-description"
-                        >
-                            <div>
-                                <LargeCard
-                                    name={selectedUser?.name}
-                                    description={selectedUser?.description}
-                                    age={selectedUser?.age}
-                                    profile={path + selectedUser?.profilePhoto}
-                                    location={selectedUser?.location}
-                                    price={selectedUser?.price}
-                                    phone={selectedUser?.phone}
-                                    references={selectedUser?.referencePhotos}
-                                ></LargeCard>
-                            </div>
-                        </Modal>
-                    </React.Fragment>
-                </Container>
-            </main>
+            <div className={classes.container}>
+                {users?.map((user) => (
+                    <div
+                        key={user.profilePhoto}
+                        className={classes.box}
+                        onClick={() => {
+                            handleOpen(user)
+                        }}
+                    >
+                        <SmallCard
+                            name={user.name}
+                            location={user.location}
+                            image={path + user.profilePhoto}
+                            phone={user.phone}
+                        ></SmallCard>
+                    </div>
+                ))}
+            </div>
+            <Modal
+                className={classes.modal}
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="simple-modal-title"
+                aria-describedby="simple-modal-description"
+            >
+                <div>
+                    <LargeCard
+                        name={selectedUser?.name}
+                        description={selectedUser?.description}
+                        age={selectedUser?.age}
+                        profile={path + selectedUser?.profilePhoto}
+                        location={selectedUser?.location}
+                        price={selectedUser?.price}
+                        phone={selectedUser?.phone}
+                        references={selectedUser?.referencePhotos}
+                    ></LargeCard>
+                </div>
+            </Modal>
             <Copyright></Copyright>
         </div>
     )

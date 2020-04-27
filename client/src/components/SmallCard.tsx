@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useRef, useEffect } from "react"
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles"
 import Card from "@material-ui/core/Card"
 import CardActionArea from "@material-ui/core/CardActionArea"
@@ -7,17 +7,23 @@ import CardContent from "@material-ui/core/CardContent"
 import CardMedia from "@material-ui/core/CardMedia"
 import CardActions from "@material-ui/core/CardActions"
 import Typography from "@material-ui/core/Typography"
+import WhatsAppIcon from "@material-ui/icons/WhatsApp"
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
-        root: {
-            maxWidth: 345,
-        },
         media: {
             objectFit: "contain",
+            width: "100%",
+            height: "100%",
         },
         button: {
             flex: 1,
+            color: "#25D366",
+            transition: ".5s background-color",
+            "&:hover": {
+                backgroundColor: "#25D366",
+                color: "white",
+            },
         },
     })
 )
@@ -31,7 +37,6 @@ interface CardProps {
 
 export default function SmallCard(props: CardProps) {
     const classes = useStyles()
-
     const whatsappMessage = (number: Number) => {
         var url = `https://api.whatsapp.com/send?phone=${number}&text=Hola!%20Vi%20su%20anuncio%20en%20Kinesya,%20estoy%20interesado%20en%20su%20servicio.`
         var win = window.open(url, "_blank")
@@ -39,15 +44,9 @@ export default function SmallCard(props: CardProps) {
     }
 
     return (
-        <Card className={classes.root}>
+        <Card>
             <CardActionArea>
-                <CardMedia
-                    height="400vh"
-                    component="img"
-                    className={classes.media}
-                    image={props.image}
-                    title={props.name}
-                />
+                <CardMedia component="img" className={classes.media} image={props.image} />
                 <CardContent>
                     <Typography gutterBottom variant="h5" component="h2">
                         {props.name}
@@ -63,7 +62,7 @@ export default function SmallCard(props: CardProps) {
                     className={classes.button}
                     onClick={() => whatsappMessage(props.phone!)}
                 >
-                    {props.phone}
+                    <WhatsAppIcon></WhatsAppIcon>
                 </Button>
             </CardActions>
         </Card>
