@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react"
+import React from "react"
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles"
 import Card from "@material-ui/core/Card"
 import CardActionArea from "@material-ui/core/CardActionArea"

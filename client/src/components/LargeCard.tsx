@@ -1,21 +1,20 @@
 import React from "react"
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles"
 import Card from "@material-ui/core/Card"
-import CardContent from "@material-ui/core/CardContent"
 import Button from "@material-ui/core/Button"
 import Typography from "@material-ui/core/Typography"
 import Grid from "@material-ui/core/Grid"
-import { ButtonBase, GridList } from "@material-ui/core"
+import { Paper } from "@material-ui/core"
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         card: {
             padding: theme.spacing(0.2),
-            height: "40vw",
+            height: "80vh",
             overflowY: "auto",
             overflowX: "hidden",
             margin: "auto",
-            width: "50vw",
+            width: "60vw",
             "&::-webkit-scrollbar": {
                 width: "0.5em",
             },
@@ -34,29 +33,32 @@ const useStyles = makeStyles((theme: Theme) =>
         },
 
         img: {
-            width: "100%",
-            objectFit: "cover",
-            height: "100%",
+            padding: "1vw",
         },
         button: {
             flex: 1,
         },
         container: {
-            borderSizing: "contenxt-box",
-            textAlign: "center",
             width: "100%",
             columns: "2",
-            columnGap: "0.2vw"
+            columnGap: "1vw",
+            [theme.breakpoints.down("sm")]: {
+                columns: "1",
+            },
         },
         box: {
             width: "100%",
             padding: "10px",
+
             overflow: "hidden",
             breakInside: "avoid",
             "& img": {
                 objectFit: "contain",
                 height: "100%",
                 width: "100%",
+                border: "1px solid rgba(0, 0, 0, 0.12)",
+                borderRadius: "4px",
+                padding: "5px",
             },
         },
     })
@@ -80,19 +82,51 @@ export default React.forwardRef((props: CardProps, ref) => {
         <Card ref={ref} className={classes.card}>
             <div className={classes.container}>
                 <div className={classes.box}>
-                    <img className={classes.img} alt="complex" src={`${props.profile}`} />
+                    <img alt="complex" src={`${props.profile}`} />
                 </div>
                 <div className={classes.box}>
-                    <Typography variant="h3" component="h2">
-                            {props.name}
-                        </Typography>
-                        <Typography variant="body2" color="textSecondary" component="p">
-                            {props.location}
-                        </Typography>
-                        <Typography variant="body2" color="textSecondary" component="p">
-                            {props.age + " años"}
-                        </Typography>
+                    <Paper className={classes.img} variant="outlined">
+                        <Grid container wrap="nowrap" direction="column">
+                            <Grid item>
+                                <Typography variant="h3" component="h2">
+                                    {props.name}
+                                </Typography>
+                            </Grid>
+                            <Grid item>
+                                <Typography variant="body2" color="textSecondary" component="p">
+                                    {props.location}
+                                </Typography>
+                            </Grid>
+                            <Grid item>
+                                <Typography variant="body2" color="textSecondary" component="p">
+                                    {props.age + " años"}
+                                </Typography>
+                            </Grid>
+                            <Grid item>
+                                <Typography variant="h5" component="h2">
+                                    {props.description}
+                                </Typography>
+                            </Grid>
+                            <Grid item>
+                                <Typography variant="h6" color="textSecondary" component="h2">
+                                    {"Tarifa: 1 hora S/. " + props.price}
+                                </Typography>
+                            </Grid>
+                            <Grid item container alignContent="center">
+                                <Button size="large" className={classes.button}>
+                                    {props.phone}
+                                </Button>
+                            </Grid>
+                        </Grid>
+                    </Paper>
                 </div>
+            </div>
+            <div className={classes.container}>
+                {props.references?.map((reference, index) => (
+                    <div key={reference} className={classes.box}>
+                        <img key={index} alt="complex" src={path + reference} />
+                    </div>
+                ))}
             </div>
         </Card>
     )

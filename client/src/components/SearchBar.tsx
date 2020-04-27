@@ -1,11 +1,11 @@
 import React from "react"
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles"
-import { CssBaseline, fade } from "@material-ui/core"
+import { CssBaseline, fade, Input } from "@material-ui/core"
 import Toolbar from "@material-ui/core/Toolbar"
 import SearchIcon from "@material-ui/icons/Search"
 import Autocomplete from "@material-ui/lab/Autocomplete"
 import { Districts } from "../utils/constants"
-import TextField from "@material-ui/core/TextField"
+
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -47,14 +47,10 @@ const useStyles = makeStyles((theme: Theme) =>
             alignItems: "center",
             justifyContent: "center",
         },
-        inputRoot: {
-            color: "inherit",
-        },
-        inputInput: {
+        input: {
             padding: theme.spacing(1, 1, 1, 0),
-            paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
             transition: theme.transitions.create("width"),
-            width: "100%",
+
             [theme.breakpoints.up("sm")]: {
                 width: "12ch",
                 "&:focus": {
@@ -72,23 +68,18 @@ export default function SearchBar() {
             <CssBaseline>
                 <Toolbar className={classes.root}>
                     <div className={classes.search}>
-                        <span className={classes.searchIcon}>
+                        <div className={classes.searchIcon}>
                             <SearchIcon />
-                        </span>
-
+                        </div>
                         <Autocomplete
                             id="combo-box-demo"
                             options={Districts}
                             freeSolo
+                            classes={{ input: classes.input }}
                             getOptionLabel={(option) => option.value}
-                            style={{ width: 300 }}
                             renderInput={(params) => {
                                 return (
-                                    <TextField
-                                        {...params}
-                                        InputProps={{ disableUnderline: true }}
-                                        placeholder="Search..."
-                                    />
+                                    <Input disableUnderline {...params} placeholder="Search..." />
                                 )
                             }}
                         />

@@ -2,11 +2,9 @@ import React, { useState, useEffect, useRef } from "react"
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles"
 import Header from "../components/Header"
 import SearchBar from "../components/SearchBar"
-import Container from "@material-ui/core/Container"
 import SmallCard from "../components/SmallCard"
 import LargeCard from "../components/LargeCard"
 import Copyright from "../components/Copyright"
-import Grid from "@material-ui/core/Grid"
 import Modal from "@material-ui/core/Modal"
 import { getUsers } from "../network/UserService"
 
@@ -53,6 +51,7 @@ const useStyles = makeStyles((theme: Theme) =>
                 objectFit: "contain",
                 height: "100%",
                 width: "100%",
+                border: "1px",
             },
         },
     })
@@ -78,6 +77,7 @@ export default function Home() {
 
     useEffect(() => {
         getUsers().then((res: Profile[]) => {
+            console.log(res)
             if (mountedRef.current) setUsers(res)
             mountedRef.current = false
         })
