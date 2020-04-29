@@ -6,7 +6,6 @@ import SearchIcon from "@material-ui/icons/Search"
 import Autocomplete from "@material-ui/lab/Autocomplete"
 import { Districts } from "../utils/constants"
 
-
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {

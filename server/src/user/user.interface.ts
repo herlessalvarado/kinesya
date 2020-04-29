@@ -1,4 +1,6 @@
 import mongoose, { Model } from "mongoose"
+import { Characteristics } from "./user.characteristics.interface";
+import { Services } from "../utils/constants_variables";
 
 export interface IUser extends mongoose.Document {
     email?: string
@@ -13,6 +15,8 @@ export interface IUser extends mongoose.Document {
     isPublic?: boolean
     profilePhoto?: string
     referencePhotos?: Array<string>
+    characteristics?: Characteristics
+    tags?: Array<string>
     verifyRefreshToken(): boolean
     removeRefreshToken(): void
 }

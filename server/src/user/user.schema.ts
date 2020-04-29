@@ -1,5 +1,6 @@
 import mongoose from "mongoose"
 import validator from "validator"
+import { Services, Zodiac, Ethnicity, Orientation} from "../utils/constants_variables";
 
 export const userSchema = new mongoose.Schema({
     email: {
@@ -50,5 +51,47 @@ export const userSchema = new mongoose.Schema({
     referencePhotos: [String],
     refresh_token: {
         type: String,
+    },
+    characteristics: {
+        height: {
+            type: Number,
+        },
+        weight: {
+            type: Number,
+        },
+        eyes: {
+            type: String,
+        },
+        hair: {
+            type: String,
+        },
+        fakeBoobs: {
+            type: Boolean,
+        },
+        birthday: {
+            type: Date,
+        },
+        birthPlace: {
+            type: String,
+        },
+        zodiac: {
+            type: String,
+            enum: Zodiac,
+        },
+        measurements: {
+            type: String,
+        },
+        orientation: {
+            type: String,
+            enum: Orientation,
+        },
+        ethnicity: {
+            type: String,
+            enum: Ethnicity,
+        },
+    },
+    tags: {
+        type: [String],
+        enum: Services,
     },
 })
