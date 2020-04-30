@@ -1,4 +1,4 @@
-export interface Characteristics{
+export interface Characteristics {
     height?: number
     weight?: number
     eyes?: string
@@ -9,5 +9,5 @@ export interface Characteristics{
     zodiac?: string
     measurements?: string
     orientation?: string
-    ethnicity?: string,
-};
+    ethnicity?: string
+}
