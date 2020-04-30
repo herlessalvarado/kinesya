@@ -7,8 +7,10 @@ import LargeCard from "../components/LargeCard"
 import Copyright from "../components/Copyright"
 import Modal from "@material-ui/core/Modal"
 import { getUsers } from "../network/UserService"
+import { useHistory } from "react-router-dom"
 
 interface Profile {
+    username: string
     name: string
     description: string
     location: string
@@ -59,6 +61,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export default function Home() {
     const classes = useStyles()
+    const history = useHistory()
     const [users, setUsers] = useState(new Array<Profile>())
     const [open, setOpen] = useState(false)
     const mountedRef = useRef(true)
@@ -66,13 +69,8 @@ export default function Home() {
 
     const path = process.env.REACT_APP_API_URL!
 
-    const handleOpen = (user: Profile) => {
-        setSelectedUser(user)
-        setOpen(true)
-    }
-
-    const handleClose = () => {
-        setOpen(false)
+    const handleOpen = (username: string) => {
+        history.push("/user/" + username)
     }
 
     useEffect(() => {
@@ -93,7 +91,7 @@ export default function Home() {
                         key={user.profilePhoto}
                         className={classes.box}
                         onClick={() => {
-                            handleOpen(user)
+                            handleOpen(user.username)
                         }}
                     >
                         <SmallCard
@@ -105,26 +103,6 @@ export default function Home() {
                     </div>
                 ))}
             </div>
-            <Modal
-                className={classes.modal}
-                open={open}
-                onClose={handleClose}
-                aria-labelledby="simple-modal-title"
-                aria-describedby="simple-modal-description"
-            >
-                <div>
-                    <LargeCard
-                        name={selectedUser?.name}
-                        description={selectedUser?.description}
-                        age={selectedUser?.age}
-                        profile={path + selectedUser?.profilePhoto}
-                        location={selectedUser?.location}
-                        price={selectedUser?.price}
-                        phone={selectedUser?.phone}
-                        references={selectedUser?.referencePhotos}
-                    ></LargeCard>
-                </div>
-            </Modal>
             <Copyright></Copyright>
         </div>
     )

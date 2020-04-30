@@ -1,10 +1,10 @@
 import mongoose, { Model } from "mongoose"
-import { Characteristics } from "./user.characteristics.interface";
-import { Services } from "../utils/constants_variables";
+import { Characteristics } from "./user.characteristics.interface"
 
 export interface IUser extends mongoose.Document {
     email?: string
     password?: string
+    username?: string
     name?: string
     age?: number
     description?: string

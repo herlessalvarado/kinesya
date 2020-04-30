@@ -23,6 +23,12 @@ export async function getUsers() {
     return res.data
 }
 
+export async function getUserByUsername(username: string) {
+    return axios.get("/users/" + username).then((response) => {
+        return response.data
+    })
+}
+
 export async function logInUser(email: string, password: string) {
     return axios.post("/users/login", { email, password }).then((result) => {
         AuthOn(result.data.token, result.data.refresh_token)
@@ -30,8 +36,8 @@ export async function logInUser(email: string, password: string) {
     })
 }
 
-export async function signUp(email: string, password: string): Promise<string> {
-    return axios.post("/users", { email, password }).then((result) => {
+export async function signUp(username: string, email: string, password: string): Promise<string> {
+    return axios.post("/users", { username, email, password }).then((result) => {
         AuthOn(result.data.token, result.data.refresh_token)
         return result.data
     })

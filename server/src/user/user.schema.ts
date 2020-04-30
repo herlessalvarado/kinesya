@@ -1,6 +1,6 @@
 import mongoose from "mongoose"
 import validator from "validator"
-import { Services, Zodiac, Ethnicity, Orientation} from "../utils/constants_variables";
+import { Services, Zodiac, Ethnicity, Orientation } from "../utils/constants_variables"
 
 export const userSchema = new mongoose.Schema({
     email: {
@@ -18,6 +18,11 @@ export const userSchema = new mongoose.Schema({
         type: String,
         required: true,
         minLength: 6,
+    },
+    username: {
+        type: String,
+        required: true,
+        minlength: 6,
     },
     name: {
         type: String,
