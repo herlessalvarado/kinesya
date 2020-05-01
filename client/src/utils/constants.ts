@@ -77,9 +77,9 @@ export const Zodiac = [
     "Piscis",
 ]
 
-export const Ethnicities = ["","Andinas", "Morenas", "Piel Blanca", "Trigueña"]
+export const Ethnicities = ["", "Andinas", "Morenas", "Piel Blanca", "Trigueña"]
 
-export const Orientations = ["","Heterosexual", "Homosexual", "Bisexual", "Trans"]
+export const Orientations = ["", "Heterosexual", "Homosexual", "Bisexual", "Trans"]
 
 export const MIN_AGE = 18
 export const MAX_AGE = 99

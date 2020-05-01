@@ -13,7 +13,7 @@ export const getNewToken = () => {
 }
 
 export const _getUserByToken = () => {
-    return axios.get("/users/me", headers()).then((response) => {
+    return axios.get("users/me", headers()).then((response) => {
         return response.data
     })
 }

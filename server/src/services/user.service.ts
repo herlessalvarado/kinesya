@@ -3,6 +3,7 @@ import { User } from "../repository/user.repository"
 import { IUser } from "../user/user.interface"
 import { ServiceResult } from "../results/service.result"
 import { createStandardToken, createRefreshToken, getClaimsFromToken } from "../utils/tokenManager"
+import { handlerDuplicateError } from "../exceptions/handlerMongo"
 
 export class UserService {
     private async uploadUserPhotos(user: IUser, photos: any) {
@@ -16,6 +17,9 @@ export class UserService {
         }
         if (!!files.profile) {
             user.profilePhoto = files.profile[0].filename
+        }
+        if (!!files.banner) {
+            user.bannerPhoto = files.banner[0].filename
         }
         await user.save()
     }
@@ -40,11 +44,12 @@ export class UserService {
                 refresh_token,
             })
         } catch (error) {
-            serviceResult.addError(error as Error)
+            serviceResult.addError(handlerDuplicateError(error))
         } finally {
             return serviceResult
         }
     }
+
     async logIn(requestUser: IUser): Promise<ServiceResult> {
         const serviceResult = new ServiceResult()
         try {
@@ -88,7 +93,8 @@ export class UserService {
     async getByUsername(username: string): Promise<ServiceResult> {
         const serviceResult = new ServiceResult()
         try {
-            const user = await User.findOne({ username: username }, PROTECTED_FIELDS)
+            const user = await User.findOne({ username }, PROTECTED_FIELDS)
+            if (user === null) throw new Error("This User doesnt exists")
             serviceResult.addData(user)
         } catch (error) {
             serviceResult.addError(error as Error)

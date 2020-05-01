@@ -4,6 +4,7 @@ import CardMedia from "@material-ui/core/CardMedia"
 import Typography from "@material-ui/core/Typography"
 import Grid from "@material-ui/core/Grid"
 import { CssBaseline } from "@material-ui/core"
+import { UserModel } from "../models/user"
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -89,24 +90,7 @@ const useStyles = makeStyles((theme: Theme) =>
 )
 
 interface UserByUsernameProps {
-    cover?: string
-    profile?: string
-    references?: Array<string>
-    name?: string
-    description?: string
-    orientation?: string
-    location?: string
-    birthPlace?: string
-    age?: Number
-    height?: number
-    weight?: number
-    eyes?: string
-    hair?: string
-    fakeBoobs?: boolean
-    birthday?: Date
-    zodiac?: string
-    measurements?: string
-    ethnicity?: string
+    user: UserModel
 }
 
 export default function UserByUsername(props: UserByUsernameProps) {
@@ -119,20 +103,20 @@ export default function UserByUsername(props: UserByUsernameProps) {
                     <div className={classes.cover}>
                         <CardMedia
                             component="img"
-                            image={props.cover}
+                            image={path + props.user.bannerPhoto}
                             className={classes.coverPhoto}
                         />
                     </div>
                     <div className={classes.profile}>
                         <CardMedia
                             component="img"
-                            image={props.profile}
+                            image={path + props.user.profilePhoto}
                             className={classes.profilePhoto}
                         />
                     </div>
                     <div className={classes.name}>
                         <Typography variant="h5" gutterBottom>
-                            {props.name}
+                            {props.user.name}
                         </Typography>
                     </div>
                     <div className={classes.container2}>
@@ -143,7 +127,7 @@ export default function UserByUsername(props: UserByUsernameProps) {
                                         style={{ color: "white", textAlign: "justify" }}
                                         gutterBottom
                                     >
-                                        {props.description}
+                                        {props.user.description}
                                     </Typography>
                                 </div>
                             </Grid>
@@ -167,7 +151,7 @@ export default function UserByUsername(props: UserByUsernameProps) {
                                                         color: "darkGray",
                                                     }}
                                                 >
-                                                    {props.orientation}
+                                                    {props.user.characteristics?.orientation}
                                                 </Typography>
                                             </div>
                                             <div>
@@ -186,7 +170,7 @@ export default function UserByUsername(props: UserByUsernameProps) {
                                                         color: "darkGray",
                                                     }}
                                                 >
-                                                    {props.location}
+                                                    {props.user.location}
                                                 </Typography>
                                             </div>
                                             <div>
@@ -224,7 +208,7 @@ export default function UserByUsername(props: UserByUsernameProps) {
                                                         color: "darkGray",
                                                     }}
                                                 >
-                                                    {props.birthPlace}
+                                                    {props.user.characteristics?.birthPlace}
                                                 </Typography>
                                             </div>
                                             <div>
@@ -243,7 +227,7 @@ export default function UserByUsername(props: UserByUsernameProps) {
                                                         color: "darkGray",
                                                     }}
                                                 >
-                                                    {props.age}
+                                                    {props.user.age}
                                                 </Typography>
                                             </div>
                                             <div>
@@ -262,7 +246,7 @@ export default function UserByUsername(props: UserByUsernameProps) {
                                                         color: "darkGray",
                                                     }}
                                                 >
-                                                    {props.zodiac}
+                                                    {props.user.characteristics?.zodiac}
                                                 </Typography>
                                             </div>
                                         </div>
@@ -285,7 +269,7 @@ export default function UserByUsername(props: UserByUsernameProps) {
                                                         color: "darkGray",
                                                     }}
                                                 >
-                                                    {props.measurements}
+                                                    {props.user.characteristics?.measurements}
                                                 </Typography>
                                             </div>
                                             <div>
@@ -304,7 +288,7 @@ export default function UserByUsername(props: UserByUsernameProps) {
                                                         color: "darkGray",
                                                     }}
                                                 >
-                                                    {props.height + "cm"}
+                                                    {props.user.characteristics?.height + "cm"}
                                                 </Typography>
                                             </div>
                                             <div>
@@ -323,7 +307,7 @@ export default function UserByUsername(props: UserByUsernameProps) {
                                                         color: "darkGray",
                                                     }}
                                                 >
-                                                    {props.weight + "kg"}
+                                                    {props.user.characteristics?.weight + "kg"}
                                                 </Typography>
                                             </div>
                                             <div>
@@ -342,7 +326,7 @@ export default function UserByUsername(props: UserByUsernameProps) {
                                                         color: "darkGray",
                                                     }}
                                                 >
-                                                    {props.ethnicity}
+                                                    {props.user.characteristics?.ethnicity}
                                                 </Typography>
                                             </div>
                                             <div>
@@ -361,7 +345,7 @@ export default function UserByUsername(props: UserByUsernameProps) {
                                                         color: "darkGray",
                                                     }}
                                                 >
-                                                    {props.hair}
+                                                    {props.user.characteristics?.hair}
                                                 </Typography>
                                             </div>
                                             <div>
@@ -380,7 +364,9 @@ export default function UserByUsername(props: UserByUsernameProps) {
                                                         color: "darkGray",
                                                     }}
                                                 >
-                                                    {props.fakeBoobs}
+                                                    {props.user.characteristics?.fakeBoobs
+                                                        ? "Si"
+                                                        : "No"}
                                                 </Typography>
                                             </div>
                                         </div>
@@ -389,7 +375,7 @@ export default function UserByUsername(props: UserByUsernameProps) {
                             </Grid>
                         </Grid>
                         <div className={classes.container3}>
-                            {props.references?.map((reference, index) => (
+                            {props.user.referencePhotos?.map((reference, index) => (
                                 <div key={reference} className={classes.box2}>
                                     <img key={index} alt="complex" src={path + reference} />
                                 </div>

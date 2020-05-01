@@ -13,7 +13,7 @@ export function createRefreshToken(user: IUser) {
     })
 }
 export function createStandardToken(user: IUser): string {
-    const claims: Claims = { id: user._id, username: user.name! }
+    const claims: Claims = { id: user._id, username: user.username }
     return jwt.sign(claims, process.env.JWT_KEY!, {
         expiresIn: process.env.JWT_EXPIRES!,
     })

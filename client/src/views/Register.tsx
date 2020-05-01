@@ -6,6 +6,7 @@ import {
     createMuiTheme,
     ThemeProvider,
 } from "@material-ui/core/styles"
+import ToastError from "../components/Toast"
 import Button from "@material-ui/core/Button"
 import CssBaseline from "@material-ui/core/CssBaseline"
 import TextField from "@material-ui/core/TextField"
@@ -19,6 +20,7 @@ import Header from "../components/Header"
 import { signUp } from "../network/UserService"
 import { useHistory } from "react-router-dom"
 import { getJWT } from "../cache/CookieManager"
+import { AxiosError } from "axios"
 
 const theme = createMuiTheme({
     palette: {
@@ -50,11 +52,18 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function Register() {
     const classes = useStyles()
     const history = useHistory()
-
+    const [openToast, setOpenToast] = useState(false)
+    const [toastMessage, setToastMessage] = useState("")
     const [username, SetUsername] = useState("")
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
 
+    const handCloseToast = (event?: React.SyntheticEvent, reason?: string) => {
+        if (reason === "clickaway") {
+            return
+        }
+        setOpenToast(false)
+    }
     const handleUsername = (event: ChangeEvent<HTMLInputElement>) => {
         SetUsername(event.target.value)
     }
@@ -72,9 +81,16 @@ export default function Register() {
     })
 
     const SignUp = (username: string, email: string, password: string) => {
-        signUp(username, email, password).then(() => {
-            history.push("/login")
-        })
+        signUp(username, email, password)
+            .then(() => {
+                history.push("/login")
+            })
+            .catch((err: AxiosError) => {
+                const { property } = JSON.parse(err.response?.data?.message)
+
+                setToastMessage(`Ya existe  un usuario registrado con este ${property}`)
+                setOpenToast(true)
+            })
     }
 
     return (
@@ -87,7 +103,7 @@ export default function Register() {
                         Registro
                     </Typography>
                     <ThemeProvider theme={theme}>
-                        <form className={classes.form} noValidate>
+                        <form className={classes.form}>
                             <Grid container spacing={2}>
                                 <Grid item xs={12}>
                                     <TextField
@@ -148,6 +164,12 @@ export default function Register() {
                     <Copyright />
                 </Box>
             </Container>
+            <ToastError
+                key="alert"
+                open={openToast}
+                handleClose={handCloseToast}
+                message={toastMessage}
+            ></ToastError>
         </React.Fragment>
     )
 }

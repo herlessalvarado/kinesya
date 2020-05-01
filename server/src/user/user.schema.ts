@@ -21,6 +21,7 @@ export const userSchema = new mongoose.Schema({
     },
     username: {
         type: String,
+        unique: true,
         required: true,
         minlength: 6,
     },
@@ -47,6 +48,9 @@ export const userSchema = new mongoose.Schema({
         type: String,
     },
     profilePhoto: {
+        type: String,
+    },
+    bannerPhoto: {
         type: String,
     },
     isPublic: {

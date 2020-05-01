@@ -1,11 +1,9 @@
-import React, { useState, useEffect, useRef } from "react"
+import React, { useState, useEffect } from "react"
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles"
 import Header from "../components/Header"
 import SearchBar from "../components/SearchBar"
 import SmallCard from "../components/SmallCard"
-import LargeCard from "../components/LargeCard"
 import Copyright from "../components/Copyright"
-import Modal from "@material-ui/core/Modal"
 import { getUsers } from "../network/UserService"
 import { useHistory } from "react-router-dom"
 
@@ -63,9 +61,6 @@ export default function Home() {
     const classes = useStyles()
     const history = useHistory()
     const [users, setUsers] = useState(new Array<Profile>())
-    const [open, setOpen] = useState(false)
-    const mountedRef = useRef(true)
-    const [selectedUser, setSelectedUser] = useState<Profile>()
 
     const path = process.env.REACT_APP_API_URL!
 
@@ -74,11 +69,15 @@ export default function Home() {
     }
 
     useEffect(() => {
-        getUsers().then((res: Profile[]) => {
-            console.log(res)
-            if (mountedRef.current) setUsers(res)
-            mountedRef.current = false
-        })
+        let active = true
+        if (active) {
+            getUsers().then((res: Profile[]) => {
+                setUsers(res)
+            })
+        }
+        return () => {
+            active = false
+        }
     }, [])
 
     return (

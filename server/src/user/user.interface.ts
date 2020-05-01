@@ -14,6 +14,7 @@ export interface IUser extends mongoose.Document {
     refresh_token?: string
     isPublic?: boolean
     profilePhoto?: string
+    bannerPhoto?: string
     referencePhotos?: Array<string>
     characteristics?: Characteristics
     tags?: Array<string>

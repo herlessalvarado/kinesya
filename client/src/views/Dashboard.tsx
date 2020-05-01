@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent, useEffect, useRef } from "react"
+import React, { useState, ChangeEvent, useEffect } from "react"
 import {
     createStyles,
     makeStyles,
@@ -37,36 +37,13 @@ import {
 import Autocomplete from "@material-ui/lab/Autocomplete"
 import DateFnsUtils from "@date-io/date-fns"
 import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers"
-import  validateDecimal from "../helpers/validators/field_validators"
-interface UserCharacteristics{
-    height?: string
-    weight?: string
-    eyes?: string
-    hair?: string
-    fakeBoobs?: boolean
-    birthday?: string
-    birthPlace?: string
-    zodiac?: string
-    measurements?: string
-    orientation?: string
-    ethnicity?: string
-}
-interface User {
-    characteristics?: UserCharacteristics
-    name?: string
-    age?: number
-    description?: string
-    price?: number
-    phone?: number
-    location?: string
-    profilePhoto: string
-    referencePhotos: Array<string>
-    tags?: Array<string>
-}
+import validateDecimal from "../helpers/validators/field_validators"
+import { UserModel } from "../models/user"
+import UploadImage from "../components/UploadImage"
 
 interface ValidateFields {
-    value:string,
-    valid:boolean
+    value: string
+    valid: boolean
 }
 
 const theme = createMuiTheme({
@@ -112,6 +89,7 @@ const useStyles = makeStyles((theme: Theme) =>
         grid: {
             marginTop: theme.spacing(1),
         },
+        
     })
 )
 
@@ -122,8 +100,9 @@ interface Photo {
 
 export default function Dashboard() {
     const classes = useStyles()
-    const [height,setHeight] = useState<ValidateFields>({valid:true,value:""})
-    const [weight,setWeight] = useState<ValidateFields>({valid:true,value:""})
+    const [banner, setBanner] = useState<Photo | undefined>()
+    const [height, setHeight] = useState<ValidateFields>({ valid: true, value: "" })
+    const [weight, setWeight] = useState<ValidateFields>({ valid: true, value: "" })
     const [openToast, setOpenToast] = useState(false)
     const [toastMessage, setToastMessage] = useState("")
     const [name, setName] = useState("")
@@ -131,7 +110,6 @@ export default function Dashboard() {
     const [age, setAge] = useState(MIN_AGE)
     const [price, setPrice] = useState(MIN_PRICE)
     const [phone, setPhone] = useState<number>(51)
-    const mountedRef = useRef(true)
     const [location, setLocation] = useState("")
     const [profile, setProfile] = useState<Photo | undefined>()
     const [references, setReferences] = useState(Array<Photo>())
@@ -147,15 +125,17 @@ export default function Dashboard() {
     const [etnia, setEtnia] = useState("")
     const history = useHistory()
 
-    const setUsersFields = (res: User) => {
-        if (!!res.characteristics){
-            setHeight({valid:true,value:res.characteristics.height || ""})
+    const setUsersFields = (res: UserModel) => {
+        if (!!res.characteristics) {
+            setHeight({ valid: true, value: res.characteristics.height || "" })
             setFakeBoobs(res.characteristics.fakeBoobs || false)
-            setWeight({valid:true,value:res.characteristics.weight || ""})
+            setWeight({ valid: true, value: res.characteristics.weight || "" })
             setEyes(res.characteristics.eyes || "")
             setHair(res.characteristics.hair || "")
             setFakeBoobs(res.characteristics.fakeBoobs || false)
-            setBirthday(!!res.characteristics.birthday ? new Date(res.characteristics.birthday) : new Date())
+            setBirthday(
+                !!res.characteristics.birthday ? new Date(res.characteristics.birthday) : new Date()
+            )
             setBirthPlace(res.characteristics.birthPlace || "")
             setZodiac(res.characteristics.zodiac || "")
             setMeasurements(res.characteristics.measurements || "")
@@ -167,6 +147,7 @@ export default function Dashboard() {
         setPrice(res.price || MIN_PRICE)
         setPhone(res.phone || 51)
         setLocation(res.location || "")
+        if (!!res.profilePhoto) setBanner({ url: process.env.REACT_APP_API_URL! + res.bannerPhoto })
         if (!!res.profilePhoto)
             setProfile({ url: process.env.REACT_APP_API_URL! + res.profilePhoto })
         if (res.referencePhotos.length > 0)
@@ -184,26 +165,27 @@ export default function Dashboard() {
         setOpenToast(false)
     }
 
-    function validateHeight(){
-        if(!validateDecimal(height.value))
-            setHeight({...height,valid:false})
+    function validateHeight() {
+        if (!validateDecimal(height.value)) setHeight({ ...height, valid: false })
     }
-    function validateWeight(){
-        if(!validateDecimal(weight.value))
-            setWeight({...weight,valid:false})
+    function validateWeight() {
+        if (!validateDecimal(weight.value)) setWeight({ ...weight, valid: false })
     }
 
     useEffect(() => {
-        if (mountedRef.current) {
+        let valid = true
+        if (valid) {
             getUserByToken()
                 .then((res) => {
-                    setUsersFields(res as User)
+                    setUsersFields(res as UserModel)
                 })
                 .catch(() => {
                     history.push("/login")
                 })
         }
-        mountedRef.current = false
+        return () => {
+            valid = false
+        }
     }, [history])
 
     const handleName = (event: ChangeEvent<HTMLInputElement>) => {
@@ -219,7 +201,6 @@ export default function Dashboard() {
     }
 
     const handleAge = (event: ChangeEvent<HTMLInputElement>) => {
-
         setAge(parseInt(event.target.value, 10) || age)
     }
 
@@ -241,6 +222,12 @@ export default function Dashboard() {
             url: window.URL.createObjectURL(event.target.files[0]),
         })
     }
+    const handleBanner = (event: any) => {
+        setBanner({
+            file: event.target.files[0],
+            url: window.URL.createObjectURL(event.target.files[0]),
+        })
+    }
 
     const handleChange = (event: any) => {
         let _references = Array.from(event.target.files).map(
@@ -253,11 +240,10 @@ export default function Dashboard() {
         setReferences(references?.concat(_references))
     }
     const handleHeight = (event: ChangeEvent<HTMLInputElement>) => {
-        setHeight({...height,value:event.target.value})
+        setHeight({ ...height, value: event.target.value })
     }
     const handleWeight = (event: ChangeEvent<HTMLInputElement>) => {
-        setWeight({...weight,value:event.target.value})
-
+        setWeight({ ...weight, value: event.target.value })
     }
     const handleEyes = (event: ChangeEvent<HTMLInputElement>) => {
         setEyes(event.target.value)
@@ -272,16 +258,16 @@ export default function Dashboard() {
     const handleBirthPlace = (event: ChangeEvent<HTMLInputElement>) => {
         setBirthPlace(event.target.value)
     }
-    const handleZodiac = (value:string) => {
+    const handleZodiac = (value: string) => {
         setZodiac(value)
     }
     const handleMeasurements = (event: ChangeEvent<HTMLInputElement>) => {
         setMeasurements(event.target.value)
     }
-    const handleOrientation = (value:string) => {
+    const handleOrientation = (value: string) => {
         setOrientation(value)
     }
-    const handleEthnicity = (value:string) => {
+    const handleEthnicity = (value: string) => {
         setEtnia(value)
     }
     const handleBirthday = (date: Date) => {
@@ -291,6 +277,7 @@ export default function Dashboard() {
     const update = () => {
         let formData = new FormData()
         formData.append("profile", profile?.file)
+        formData.append("banner", banner?.file)
         references?.forEach((photo) => {
             formData.append("references", photo.file)
         })
@@ -312,9 +299,20 @@ export default function Dashboard() {
             .catch((err: AxiosError) => {
                 history.push("/login")
             })
-        const characteristics = {height:height.value,weight:weight.value,eyes,hair,fakeBoobs,zodiac,orientation,birthPlace,measurements,ethnicity:etnia,birthday: birthday }
-        formData.append("characteristics",JSON.stringify(characteristics));
-        
+        const characteristics = {
+            height: height.value,
+            weight: weight.value,
+            eyes,
+            hair,
+            fakeBoobs,
+            zodiac,
+            orientation,
+            birthPlace,
+            measurements,
+            ethnicity: etnia,
+            birthday: birthday,
+        }
+        formData.append("characteristics", JSON.stringify(characteristics))
     }
 
     return (
@@ -432,9 +430,14 @@ export default function Dashboard() {
                                     }}
                                     renderTags={(value: string[], getTagProps) =>
                                         value.map((option: string, index: number) => (
-                                          <Chip variant="outlined" color="primary" label={option} {...getTagProps({ index })} />
+                                            <Chip
+                                                variant="outlined"
+                                                color="primary"
+                                                label={option}
+                                                {...getTagProps({ index })}
+                                            />
                                         ))
-                                      }
+                                    }
                                     options={SERVICES}
                                     getOptionLabel={(option) => option}
                                     renderInput={(params) => (
@@ -448,41 +451,48 @@ export default function Dashboard() {
                             </Grid>
                             <Grid item xs={12} sm={6}>
                                 <FormControl fullWidth>
-                                <TextField 
-                                    error={!height.valid}
-                                    value={height.value}
-                                    onFocus={()=>{setHeight({...height,valid:true})}}
-                                    onBlur={()=>{validateHeight()}}
-                                    onChange={handleHeight}
-                                    fullWidth
-                                    label="Altura"
-                                    placeholder="Altura"
-                                    helperText={(!height.valid) ?"Altura invalida" : "" }
-                                    InputProps={
-                                        {
-                                            endAdornment:<InputAdornment position="end">m</InputAdornment>,
-                                        }
-                                    }
-                                />
+                                    <TextField
+                                        error={!height.valid}
+                                        value={height.value}
+                                        onFocus={() => {
+                                            setHeight({ ...height, valid: true })
+                                        }}
+                                        onBlur={() => {
+                                            validateHeight()
+                                        }}
+                                        onChange={handleHeight}
+                                        fullWidth
+                                        label="Altura"
+                                        placeholder="Altura"
+                                        helperText={!height.valid ? "Altura invalida" : ""}
+                                        InputProps={{
+                                            endAdornment: (
+                                                <InputAdornment position="end">m</InputAdornment>
+                                            ),
+                                        }}
+                                    />
                                 </FormControl>
-
                             </Grid>
                             <Grid item xs={12} sm={6}>
                                 <TextField
                                     error={!weight.valid}
                                     value={weight.value}
-                                    onFocus={()=>{setWeight({...weight,valid:true})}}
+                                    onFocus={() => {
+                                        setWeight({ ...weight, valid: true })
+                                    }}
                                     onChange={handleWeight}
-                                    onBlur={()=>{validateWeight()}}
+                                    onBlur={() => {
+                                        validateWeight()
+                                    }}
                                     fullWidth
                                     label="Peso"
                                     placeholder="Peso"
-                                    helperText={(!weight.valid) ?"Peso invalido" : "" }
-                                    InputProps={
-                                        {
-                                            endAdornment:<InputAdornment position="end">Kg</InputAdornment>,
-                                        }
-                                    }
+                                    helperText={!weight.valid ? "Peso invalido" : ""}
+                                    InputProps={{
+                                        endAdornment: (
+                                            <InputAdornment position="end">Kg</InputAdornment>
+                                        ),
+                                    }}
                                 />
                             </Grid>
                             <Grid item xs={12} sm={6}>
@@ -518,7 +528,7 @@ export default function Dashboard() {
                                     label="Tetas Falsas"
                                 />
                             </Grid>
-                            
+
                             <Grid item sm={6} xs={12}>
                                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
                                     <DatePicker
@@ -545,7 +555,6 @@ export default function Dashboard() {
                             </Grid>
                             <Grid item xs={12} sm={6}>
                                 <Autocomplete
-                                    
                                     id="zodiac"
                                     selectOnFocus
                                     value={zodiac}
@@ -615,22 +624,28 @@ export default function Dashboard() {
                                     )}
                                 />
                             </Grid>
-
-                            <Grid container spacing={3} className={classes.grid}>
+                            <Grid container spacing={3} className={classes.grid} justify="center">
+                                
                                 <Grid item xs={12} sm={6}>
-                                    <Typography variant="h6" color="inherit" noWrap>
-                                        Foto de perfil
-                                    </Typography>
+                                    <UploadImage text="Foto de Portada" onChange={handleBanner}/>
+                                    
                                 </Grid>
+                                {!!banner && (
+                                    <Grid item xs={12}>
+                                        <CardMedia
+                                            component="img"
+                                            height="200"
+                                            className={classes.media}
+                                            image={banner.url}
+                                        />
+                                    </Grid>
+                                )}
+                            </Grid>
+                            <Grid container spacing={3} className={classes.grid} justify="center">
                                 <Grid item xs={12} sm={6}>
-                                    <Input
-                                        id="assets"
-                                        name="assets"
-                                        type="file"
-                                        onChange={handleProfile}
-                                    />
+                                <UploadImage text="Foto de Perfil" onChange={handleProfile}/>
                                 </Grid>
-                                {!!profile ? (
+                                {!!profile && (
                                     <Grid item xs={12}>
                                         <CardMedia
                                             component="img"
@@ -639,23 +654,13 @@ export default function Dashboard() {
                                             image={profile.url}
                                         />
                                     </Grid>
-                                ) : null}
+                                )}
                             </Grid>
 
-                            <Grid container spacing={3} className={classes.grid}>
+                            <Grid container spacing={3} className={classes.grid} justify="center">
+
                                 <Grid item xs={12} sm={6}>
-                                    <Typography variant="h6" color="inherit" noWrap>
-                                        Fotos secundarias
-                                    </Typography>
-                                </Grid>
-                                <Grid item xs={12} sm={6}>
-                                    <Input
-                                        id="assets2"
-                                        name="assets2"
-                                        type="file"
-                                        inputProps={{ multiple: true }}
-                                        onChange={handleChange}
-                                    />
+                                <UploadImage text="Fotos Secundarias" onChange={handleChange} multiple={true}/>
                                 </Grid>
                             </Grid>
                             <ToastSuccessful

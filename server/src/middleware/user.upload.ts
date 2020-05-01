@@ -28,4 +28,5 @@ export const upload = multer({
 }).fields([
     { name: "profile", maxCount: 1 },
     { name: "references", maxCount: 4 },
+    { name: "banner", maxCount: 1 },
 ])

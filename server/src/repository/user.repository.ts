@@ -4,7 +4,6 @@ import jwt from "jsonwebtoken"
 import { getClaimsFromToken } from "../utils/tokenManager"
 import { userSchema } from "../user/user.schema"
 import { IUser, IUserModel } from "../user/user.interface"
-import { Claims } from "../utils/constants_variables"
 
 userSchema.pre<IUser>("save", async function (next) {
     const user = this
