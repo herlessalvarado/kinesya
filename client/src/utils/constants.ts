@@ -1,174 +1,86 @@
-export const Districts = [
-    {
-        value: "Breña",
-        label: "Breña",
-    },
-    {
-        value: "La Victoria",
-        label: "La Victoria",
-    },
-    {
-        value: "Centro de Lima",
-        label: "Centro de Lima",
-    },
-    {
-        value: "Lince",
-        label: "Lince",
-    },
-    {
-        value: "Rímac",
-        label: "Rímac",
-    },
-    {
-        value: "Barranco",
-        label: "Barranco",
-    },
-    {
-        value: "Jesús María",
-        label: "Jesús María",
-    },
-    {
-        value: "La Molina",
-        label: "La Molina",
-    },
-    {
-        value: "Magdalena",
-        label: "Magdalena",
-    },
-    {
-        value: "Miraflores",
-        label: "Miraflores",
-    },
-    {
-        value: "Pueblo Libre",
-        label: "Pueblo Libre",
-    },
-    {
-        value: "San Borja",
-        label: "San Borja",
-    },
-    {
-        value: "San Isidro",
-        label: "San Isidro",
-    },
-    {
-        value: "San Luis",
-        label: "San Luis",
-    },
-    {
-        value: "San Miguel",
-        label: "San Miguel",
-    },
-    {
-        value: "Santiago de Surco",
-        label: "Santiago de Surco",
-    },
-    {
-        value: "Surquillo",
-        label: "Surquillo",
-    },
-    {
-        value: "Ate",
-        label: "Ate",
-    },
-    {
-        value: "Cieneguilla",
-        label: "Cieneguilla",
-    },
-    {
-        value: "Chaclacayo",
-        label: "Chaclacayo",
-    },
-    {
-        value: "San Juan de Lurigancho",
-        label: "San Juan de Lurigancho",
-    },
-    {
-        value: "El Agustino",
-        label: "El Agustino",
-    },
-    {
-        value: "Chosica",
-        label: "Chosica",
-    },
-    {
-        value: "Santa Anita",
-        label: "Santa Anita",
-    },
-    {
-        value: "Ancón",
-        label: "Ancón",
-    },
-    {
-        value: "Carabayllo",
-        label: "Carabayllo",
-    },
-    {
-        value: "Comas",
-        label: "Comas",
-    },
-    {
-        value: "Independencia",
-        label: "Independencia",
-    },
-    {
-        value: "Los Olivos",
-        label: "Los Olivos",
-    },
-    {
-        value: "Puente Piedra",
-        label: "Puente Piedra",
-    },
-    {
-        value: "San Martín de Porres",
-        label: "San Martín de Porres",
-    },
-    {
-        value: "Santa Rosa",
-        label: "Santa Rosa",
-    },
-    {
-        value: "Chorrillos",
-        label: "Chorrillos",
-    },
-    {
-        value: "Lurín",
-        label: "Lurín",
-    },
-    {
-        value: "Pachacamac",
-        label: "Pachacamac",
-    },
-    {
-        value: "Pucusana",
-        label: "Pucusana",
-    },
-    {
-        value: "Punta Hermosa",
-        label: "Punta Hermosa",
-    },
-    {
-        value: "Punta Negra",
-        label: "Punta Negra",
-    },
-    {
-        value: "San Bartolo",
-        label: "San Bartolo",
-    },
-    {
-        value: "San Juan de Miraflores",
-        label: "San Juan de Miraflores",
-    },
-    {
-        value: "Santa María del Mar",
-        label: "Santa María del Mar",
-    },
-    {
-        value: "Villa el Salvador",
-        label: "Villa el Salvador",
-    },
-    {
-        value: "Villa María del Triunfo",
-        label: "Villa María del Triunfo",
-    },
+export const DISTRICTS = [
+    "",
+    "Breña",
+    "La Victoria",
+    "Centro de Lima",
+    "Lince",
+    "Rímac",
+    "Barranco",
+    "Jesús María",
+    "La Molina",
+    "Magdalena",
+    "Miraflores",
+    "Pueblo Libre",
+    "San Borja",
+    "San Isidro",
+    "San Luis",
+    "San Miguel",
+    "Santiago de Surco",
+    "Surquillo",
+    "Ate",
+    "Cieneguilla",
+    "Chaclacayo",
+    "San Juan de Lurigancho",
+    "El Agustino",
+    "Chosica",
+    "Santa Anita",
+    "Ancón",
+    "Carabayllo",
+    "Comas",
+    "Independencia",
+    "Los Olivos",
+    "Puente Piedra",
+    "San Martín de Porres",
+    "Santa Rosa",
+    "Chorrillos",
+    "Lurín",
+    "Pachacamac",
+    "Pucusana",
+    "Punta Hermosa",
+    "Punta Negra",
+    "San Bartolo",
+    "San Juan de Miraflores",
+    "Santa María del Mar",
+    "Villa el Salvador",
+    "Villa María del Triunfo",
 ]
+export const SERVICES = [
+    "",
+    "Trato de pareja",
+    "Sexo oral",
+    "Sexo anal",
+    "Oral con condón",
+    "Oral natural",
+    "Eyaculación facial",
+    "Masajes",
+    "Fantasías",
+    "Trío",
+    "Beso Negro",
+    "Fetichismo",
+    "Sado duro",
+    "Sado suave",
+]
+
+export const Zodiac = [
+    "",
+    "Aries",
+    "Tauro",
+    "Géminis",
+    "Cáncer",
+    "Leo",
+    "Virgo",
+    "Libra",
+    "Escorpio",
+    "Sagitario",
+    "Capricornio",
+    "Acuario",
+    "Piscis",
+]
+
+export const Ethnicities = ["","Andinas", "Morenas", "Piel Blanca", "Trigueña"]
+
+export const Orientations = ["","Heterosexual", "Homosexual", "Bisexual", "Trans"]
+
+export const MIN_AGE = 18
+export const MAX_AGE = 99
+export const MIN_PRICE = 0.0

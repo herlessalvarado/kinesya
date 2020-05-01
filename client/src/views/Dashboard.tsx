@@ -7,7 +7,6 @@ import {
     ThemeProvider,
 } from "@material-ui/core/styles"
 import CssBaseline from "@material-ui/core/CssBaseline"
-import MenuItem from "@material-ui/core/MenuItem"
 import Paper from "@material-ui/core/Paper"
 import Typography from "@material-ui/core/Typography"
 import Grid from "@material-ui/core/Grid"
@@ -18,16 +17,42 @@ import InputAdornment from "@material-ui/core/InputAdornment"
 import Input from "@material-ui/core/Input"
 import CardMedia from "@material-ui/core/CardMedia"
 import { AxiosError } from "axios"
-import { Button } from "@material-ui/core"
+import { Button, Checkbox, FormControlLabel, Chip } from "@material-ui/core"
 import FormData from "form-data"
 import Header from "../components/Header"
 import Copyright from "../components/Copyright"
 import { getUserByToken, updateUser } from "../network/UserService"
 import { ToastSuccessful } from "../components/Toast"
 import { useHistory } from "react-router-dom"
-import { Districts } from "../utils/constants"
-
+import {
+    DISTRICTS,
+    MIN_AGE,
+    MIN_PRICE,
+    MAX_AGE,
+    SERVICES,
+    Zodiac,
+    Orientations,
+    Ethnicities,
+} from "../utils/constants"
+import Autocomplete from "@material-ui/lab/Autocomplete"
+import DateFnsUtils from "@date-io/date-fns"
+import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers"
+import  validateDecimal from "../helpers/validators/field_validators"
+interface UserCharacteristics{
+    height?: string
+    weight?: string
+    eyes?: string
+    hair?: string
+    fakeBoobs?: boolean
+    birthday?: string
+    birthPlace?: string
+    zodiac?: string
+    measurements?: string
+    orientation?: string
+    ethnicity?: string
+}
 interface User {
+    characteristics?: UserCharacteristics
     name?: string
     age?: number
     description?: string
@@ -36,6 +61,12 @@ interface User {
     location?: string
     profilePhoto: string
     referencePhotos: Array<string>
+    tags?: Array<string>
+}
+
+interface ValidateFields {
+    value:string,
+    valid:boolean
 }
 
 const theme = createMuiTheme({
@@ -84,10 +115,6 @@ const useStyles = makeStyles((theme: Theme) =>
     })
 )
 
-const MIN_AGE = 18
-const MAX_AGE = 99
-const MIN_PRICE = 0.0
-
 interface Photo {
     url?: string
     file?: any
@@ -95,6 +122,8 @@ interface Photo {
 
 export default function Dashboard() {
     const classes = useStyles()
+    const [height,setHeight] = useState<ValidateFields>({valid:true,value:""})
+    const [weight,setWeight] = useState<ValidateFields>({valid:true,value:""})
     const [openToast, setOpenToast] = useState(false)
     const [toastMessage, setToastMessage] = useState("")
     const [name, setName] = useState("")
@@ -103,11 +132,37 @@ export default function Dashboard() {
     const [price, setPrice] = useState(MIN_PRICE)
     const [phone, setPhone] = useState<number>(51)
     const mountedRef = useRef(true)
-    const [location, setLocation] = useState("Seleccionar")
+    const [location, setLocation] = useState("")
     const [profile, setProfile] = useState<Photo | undefined>()
     const [references, setReferences] = useState(Array<Photo>())
+    const [tags, setTags] = useState(Array<string>())
+    const [eyes, setEyes] = useState("")
+    const [hair, setHair] = useState("")
+    const [fakeBoobs, setFakeBoobs] = useState(false)
+    const [birthday, setBirthday] = useState(new Date())
+    const [birthPlace, setBirthPlace] = useState("")
+    const [zodiac, setZodiac] = useState("")
+    const [measurements, setMeasurements] = useState("")
+    const [orientation, setOrientation] = useState("")
+    const [etnia, setEtnia] = useState("")
     const history = useHistory()
+
     const setUsersFields = (res: User) => {
+        if (!!res.characteristics){
+            setHeight({valid:true,value:res.characteristics.height || ""})
+            setFakeBoobs(res.characteristics.fakeBoobs || false)
+            setWeight({valid:true,value:res.characteristics.weight || ""})
+            setEyes(res.characteristics.eyes || "")
+            setHair(res.characteristics.hair || "")
+            setFakeBoobs(res.characteristics.fakeBoobs || false)
+            setBirthday(!!res.characteristics.birthday ? new Date(res.characteristics.birthday) : new Date())
+            setBirthPlace(res.characteristics.birthPlace || "")
+            setZodiac(res.characteristics.zodiac || "")
+            setMeasurements(res.characteristics.measurements || "")
+            setOrientation(res.characteristics.orientation || "")
+            setEtnia(res.characteristics.ethnicity || "")
+        }
+        setTags(res.tags || [])
         setAge(res.age || MIN_AGE)
         setPrice(res.price || MIN_PRICE)
         setPhone(res.phone || 51)
@@ -129,6 +184,15 @@ export default function Dashboard() {
         setOpenToast(false)
     }
 
+    function validateHeight(){
+        if(!validateDecimal(height.value))
+            setHeight({...height,valid:false})
+    }
+    function validateWeight(){
+        if(!validateDecimal(weight.value))
+            setWeight({...weight,valid:false})
+    }
+
     useEffect(() => {
         if (mountedRef.current) {
             getUserByToken()
@@ -146,11 +210,16 @@ export default function Dashboard() {
         setName(event.target.value)
     }
 
+    const handleTags = (newValue: Array<string>) => {
+        setTags(newValue)
+    }
+
     const handleDescription = (event: ChangeEvent<HTMLInputElement>) => {
         setDescription(event.target.value)
     }
 
     const handleAge = (event: ChangeEvent<HTMLInputElement>) => {
+
         setAge(parseInt(event.target.value, 10) || age)
     }
 
@@ -162,8 +231,8 @@ export default function Dashboard() {
         setPhone(parseInt(event.target.value, 10) || phone)
     }
 
-    const handleLocation = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setLocation(event.target.value)
+    const handleLocation = (value: string) => {
+        setLocation(value)
     }
 
     const handleProfile = (event: any) => {
@@ -183,6 +252,41 @@ export default function Dashboard() {
 
         setReferences(references?.concat(_references))
     }
+    const handleHeight = (event: ChangeEvent<HTMLInputElement>) => {
+        setHeight({...height,value:event.target.value})
+    }
+    const handleWeight = (event: ChangeEvent<HTMLInputElement>) => {
+        setWeight({...weight,value:event.target.value})
+
+    }
+    const handleEyes = (event: ChangeEvent<HTMLInputElement>) => {
+        setEyes(event.target.value)
+    }
+    const handleHair = (event: ChangeEvent<HTMLInputElement>) => {
+        setHair(event.target.value)
+    }
+    const handleFakeBoobs = (value: boolean) => {
+        setFakeBoobs(value)
+    }
+
+    const handleBirthPlace = (event: ChangeEvent<HTMLInputElement>) => {
+        setBirthPlace(event.target.value)
+    }
+    const handleZodiac = (value:string) => {
+        setZodiac(value)
+    }
+    const handleMeasurements = (event: ChangeEvent<HTMLInputElement>) => {
+        setMeasurements(event.target.value)
+    }
+    const handleOrientation = (value:string) => {
+        setOrientation(value)
+    }
+    const handleEthnicity = (value:string) => {
+        setEtnia(value)
+    }
+    const handleBirthday = (date: Date) => {
+        setBirthday(date)
+    }
 
     const update = () => {
         let formData = new FormData()
@@ -197,6 +301,9 @@ export default function Dashboard() {
         formData.append("phone", phone)
         formData.append("location", location)
         formData.append("isPublic", true)
+        tags?.forEach((tag) => {
+            formData.append("tags", tag)
+        })
         updateUser(formData)
             .then((message) => {
                 setToastMessage(message)
@@ -205,6 +312,9 @@ export default function Dashboard() {
             .catch((err: AxiosError) => {
                 history.push("/login")
             })
+        const characteristics = {height:height.value,weight:weight.value,eyes,hair,fakeBoobs,zodiac,orientation,birthPlace,measurements,ethnicity:etnia,birthday: birthday }
+        formData.append("characteristics",JSON.stringify(characteristics));
+        
     }
 
     return (
@@ -291,22 +401,221 @@ export default function Dashboard() {
                                 />
                             </Grid>
                             <Grid item xs={12} sm={6}>
-                                <TextField
-                                    id="location"
-                                    fullWidth
-                                    select
-                                    label="Select"
+                                <Autocomplete
+                                    id="districts"
+                                    selectOnFocus
                                     value={location}
-                                    onChange={handleLocation}
-                                    helperText="Selecciona tu distrito"
-                                >
-                                    {Districts.map((option) => (
-                                        <MenuItem key={option.value} value={option.value}>
-                                            {option.label}
-                                        </MenuItem>
-                                    ))}
-                                </TextField>
+                                    onChange={(event: any, value: any) => {
+                                        if (value !== null) handleLocation(value)
+                                    }}
+                                    options={DISTRICTS}
+                                    getOptionLabel={(options) => options}
+                                    renderInput={(params) => (
+                                        <TextField
+                                            {...params}
+                                            variant="standard"
+                                            label="Distrito"
+                                            placeholder="Distrito"
+                                            helperText="Selecciona tu distrito"
+                                        />
+                                    )}
+                                />
                             </Grid>
+                            <Grid item xs={12} sm={12}>
+                                <Autocomplete
+                                    limitTags={3}
+                                    multiple
+                                    id="tags-services"
+                                    value={tags}
+                                    onChange={(event, value) => {
+                                        handleTags(value)
+                                    }}
+                                    renderTags={(value: string[], getTagProps) =>
+                                        value.map((option: string, index: number) => (
+                                          <Chip variant="outlined" color="primary" label={option} {...getTagProps({ index })} />
+                                        ))
+                                      }
+                                    options={SERVICES}
+                                    getOptionLabel={(option) => option}
+                                    renderInput={(params) => (
+                                        <TextField
+                                            {...params}
+                                            label="Servicios"
+                                            placeholder="Servicios"
+                                        />
+                                    )}
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <FormControl fullWidth>
+                                <TextField 
+                                    error={!height.valid}
+                                    value={height.value}
+                                    onFocus={()=>{setHeight({...height,valid:true})}}
+                                    onBlur={()=>{validateHeight()}}
+                                    onChange={handleHeight}
+                                    fullWidth
+                                    label="Altura"
+                                    placeholder="Altura"
+                                    helperText={(!height.valid) ?"Altura invalida" : "" }
+                                    InputProps={
+                                        {
+                                            endAdornment:<InputAdornment position="end">m</InputAdornment>,
+                                        }
+                                    }
+                                />
+                                </FormControl>
+
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    error={!weight.valid}
+                                    value={weight.value}
+                                    onFocus={()=>{setWeight({...weight,valid:true})}}
+                                    onChange={handleWeight}
+                                    onBlur={()=>{validateWeight()}}
+                                    fullWidth
+                                    label="Peso"
+                                    placeholder="Peso"
+                                    helperText={(!weight.valid) ?"Peso invalido" : "" }
+                                    InputProps={
+                                        {
+                                            endAdornment:<InputAdornment position="end">Kg</InputAdornment>,
+                                        }
+                                    }
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    value={hair}
+                                    onChange={handleHair}
+                                    fullWidth
+                                    label="Cabello"
+                                    placeholder="Cabello"
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    value={eyes}
+                                    onChange={handleEyes}
+                                    fullWidth
+                                    label="Ojos"
+                                    placeholder="Ojos"
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <FormControlLabel
+                                    control={
+                                        <Checkbox
+                                            color="primary"
+                                            checked={fakeBoobs}
+                                            onChange={(event, value) => {
+                                                handleFakeBoobs(value)
+                                            }}
+                                            name="checkedFakeBoobs"
+                                        />
+                                    }
+                                    label="Tetas Falsas"
+                                />
+                            </Grid>
+                            
+                            <Grid item sm={6} xs={12}>
+                                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                    <DatePicker
+                                        disableToolbar
+                                        label="Fecha de Nacimiento"
+                                        variant="inline"
+                                        value={birthday}
+                                        placeholder="Fecha de Nacimiento"
+                                        onChange={(date) => {
+                                            if (date !== null) handleBirthday(date)
+                                        }}
+                                        format="MM/dd/yyyy"
+                                    />
+                                </MuiPickersUtilsProvider>
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    value={birthPlace}
+                                    onChange={handleBirthPlace}
+                                    fullWidth
+                                    label="Lugar de Nacimiento"
+                                    placeholder="Lugar de Nacimiento"
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <Autocomplete
+                                    
+                                    id="zodiac"
+                                    selectOnFocus
+                                    value={zodiac}
+                                    onChange={(event: any, value: any) => {
+                                        if (value !== null) handleZodiac(value)
+                                    }}
+                                    options={Zodiac}
+                                    getOptionLabel={(options) => options}
+                                    renderInput={(params) => (
+                                        <TextField
+                                            {...params}
+                                            variant="standard"
+                                            label="Zodiaco"
+                                            placeholder="Zodiaco"
+                                        />
+                                    )}
+                                />
+                            </Grid>
+
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    id="measurements"
+                                    fullWidth
+                                    value={measurements}
+                                    onChange={handleMeasurements}
+                                    label="Medidas"
+                                    placeholder="Medidas"
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <Autocomplete
+                                    id="orientation"
+                                    selectOnFocus
+                                    value={orientation}
+                                    onChange={(event: any, value: any) => {
+                                        if (value !== null) handleOrientation(value)
+                                    }}
+                                    options={Orientations}
+                                    getOptionLabel={(options) => options}
+                                    renderInput={(params) => (
+                                        <TextField
+                                            {...params}
+                                            variant="standard"
+                                            label="Orientacion Sexual"
+                                            placeholder="Orientacion"
+                                        />
+                                    )}
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <Autocomplete
+                                    id="etnia"
+                                    selectOnFocus
+                                    value={etnia}
+                                    onChange={(event: any, value: any) => {
+                                        if (value !== null) handleEthnicity(value)
+                                    }}
+                                    options={Ethnicities}
+                                    getOptionLabel={(options) => options}
+                                    renderInput={(params) => (
+                                        <TextField
+                                            {...params}
+                                            variant="standard"
+                                            label="Etnia"
+                                            placeholder="Etnia"
+                                        />
+                                    )}
+                                />
+                            </Grid>
+
                             <Grid container spacing={3} className={classes.grid}>
                                 <Grid item xs={12} sm={6}>
                                     <Typography variant="h6" color="inherit" noWrap>
