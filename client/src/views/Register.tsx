@@ -51,8 +51,13 @@ export default function Register() {
     const classes = useStyles()
     const history = useHistory()
 
+    const [username, SetUsername] = useState("")
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
+
+    const handleUsername = (event: ChangeEvent<HTMLInputElement>) => {
+        SetUsername(event.target.value)
+    }
 
     const handleEmail = (event: ChangeEvent<HTMLInputElement>) => {
         setEmail(event.target.value)
@@ -66,8 +71,8 @@ export default function Register() {
         if (!!getJWT()) history.push("/dashboard")
     })
 
-    const SignUp = (email: string, password: string) => {
-        signUp(email, password).then(() => {
+    const SignUp = (username: string, email: string, password: string) => {
+        signUp(username, email, password).then(() => {
             history.push("/login")
         })
     }
@@ -84,6 +89,18 @@ export default function Register() {
                     <ThemeProvider theme={theme}>
                         <form className={classes.form} noValidate>
                             <Grid container spacing={2}>
+                                <Grid item xs={12}>
+                                    <TextField
+                                        variant="outlined"
+                                        required
+                                        fullWidth
+                                        id="username"
+                                        label="Usuario"
+                                        name="username"
+                                        autoComplete="username"
+                                        onChange={handleUsername}
+                                    />
+                                </Grid>
                                 <Grid item xs={12}>
                                     <TextField
                                         variant="outlined"
@@ -113,7 +130,7 @@ export default function Register() {
                                 fullWidth
                                 variant="contained"
                                 className={classes.submit}
-                                onClick={() => SignUp(email, password)}
+                                onClick={() => SignUp(username, email, password)}
                             >
                                 Registrarse
                             </Button>

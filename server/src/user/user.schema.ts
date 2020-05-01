@@ -19,6 +19,11 @@ export const userSchema = new mongoose.Schema({
         required: true,
         minLength: 6,
     },
+    username: {
+        type: String,
+        required: true,
+        minlength: 6,
+    },
     name: {
         type: String,
         trim: true,
