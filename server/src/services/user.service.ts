@@ -79,10 +79,10 @@ export class UserService {
             return serviceResult
         }
     }
-    async getAll(): Promise<ServiceResult> {
+    async getAll(page?: number, limit?: number): Promise<ServiceResult> {
         const serviceResult = new ServiceResult()
         try {
-            const users = await User.find({ isPublic: true }, PROTECTED_FIELDS)
+            const users = await this.paginateUsers(page, limit)
             serviceResult.addData(users)
         } catch (error) {
             serviceResult.addError(error as Error)
@@ -90,6 +90,17 @@ export class UserService {
             return serviceResult
         }
     }
+    public paginateUsers(page?: number, limit?: number) {
+        const queryAll = User.find({ isPublic: true }, PROTECTED_FIELDS)
+        if (!!page && !!limit) {
+            const startIndex = (page - 1) * limit,
+                endIndex = page * limit
+            queryAll.skip(startIndex).limit(endIndex)
+        }
+
+        return queryAll
+    }
+
     async getByUsername(username: string): Promise<ServiceResult> {
         const serviceResult = new ServiceResult()
         try {
