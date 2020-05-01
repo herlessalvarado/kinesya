@@ -85,6 +85,17 @@ export class UserService {
             return serviceResult
         }
     }
+    async getByUsername(username: string): Promise<ServiceResult> {
+        const serviceResult = new ServiceResult()
+        try {
+            const user = await User.findOne({ username: username }, PROTECTED_FIELDS)
+            serviceResult.addData(user)
+        } catch (error) {
+            serviceResult.addError(error as Error)
+        } finally {
+            return serviceResult
+        }
+    }
     async updateUser(token: string, newUser: IUser, photos: any): Promise<ServiceResult> {
         let serviceResult = new ServiceResult()
         let userID = getClaimsFromToken(token).id

@@ -54,11 +54,21 @@ UserRouter.get("/users", async (req: Request, res: Response) => {
     }
 })
 
+UserRouter.get("/users/:username", async (req: Request, res: Response) => {
+    const result = await userService.getByUsername(req.params.username)
+    if (result.success) {
+        res.status(200).send(result.data)
+    } else {
+        res.status(400).send(result.getErrorMessages())
+    }
+})
+
 /*
     UPDATE USER
                 */
 
 UserRouter.put("/users", [upload, auth], async (req: Request, res: Response) => {
+    if (!!req.body.characteristics) req.body.characteristics = JSON.parse(req.body.characteristics)
     const result = await userService.updateUser(req.body.token, req.body, req.files)
     if (result.success) {
         res.status(200).send(result.data)

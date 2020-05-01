@@ -6,6 +6,7 @@ import Login from "./views/Login"
 import Register from "./views/Register"
 import Dashboard from "./views/Dashboard"
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom"
+import Profile from "./views/Profile"
 
 axios.defaults.baseURL = process.env.REACT_APP_API_URL
 axios.defaults.withCredentials = true
@@ -22,6 +23,9 @@ function App() {
                 </Route>
                 <Route path="/register">
                     <Register />
+                </Route>
+                <Route path="/user/:username">
+                    <Profile />
                 </Route>
                 <PrivateRoute path="/dashboard" redirect="/login">
                     <Dashboard />

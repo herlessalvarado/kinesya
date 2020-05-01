@@ -3,6 +3,41 @@ export interface Claims {
     username?: string
 }
 
+export const Services = [
+    "Trato de pareja",
+    "Sexo oral",
+    "Sexo anal",
+    "Oral con condón",
+    "Oral natural",
+    "Eyaculación facial",
+    "Masajes",
+    "Fantasías",
+    "Trío",
+    "Beso Negro",
+    "Fetichismo",
+    "Sado duro",
+    "Sado suave",
+]
+
+export const Zodiac = [
+    "Aries",
+    "Tauro",
+    "Géminis",
+    "Cáncer",
+    "Leo",
+    "Virgo",
+    "Libra",
+    "Escorpio",
+    "Sagitario",
+    "Capricornio",
+    "Acuario",
+    "Piscis",
+]
+
+export const Ethnicity = ["Andinas", "Morenas", "Piel Blanca", "Trigueña"]
+
+export const Orientation = ["Heterosexual", "Homosexual", "Bisexual", "Trans"]
+
 export enum Districts {
     BRENA = "Breña",
     LAVICTORIA = "La Victoria",

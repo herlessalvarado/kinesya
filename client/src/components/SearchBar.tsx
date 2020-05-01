@@ -4,8 +4,7 @@ import { CssBaseline, fade, Input } from "@material-ui/core"
 import Toolbar from "@material-ui/core/Toolbar"
 import SearchIcon from "@material-ui/icons/Search"
 import Autocomplete from "@material-ui/lab/Autocomplete"
-import { Districts } from "../utils/constants"
-
+import { DISTRICTS } from "../utils/constants"
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -73,10 +72,10 @@ export default function SearchBar() {
                         </div>
                         <Autocomplete
                             id="combo-box-demo"
-                            options={Districts}
+                            options={DISTRICTS}
                             freeSolo
                             classes={{ input: classes.input }}
-                            getOptionLabel={(option) => option.value}
+                            getOptionLabel={(option) => option}
                             renderInput={(params) => {
                                 return (
                                     <Input disableUnderline {...params} placeholder="Search..." />
