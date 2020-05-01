@@ -89,7 +89,6 @@ const useStyles = makeStyles((theme: Theme) =>
         grid: {
             marginTop: theme.spacing(1),
         },
-        
     })
 )
 
@@ -625,10 +624,8 @@ export default function Dashboard() {
                                 />
                             </Grid>
                             <Grid container spacing={3} className={classes.grid} justify="center">
-                                
                                 <Grid item xs={12} sm={6}>
-                                    <UploadImage text="Foto de Portada" onChange={handleBanner}/>
-                                    
+                                    <UploadImage text="Foto de Portada" onChange={handleBanner} />
                                 </Grid>
                                 {!!banner && (
                                     <Grid item xs={12}>
@@ -643,7 +640,7 @@ export default function Dashboard() {
                             </Grid>
                             <Grid container spacing={3} className={classes.grid} justify="center">
                                 <Grid item xs={12} sm={6}>
-                                <UploadImage text="Foto de Perfil" onChange={handleProfile}/>
+                                    <UploadImage text="Foto de Perfil" onChange={handleProfile} />
                                 </Grid>
                                 {!!profile && (
                                     <Grid item xs={12}>
@@ -658,9 +655,12 @@ export default function Dashboard() {
                             </Grid>
 
                             <Grid container spacing={3} className={classes.grid} justify="center">
-
                                 <Grid item xs={12} sm={6}>
-                                <UploadImage text="Fotos Secundarias" onChange={handleChange} multiple={true}/>
+                                    <UploadImage
+                                        text="Fotos Secundarias"
+                                        onChange={handleChange}
+                                        multiple={true}
+                                    />
                                 </Grid>
                             </Grid>
                             <ToastSuccessful
