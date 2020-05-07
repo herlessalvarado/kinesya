@@ -22,6 +22,8 @@ import {
     servicesValidatorResult,
     decimalValidatorResult,
     textLengthValidatorResult,
+    priceValidatorResult,
+    phoneValidatorResult,
 } from "../helpers/field_validators"
 import { UserStateProps } from "../models/user"
 import { isInvalid, isValid } from "../helpers/html_validators"
@@ -129,7 +131,7 @@ export default function Contact(props: UserStateProps) {
                 </Typography>
                 <Grid container spacing={3}>
                     <Grid item xs={12} sm={6}>
-                        <Validator validator={decimalValidatorResult.validator} ref={refPrice}>
+                        <Validator validator={priceValidatorResult.validator} ref={refPrice}>
                             <TextField
                                 error={checkInvalidityPrice()}
                                 value={price}
@@ -138,7 +140,7 @@ export default function Contact(props: UserStateProps) {
                                 label="Price"
                                 placeholder="Price"
                                 helperText={
-                                    checkInvalidityPrice() ? decimalValidatorResult.message : ""
+                                    checkInvalidityPrice() ? priceValidatorResult.message : ""
                                 }
                                 InputProps={{
                                     startAdornment: (
@@ -149,7 +151,7 @@ export default function Contact(props: UserStateProps) {
                         </Validator>
                     </Grid>
                     <Grid item xs={12} sm={6}>
-                        <Validator validator={textLengthValidatorResult.validator} ref={refPhone}>
+                        <Validator validator={phoneValidatorResult.validator} ref={refPhone}>
                             <TextField
                                 error={checkInvalidityPhone()}
                                 value={phone}
@@ -158,7 +160,7 @@ export default function Contact(props: UserStateProps) {
                                 label="Phone"
                                 placeholder="Phone"
                                 helperText={
-                                    checkInvalidityPhone() ? textLengthValidatorResult.message : ""
+                                    checkInvalidityPhone() ? phoneValidatorResult.message : ""
                                 }
                                 InputProps={{
                                     startAdornment: (

@@ -36,9 +36,26 @@ export const servicesValidatorResult: ValidatorResult = {
     validator: validateServices,
     message: "Debes escoger al menos un servicio",
 }
+export const priceValidatorResult:ValidatorResult ={
+    validator: validatePrice,
+    message: "El precio minimo es de S/100",
+}
+
+export const phoneValidatorResult:ValidatorResult ={
+    validator: validatePhone,
+    message: "Debes colocar un numero valido",
+}
 
 export function validateAge(text: string) {
     return parseInt(text) >= 18
+}
+
+export function validatePrice(text:string){
+    return parseFloat(text) >= 100.0
+}
+
+export function validatePhone(text:string){
+    return  /^\d{9}$/.test(text)
 }
 
 export function validateTextAreaLength(text: string) {
