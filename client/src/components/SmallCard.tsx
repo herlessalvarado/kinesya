@@ -46,7 +46,12 @@ export default function SmallCard(props: CardProps) {
     return (
         <Card>
             <CardActionArea>
-                <CardMedia component="img" className={classes.media} image={props.image} />
+                <CardMedia
+                    component="img"
+                    loading="lazy"
+                    className={classes.media}
+                    image={props.image}
+                />
                 <CardContent>
                     <Typography gutterBottom variant="h5" component="h2">
                         {props.name}

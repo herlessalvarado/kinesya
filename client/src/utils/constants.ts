@@ -45,7 +45,7 @@ export const DISTRICTS = [
     "Villa María del Triunfo",
 ]
 export const SERVICES = [
-    "",
+    "Seleccionar",
     "Trato de pareja",
     "Sexo oral",
     "Sexo anal",
@@ -80,7 +80,9 @@ export const Zodiac = [
 export const Ethnicities = ["", "Andinas", "Morenas", "Piel Blanca", "Trigueña"]
 
 export const Orientations = ["", "Heterosexual", "Homosexual", "Bisexual", "Trans"]
-
+export const IMAGE_LIMITS = 4
 export const MIN_AGE = 18
 export const MAX_AGE = 99
 export const MIN_PRICE = 0.0
+
+export const MAX_STEPS_PROFILE = 3

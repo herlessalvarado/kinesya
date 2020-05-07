@@ -1,0 +1,8 @@
+
+
+POST  http://localhost:8000/users/token HTTP/1.1
+content-type: application/json
+
+{
+    "request_token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlYWJhM2JkZGEzNjkxMGQ4YzQ5ZTY5YSIsImlhdCI6MTU4ODgxMjU3OCwiZXhwIjoxNTg4ODE2MTc4fQ.kW00ZBLqmMJeI-u_-eHAiQseQa1AtfVKBfvka2xeIU0"
+}

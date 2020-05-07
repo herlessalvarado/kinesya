@@ -1,4 +1,37 @@
-export interface UserCharacteristics {
+import { Photo } from "../components/UploadImage"
+
+export const NullUser: UserViewModel = {
+    bannerPhoto: Array<Photo>(),
+    height: "",
+    weight: "",
+    eyes: "",
+    hair: "",
+    fakeBoobs: false,
+    birthday: "",
+    birthPlace: "",
+    zodiac: "",
+    measurements: "",
+    orientation: "",
+    ethnicity: "",
+    name: "",
+    age: "",
+    description: "",
+    price: "",
+    phone: "",
+    location: "",
+    profilePhoto: Array<Photo>(),
+    referencePhotos: Array<Photo>(),
+    tags: Array<string>(),
+}
+
+export interface UserStateProps {
+    user: UserViewModel
+    onClick: (user: UserViewModel, step: number) => void
+    stepId: number
+}
+
+export interface UserViewModel {
+    bannerPhoto?: Array<Photo>
     height?: string
     weight?: string
     eyes?: string
@@ -10,17 +43,13 @@ export interface UserCharacteristics {
     measurements?: string
     orientation?: string
     ethnicity?: string
-}
-export interface UserModel {
-    bannerPhoto: string
-    characteristics?: UserCharacteristics
     name?: string
-    age?: number
+    age?: string
     description?: string
-    price?: number
-    phone?: number
+    price?: string
+    phone?: string
     location?: string
-    profilePhoto: string
-    referencePhotos: Array<string>
+    profilePhoto?: Array<Photo>
+    referencePhotos?: Array<Photo>
     tags?: Array<string>
 }

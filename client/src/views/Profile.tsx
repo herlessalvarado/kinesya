@@ -2,16 +2,16 @@ import React, { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import UserDetails from "../components/UserDetails"
 import { getUserByUsername } from "../network/UserService"
-import { UserModel } from "../models/user"
+import { UserDTO } from "../dto/user"
 
 export default function Profile() {
     let { username } = useParams()
-    const [user, setUser] = useState<UserModel>()
+    const [user, setUser] = useState<UserDTO>()
 
     useEffect(() => {
         let active = true
         if (active) {
-            getUserByUsername(username!).then((res: UserModel) => {
+            getUserByUsername(username!).then((res: UserDTO) => {
                 setUser(res)
             })
         }

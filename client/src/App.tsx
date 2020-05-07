@@ -4,7 +4,7 @@ import PrivateRoute from "./routing/PrivateRoute"
 import Home from "./views/Home"
 import Login from "./views/Login"
 import Register from "./views/Register"
-import Dashboard from "./views/Dashboard"
+
 import UpdateProfile from "./views/UpdateProfile"
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom"
 import Profile from "./views/Profile"
@@ -28,6 +28,7 @@ function App() {
                 <Route path="/user/:username">
                     <Profile />
                 </Route>
+
                 <PrivateRoute path="/dashboard" redirect="/login">
                     {/* <Dashboard /> */}
                     <UpdateProfile />

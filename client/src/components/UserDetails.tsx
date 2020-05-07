@@ -4,7 +4,7 @@ import CardMedia from "@material-ui/core/CardMedia"
 import Typography from "@material-ui/core/Typography"
 import Grid from "@material-ui/core/Grid"
 import { CssBaseline } from "@material-ui/core"
-import { UserModel } from "../models/user"
+import { UserDTO } from "../dto/user"
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -90,7 +90,7 @@ const useStyles = makeStyles((theme: Theme) =>
 )
 
 interface UserByUsernameProps {
-    user: UserModel
+    user: UserDTO
 }
 
 export default function UserByUsername(props: UserByUsernameProps) {

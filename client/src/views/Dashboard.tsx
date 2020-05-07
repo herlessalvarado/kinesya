@@ -35,13 +35,9 @@ import {
     Ethnicities,
 } from "../utils/constants"
 import Autocomplete from "@material-ui/lab/Autocomplete"
-import DateFnsUtils from "@date-io/date-fns"
-import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers"
-import validateDecimal from "../helpers/validators/field_validators"
-import { UserModel } from "../models/user"
 import UploadImage from "../components/UploadImage"
 
-interface ValidateFields {
+/*interface ValidateFields {
     value: string
     valid: boolean
 }
@@ -124,7 +120,7 @@ export default function Dashboard() {
     const [etnia, setEtnia] = useState("")
     const history = useHistory()
 
-    const setUsersFields = (res: UserModel) => {
+    const setUsersFields = (res: UserDTO) => {
         if (!!res.characteristics) {
             setHeight({ valid: true, value: res.characteristics.height || "" })
             setFakeBoobs(res.characteristics.fakeBoobs || false)
@@ -176,7 +172,7 @@ export default function Dashboard() {
         if (valid) {
             getUserByToken()
                 .then((res) => {
-                    setUsersFields(res as UserModel)
+                    setUsersFields(res as UserDTO)
                 })
                 .catch(() => {
                     history.push("/login")
@@ -694,3 +690,4 @@ export default function Dashboard() {
         </React.Fragment>
     )
 }
+*/
