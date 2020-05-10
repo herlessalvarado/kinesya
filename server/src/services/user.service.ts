@@ -166,4 +166,18 @@ export class UserService {
             return serviceResult
         }
     }
+
+    async searchByDistrict(district: string): Promise<ServiceResult> {
+        let serviceResult = new ServiceResult()
+        try {
+            const filteredUsers = await User.find({ location: district }, PROTECTED_FIELDS).limit(
+                20
+            )
+            serviceResult.addData(filteredUsers)
+        } catch (error) {
+            serviceResult.addError(error as Error)
+        } finally {
+            return serviceResult
+        }
+    }
 }

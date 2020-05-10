@@ -53,3 +53,15 @@ export async function updateUser(formData: any) {
 export async function getUserByToken() {
     return _getUserByToken().catch(() => getNewToken().then(() => _getUserByToken()))
 }
+
+export async function getUsersByDistrict(district: string): Promise<any> {
+    return axios
+        .get("/users/search-by-district", {
+            params: {
+                location: district,
+            },
+        })
+        .then((response) => {
+            return response.data
+        })
+}

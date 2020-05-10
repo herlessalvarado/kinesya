@@ -54,6 +54,15 @@ UserRouter.get("/users", async (req: Request, res: Response) => {
     }
 })
 
+UserRouter.get("/users/search-by-district", async (req: Request, res: Response) => {
+    const result = await userService.searchByDistrict(req.query.location)
+    if (result.success) {
+        res.status(200).send(result.data)
+    } else {
+        res.status(400).send(result.getErrorMessages())
+    }
+})
+
 UserRouter.get("/users/:username", async (req: Request, res: Response) => {
     const result = await userService.getByUsername(req.params.username)
     if (result.success) {

@@ -1,10 +1,11 @@
-import React from "react"
+import React, { useState, ChangeEvent } from "react"
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles"
-import { CssBaseline, fade, Input } from "@material-ui/core"
+import { CssBaseline, fade, Input, TextField } from "@material-ui/core"
 import Toolbar from "@material-ui/core/Toolbar"
 import SearchIcon from "@material-ui/icons/Search"
 import Autocomplete from "@material-ui/lab/Autocomplete"
 import { DISTRICTS } from "../utils/constants"
+import { getUsersByDistrict } from "../network/UserService"
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -56,12 +57,24 @@ const useStyles = makeStyles((theme: Theme) =>
                     width: "20ch",
                 },
             },
+            "&&&:before": {
+                borderBottom: "none",
+            },
+            "&&:after": {
+                borderBottom: "none",
+            },
         },
     })
 )
 
 export default function SearchBar() {
     const classes = useStyles()
+    const [selected, setSelected] = useState("")
+
+    const handleSelected = (event: any) => {
+        setSelected(event.target.textContent)
+    }
+
     return (
         <React.Fragment>
             <CssBaseline>
@@ -74,11 +87,18 @@ export default function SearchBar() {
                             id="combo-box-demo"
                             options={DISTRICTS}
                             freeSolo
-                            classes={{ input: classes.input }}
+                            classes={{ inputRoot: classes.input }}
                             getOptionLabel={(option) => option}
+                            onChange={handleSelected}
                             renderInput={(params) => {
                                 return (
-                                    <Input disableUnderline {...params} placeholder="Search..." />
+                                    <TextField
+                                        {...params}
+                                        placeholder="Search..."
+                                        onKeyDown={(event) => {
+                                            if (event.key === "Enter") getUsersByDistrict(selected!)
+                                        }}
+                                    />
                                 )
                             }}
                         />
