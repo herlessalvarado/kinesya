@@ -31,25 +31,25 @@ export interface UserStateProps {
 }
 
 export interface UserViewModel {
-    bannerPhoto?: Array<Photo>
-    height?: string
-    weight?: string
-    eyes?: string
-    hair?: string
-    fakeBoobs?: boolean
-    birthday?: string
-    birthPlace?: string
-    zodiac?: string
-    measurements?: string
-    orientation?: string
-    ethnicity?: string
-    name?: string
-    age?: string
-    description?: string
-    price?: string
-    phone?: string
-    location?: string
-    profilePhoto?: Array<Photo>
-    referencePhotos?: Array<Photo>
-    tags?: Array<string>
+    bannerPhoto: Array<Photo>
+    height: string
+    weight: string
+    eyes: string
+    hair: string
+    fakeBoobs: boolean
+    birthday: string
+    birthPlace: string
+    zodiac: string
+    measurements: string
+    orientation: string
+    ethnicity: string
+    name: string
+    age: string
+    description: string
+    price: string
+    phone: string
+    location: string
+    profilePhoto: Array<Photo>
+    referencePhotos: Array<Photo>
+    tags: Array<string>
 }

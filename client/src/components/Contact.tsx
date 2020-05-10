@@ -74,37 +74,26 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export default function Contact(props: UserStateProps) {
     const classes = useStyles()
-
+    
     const [price, setPrice] = useState(props.user.price)
     const [phone, setPhone] = useState(props.user.phone)
     const [location, setLocation] = useState(props.user.location)
     const [tags, setTags] = useState(props.user.tags)
-    const [valid, setValid] = useState(false)
 
-    const refTags = useRef<HTMLElement>()
-    const refPrice = useRef<HTMLElement>()
-    const refPhone = useRef<HTMLElement>()
-    const refLocation = useRef<HTMLElement>()
+    const [validPrice, setValidPrice] = useState(priceValidatorResult.validator(props.user.price))
+    const [validPhone, setValidPhone] = useState(phoneValidatorResult.validator(props.user.phone))
 
-    const checkInvalidityPrice = (): boolean => {
-        return isInvalid(refPrice)
-    }
-    const checkInvalidityTags = (): boolean => {
-        return isInvalid(refTags)
-    }
-    const checkInvalidityLocation = (): boolean => {
-        return isInvalid(refLocation)
-    }
-    const checkInvalidityPhone = (): boolean => {
-        return isInvalid(refPhone)
-    }
+
+
 
     const handlePrice = (event: ChangeEvent<HTMLInputElement>) => {
         setPrice(event.target.value)
+        setValidPrice(priceValidatorResult.validator(event.target.value))
     }
 
     const handlePhone = (event: ChangeEvent<HTMLInputElement>) => {
         setPhone(event.target.value)
+        setValidPhone(phoneValidatorResult.validator(event.target.value))
     }
 
     const handleLocation = (value: string) => {
@@ -115,13 +104,10 @@ export default function Contact(props: UserStateProps) {
         setTags(newValue)
     }
 
-    function areAllInValid() {
-        return isValid(refPrice) && isValid(refPhone) && isValid(refLocation) && isValid(refTags)
+    function areAllValid() {
+        return (location !== "") && (tags.length > 0) && (phone !== "" && validPhone) && (price !== "" && validPrice)
     }
 
-    useEffect(() => {
-        if (areAllInValid()) setValid(true)
-    })
 
     return (
         <React.Fragment>
@@ -131,16 +117,15 @@ export default function Contact(props: UserStateProps) {
                 </Typography>
                 <Grid container spacing={3}>
                     <Grid item xs={12} sm={6}>
-                        <Validator validator={priceValidatorResult.validator} ref={refPrice}>
                             <TextField
-                                error={checkInvalidityPrice()}
+                                error={!validPrice}
                                 value={price}
                                 fullWidth
                                 onChange={handlePrice}
                                 label="Price"
-                                placeholder="Price"
+                                placeholder="Precio"
                                 helperText={
-                                    checkInvalidityPrice() ? priceValidatorResult.message : ""
+                                    !validPrice ? priceValidatorResult.message : ""
                                 }
                                 InputProps={{
                                     startAdornment: (
@@ -148,19 +133,17 @@ export default function Contact(props: UserStateProps) {
                                     ),
                                 }}
                             />
-                        </Validator>
                     </Grid>
                     <Grid item xs={12} sm={6}>
-                        <Validator validator={phoneValidatorResult.validator} ref={refPhone}>
                             <TextField
-                                error={checkInvalidityPhone()}
+                                error={!validPhone}
                                 value={phone}
                                 fullWidth
                                 onChange={handlePhone}
                                 label="Phone"
-                                placeholder="Phone"
+                                placeholder="Telefono"
                                 helperText={
-                                    checkInvalidityPhone() ? phoneValidatorResult.message : ""
+                                    !validPhone ? phoneValidatorResult.message : ""
                                 }
                                 InputProps={{
                                     startAdornment: (
@@ -168,14 +151,8 @@ export default function Contact(props: UserStateProps) {
                                     ),
                                 }}
                             />
-                        </Validator>
                     </Grid>
                     <Grid item xs={12} sm={12}>
-                        <Validator
-                            ref={refLocation}
-                            multiple
-                            validator={textLengthValidatorResult.validator}
-                        >
                             <Autocomplete
                                 id="zodiac"
                                 selectOnFocus
@@ -191,23 +168,14 @@ export default function Contact(props: UserStateProps) {
                                         variant="standard"
                                         label="Distrito"
                                         placeholder="Distrito"
-                                        error={checkInvalidityLocation()}
-                                        helperText={
-                                            checkInvalidityLocation()
-                                                ? textLengthValidatorResult.message
-                                                : ""
-                                        }
+
                                     />
                                 )}
                             />
-                        </Validator>
+
                     </Grid>
                     <Grid item xs={12} sm={12}>
-                        <Validator
-                            multiple
-                            ref={refTags}
-                            validator={servicesValidatorResult.validator}
-                        >
+
                             <Autocomplete
                                 limitTags={3}
                                 multiple
@@ -233,16 +201,11 @@ export default function Contact(props: UserStateProps) {
                                         {...params}
                                         label="Servicios"
                                         placeholder="Servicios"
-                                        error={checkInvalidityTags()}
-                                        helperText={
-                                            checkInvalidityTags()
-                                                ? servicesValidatorResult.message
-                                                : ""
-                                        }
+
                                     />
                                 )}
                             />
-                        </Validator>
+
                     </Grid>
                 </Grid>
                 <div className={classes.buttons}>
@@ -263,7 +226,7 @@ export default function Contact(props: UserStateProps) {
                         variant="contained"
                         color="primary"
                         className={classes.button}
-                        disabled={!valid}
+                        disabled={!areAllValid()}
                         onClick={() => {
                             props.onClick(
                                 { ...props.user, tags, location, price, phone },

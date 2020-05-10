@@ -56,17 +56,10 @@ export interface Photo {
     url?: string
     file?: any
 }
-
-export default forwardRef<any, UploadImageProps>(
-    ({ text, onChange, value, multiple }: UploadImageProps, ref: any) => {
+ 
+export default ({ text, onChange, value, multiple }: UploadImageProps) => {
         const classes = useStyles()
-        function touched() {
-            let classes = ""
-            if (value.length > 0) {
-                classes += "touched"
-            }
-            return classes
-        }
+
         function renderImage() {
             if (multiple) {
                 return (
@@ -106,8 +99,6 @@ export default forwardRef<any, UploadImageProps>(
                             {text}
                         </Typography>
                         <input
-                            ref={ref}
-                            className={touched()}
                             type="file"
                             multiple={multiple}
                             onChange={onChange}
@@ -118,4 +109,4 @@ export default forwardRef<any, UploadImageProps>(
             </Grid>
         )
     }
-)
+

@@ -77,62 +77,31 @@ export default function Physics(props: UserStateProps) {
     const [zodiac, setZodiac] = useState(props.user.zodiac)
     const [ethnicity, setEthnicity] = useState(props.user.ethnicity)
     const [boobs, setBoobs] = useState(props.user.fakeBoobs)
-    const [valid, setValid] = useState(false)
-    const refHair = useRef<HTMLElement>()
-    const refOrientation = useRef<HTMLElement>()
-    const refHeight = useRef<HTMLElement>()
-    const refWeight = useRef<HTMLElement>()
-    const refEyes = useRef<HTMLElement>()
-    const refBirthPlace = useRef<HTMLElement>()
-    const refMeasurements = useRef<HTMLElement>()
-    const refZodiac = useRef<HTMLElement>()
-    const refEthnicity = useRef<HTMLElement>()
+    
+    const [validHair, setValidHair] = useState(textLengthValidatorResult.validator(props.user.hair))
+    const [validHeight, setValidHeight] = useState(decimalValidatorResult.validator(props.user.height))
+    const [validWeight, setValidWeight] = useState(decimalValidatorResult.validator(props.user.weight))
+    const [validEyes, setValidEyes] = useState(textLengthValidatorResult.validator(props.user.eyes))
+    const [validBirthPlace, setValidBirthPlace] = useState(textLengthValidatorResult.validator(props.user.birthPlace))
+    const [validMeasurements, setValidMeasurements] = useState(textLengthValidatorResult.validator(props.user.measurements))
 
-    const checkInvalidityOrientation = (): boolean => {
-        return isInvalid(refOrientation)
-    }
-    const checkInvalidityHair = (): boolean => {
-        return isInvalid(refHair)
-    }
-
-    const checkInvalidityHeight = (): boolean => {
-        return isInvalid(refHeight)
-    }
-
-    const checkInvalidityWeight = (): boolean => {
-        return isInvalid(refWeight)
-    }
-    const checkInvalidityEyes = (): boolean => {
-        return isInvalid(refEyes)
-    }
-
-    const checkInvalidityBirthPlace = (): boolean => {
-        return isInvalid(refBirthPlace)
-    }
-
-    const checkInvalidityMeasurements = (): boolean => {
-        return isInvalid(refMeasurements)
-    }
-
-    const checkInvalidityZodiac = (): boolean => {
-        return isInvalid(refZodiac)
-    }
-    const checkInvalidityEthnicity = (): boolean => {
-        return isInvalid(refEthnicity)
-    }
 
     const handleHeight = (event: ChangeEvent<HTMLInputElement>) => {
         setHeight(event.target.value)
+        setValidHeight(decimalValidatorResult.validator(event.target.value))
     }
     const handleWeight = (event: ChangeEvent<HTMLInputElement>) => {
         setWeight(event.target.value)
+        setValidWeight(decimalValidatorResult.validator(event.target.value))
     }
 
     const handleEyes = (event: ChangeEvent<HTMLInputElement>) => {
         setEyes(event.target.value)
+        setValidEyes(textLengthValidatorResult.validator(event.target.value))
     }
     const handleHair = (event: ChangeEvent<HTMLInputElement>) => {
         setHair(event.target.value)
+        setValidHair(textLengthValidatorResult.validator(event.target.value))
     }
     const handleFakeBoobs = (value: boolean) => {
         setBoobs(value)
@@ -140,12 +109,14 @@ export default function Physics(props: UserStateProps) {
 
     const handleBirthPlace = (event: ChangeEvent<HTMLInputElement>) => {
         setBirthPlace(event.target.value)
+        setValidBirthPlace(textLengthValidatorResult.validator(event.target.value))
     }
     const handleZodiac = (value: string) => {
         setZodiac(value)
     }
     const handleMeasurements = (event: ChangeEvent<HTMLInputElement>) => {
         setMeasurements(event.target.value)
+        setValidMeasurements(textLengthValidatorResult.validator(event.target.value))
     }
     const handleOrientation = (value: string) => {
         setOrientation(value)
@@ -154,23 +125,11 @@ export default function Physics(props: UserStateProps) {
         setEthnicity(value)
     }
 
-    function areAllInValid() {
-        return (
-            isValid(refHair) &&
-            isValid(refOrientation) &&
-            isValid(refHeight) &&
-            isValid(refEyes) &&
-            isValid(refWeight) &&
-            isValid(refBirthPlace) &&
-            isValid(refMeasurements) &&
-            isValid(refZodiac) &&
-            isValid(refEthnicity)
-        )
+    function areAllValid() {
+        return (hair !== "" && validHair) && (weight !== "" && validWeight) && (eyes !== "" && validEyes) && (birthPlace !== "" && validBirthPlace) && (measurements != "" && validMeasurements) && (orientation !== "") && (ethnicity !== "") && (zodiac !== "")
     }
 
-    useEffect(() => {
-        if (areAllInValid()) setValid(true)
-    })
+ 
 
     return (
         <React.Fragment>
@@ -180,16 +139,15 @@ export default function Physics(props: UserStateProps) {
                 </Typography>
                 <Grid container spacing={3}>
                     <Grid item xs={12} sm={6}>
-                        <Validator validator={decimalValidatorResult.validator} ref={refWeight}>
                             <TextField
-                                error={checkInvalidityWeight()}
+                                error={!validWeight}
                                 value={weight}
                                 fullWidth
                                 onChange={handleWeight}
                                 label="Peso"
                                 placeholder="Peso"
                                 helperText={
-                                    checkInvalidityWeight() ? decimalValidatorResult.message : ""
+                                    !validWeight ? decimalValidatorResult.message : ""
                                 }
                                 InputProps={{
                                     endAdornment: (
@@ -197,56 +155,49 @@ export default function Physics(props: UserStateProps) {
                                     ),
                                 }}
                             />
-                        </Validator>
                     </Grid>
 
                     <Grid item xs={12} sm={6}>
-                        <Validator validator={decimalValidatorResult.validator} ref={refHeight}>
                             <TextField
-                                error={checkInvalidityHeight()}
+                                error={!validHeight}
                                 value={height}
                                 onChange={handleHeight}
                                 fullWidth
                                 label="Altura"
                                 placeholder="Altura"
                                 helperText={
-                                    checkInvalidityHeight() ? decimalValidatorResult.message : ""
+                                    !validHeight ? decimalValidatorResult.message : ""
                                 }
                                 InputProps={{
                                     endAdornment: <InputAdornment position="end">m</InputAdornment>,
                                 }}
                             />
-                        </Validator>
                     </Grid>
                     <Grid item xs={12} sm={6}>
-                        <Validator ref={refHair} validator={textLengthValidatorResult.validator}>
                             <TextField
                                 value={hair}
                                 onChange={handleHair}
                                 fullWidth
                                 label="Cabello"
                                 placeholder="Cabello"
-                                error={checkInvalidityHair()}
+                                error={!validHair}
                                 helperText={
-                                    checkInvalidityHair() ? decimalValidatorResult.message : ""
+                                    !validHair ? textLengthValidatorResult.message : ""
                                 }
                             />
-                        </Validator>
                     </Grid>
                     <Grid item xs={12} sm={6}>
-                        <Validator ref={refEyes} validator={textLengthValidatorResult.validator}>
                             <TextField
                                 value={eyes}
                                 onChange={handleEyes}
                                 fullWidth
                                 label="Ojos"
                                 placeholder="Ojos"
-                                error={checkInvalidityEyes()}
+                                error={!validEyes}
                                 helperText={
-                                    checkInvalidityEyes() ? textLengthValidatorResult.message : ""
+                                    !validEyes ? textLengthValidatorResult.message : ""
                                 }
                             />
-                        </Validator>
                     </Grid>
                     <Grid item xs={12} sm={6}>
                         <FormControlLabel
@@ -264,31 +215,22 @@ export default function Physics(props: UserStateProps) {
                         />
                     </Grid>
                     <Grid item xs={12} sm={6}>
-                        <Validator
-                            ref={refBirthPlace}
-                            validator={textLengthValidatorResult.validator}
-                        >
                             <TextField
                                 value={birthPlace}
                                 onChange={handleBirthPlace}
                                 fullWidth
                                 label="Lugar de Nacimiento"
                                 placeholder="Lugar de Nacimiento"
-                                error={checkInvalidityBirthPlace()}
+                                error={!validBirthPlace}
                                 helperText={
-                                    checkInvalidityBirthPlace()
+                                    !validBirthPlace
                                         ? textLengthValidatorResult.message
                                         : ""
                                 }
                             />
-                        </Validator>
                     </Grid>
                     <Grid item xs={12} sm={6}>
-                        <Validator
-                            ref={refZodiac}
-                            multiple
-                            validator={textLengthValidatorResult.validator}
-                        >
+
                             <Autocomplete
                                 id="zodiac"
                                 selectOnFocus
@@ -304,22 +246,11 @@ export default function Physics(props: UserStateProps) {
                                         variant="standard"
                                         label="Zodiaco"
                                         placeholder="Zodiaco"
-                                        error={checkInvalidityZodiac()}
-                                        helperText={
-                                            checkInvalidityZodiac()
-                                                ? textLengthValidatorResult.message
-                                                : ""
-                                        }
                                     />
                                 )}
                             />
-                        </Validator>
                     </Grid>
                     <Grid item xs={12} sm={6}>
-                        <Validator
-                            ref={refMeasurements}
-                            validator={textLengthValidatorResult.validator}
-                        >
                             <TextField
                                 id="measurements"
                                 fullWidth
@@ -327,22 +258,11 @@ export default function Physics(props: UserStateProps) {
                                 onChange={handleMeasurements}
                                 label="Medidas"
                                 placeholder="Medidas"
-                                error={checkInvalidityMeasurements()}
-                                helperText={
-                                    checkInvalidityMeasurements()
-                                        ? textLengthValidatorResult.message
-                                        : ""
-                                }
                             />
-                        </Validator>
                     </Grid>
 
                     <Grid item xs={12} sm={6}>
-                        <Validator
-                            ref={refOrientation}
-                            multiple
-                            validator={textLengthValidatorResult.validator}
-                        >
+
                             <Autocomplete
                                 id="orientation"
                                 selectOnFocus
@@ -354,28 +274,15 @@ export default function Physics(props: UserStateProps) {
                                 getOptionLabel={(options) => options}
                                 renderInput={(params) => (
                                     <TextField
-                                        required
                                         {...params}
                                         variant="standard"
                                         label="Orientacion Sexual"
                                         placeholder="Orientacion"
-                                        error={checkInvalidityOrientation()}
-                                        helperText={
-                                            checkInvalidityOrientation()
-                                                ? textLengthValidatorResult.message
-                                                : ""
-                                        }
                                     />
                                 )}
                             />
-                        </Validator>
                     </Grid>
                     <Grid item xs={12} sm={6}>
-                        <Validator
-                            ref={refEthnicity}
-                            multiple
-                            validator={textLengthValidatorResult.validator}
-                        >
                             <Autocomplete
                                 id="etnia"
                                 selectOnFocus
@@ -391,16 +298,9 @@ export default function Physics(props: UserStateProps) {
                                         variant="standard"
                                         label="Etnia"
                                         placeholder="Etnia"
-                                        error={checkInvalidityEthnicity()}
-                                        helperText={
-                                            checkInvalidityEthnicity()
-                                                ? textLengthValidatorResult.message
-                                                : ""
-                                        }
                                     />
                                 )}
                             />
-                        </Validator>
                     </Grid>
                 </Grid>
 
@@ -434,7 +334,7 @@ export default function Physics(props: UserStateProps) {
                         variant="contained"
                         color="primary"
                         className={classes.button}
-                        disabled={!valid}
+                        disabled={!areAllValid()}
                         onClick={() => {
                             props.onClick(
                                 {

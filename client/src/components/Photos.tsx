@@ -13,7 +13,6 @@ import {
 import UploadImage, { Photo } from "./UploadImage"
 import { IMAGE_LIMITS, MAX_STEPS_PROFILE } from "../utils/constants"
 import { UserStateProps } from "../models/user"
-import { isDirty } from "../helpers/html_validators"
 
 const theme = createMuiTheme({
     palette: {
@@ -61,11 +60,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export default function Photos(props: UserStateProps) {
     const classes = useStyles()
-    const refBanner = useRef<HTMLElement>()
-    const refProfile = useRef<HTMLElement>()
-    const refReferences = useRef<HTMLElement>()
 
-    const [valid, setValid] = useState(false)
     const [profilePhoto, setProfile] = useState(props.user.profilePhoto)
     const [bannerPhoto, setBanner] = useState(props.user.bannerPhoto)
     const [referencePhotos, setReferences] = useState(props.user.referencePhotos)
@@ -101,14 +96,10 @@ export default function Photos(props: UserStateProps) {
             if (referencePhotos.length < IMAGE_LIMITS) setReferences(_references)
         }
     }
-    function areAllTouched() {
-        return isDirty(refBanner) && isDirty(refProfile) && isDirty(refReferences)
+    function areAllValid() {
+        return profilePhoto.length > 0 && bannerPhoto.length > 0 && referencePhotos.length > 0
     }
-    useEffect(() => {
-        if (areAllTouched()) {
-            setValid(true)
-        }
-    })
+
     
 
     return (
@@ -118,19 +109,18 @@ export default function Photos(props: UserStateProps) {
                     Fotos
                 </Typography>
                 <UploadImage
-                    ref={refBanner}
+
                     text="Foto de Portada"
                     value={bannerPhoto!}
                     onChange={(event:any)=>{handleBanner(event)}}
                 />
                 <UploadImage
-                    ref={refProfile}
+
                     text="Foto de Perfil"
                     value={profilePhoto!}
                     onChange={(event:any)=>{handleProfile(event)}}
                 />
                 <UploadImage
-                    ref={refReferences}
                     text="Fotos de Referencia"
                     value={referencePhotos!}
                     multiple
@@ -155,7 +145,7 @@ export default function Photos(props: UserStateProps) {
                         variant="contained"
                         color="primary"
                         className={classes.button}
-                        disabled={!valid}
+                        disabled={!areAllValid()}
                         onClick={() => {
                             props.onClick(
                                 { ...props.user, profilePhoto, bannerPhoto, referencePhotos },

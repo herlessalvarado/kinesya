@@ -20,7 +20,7 @@ export interface UserDTO {
     price?: number
     phone?: number
     location?: string
-    profilePhoto: string
-    referencePhotos: Array<string>
+    profilePhoto?: string
+    referencePhotos?: Array<string>
     tags?: Array<string>
 }

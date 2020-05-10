@@ -1,8 +1,9 @@
 import React, { useState, ChangeEvent, FC, useEffect, useRef } from "react"
 import Grid from "@material-ui/core/Grid"
 import Typography from "@material-ui/core/Typography"
-import { Validator } from "../components/Validator"
-import moment from "moment"
+import { MuiPickersUtilsProvider,KeyboardDatePicker } from '@material-ui/pickers';
+import MomentUtils from '@date-io/moment';
+
 import {
     createMuiTheme,
     ThemeProvider,
@@ -15,12 +16,11 @@ import {
 import { UserStateProps } from "../models/user"
 import {
     textLengthValidatorResult,
-    textAreaLengthValidatorResult,
-    ageValidatorResult,
-    dateValidatorResult,
+    textAreaLengthValidatorResult
 } from "../helpers/field_validators"
 import { isInvalid, isValid } from "../helpers/html_validators"
 import { MAX_STEPS_PROFILE } from "../utils/constants"
+import moment from "moment";
 
 const theme = createMuiTheme({
     palette: {
@@ -68,46 +68,31 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const Personal = (props: UserStateProps) => {
     const classes = useStyles()
-    const refName = useRef<HTMLDivElement>()
-    const refBirthday = useRef<HTMLElement>()
-    const refDescription = useRef<HTMLElement>()
     const [birthday, setBirthday] = useState(props.user.birthday)
     const [name, setName] = useState(props.user.name)
     const [description, setDescription] = useState(props.user.description)
-    const [valid, setValid] = useState(false)
-
-    const checkInvalidityName = (): boolean => {
-        return isInvalid(refName)
+    const [validName,setValidName] = useState(textLengthValidatorResult.validator(props.user.name))
+    const [validDescription,setValidDescription] = useState(textAreaLengthValidatorResult.validator(props.user.description))
+    
+    function areAllValid() {
+        return (name !== "" && validName) && (description != "" && validDescription)
     }
 
-    const checkInvalidityDescription = (): boolean => {
-        return isInvalid(refDescription)
-    }
-
-    const checkInvalidityBirthday = (): boolean => {
-        return isInvalid(refBirthday)
-    }
-
-    function areAllInValid() {
-        return isValid(refBirthday) && isValid(refDescription) && isValid(refName)
-    }
-
-    useEffect(() => {
-        if (areAllInValid()) setValid(true)
-    })
+  
 
     const handleName = (event: ChangeEvent<HTMLInputElement>) => {
         setName(event.target.value)
+        setValidName(textLengthValidatorResult.validator(event.target.value))
     }
 
     const handleDescription = (event: ChangeEvent<HTMLInputElement>) => {
         setDescription(event.target.value)
+        setValidDescription(textAreaLengthValidatorResult.validator(event.target.value))
     }
 
     const handleBirthday = (value: string) => {
         setBirthday(value)
     }
-
     return (
         <React.Fragment>
             <ThemeProvider theme={theme}>
@@ -116,25 +101,19 @@ const Personal = (props: UserStateProps) => {
                 </Typography>
                 <Grid container spacing={3}>
                     <Grid item xs={12}>
-                        <Validator ref={refName} validator={textLengthValidatorResult.validator}>
                             <TextField
                                 id="name"
                                 label="Nombre"
                                 fullWidth
                                 value={name}
                                 onChange={handleName}
-                                error={checkInvalidityName()}
+                                error={!validName}
                                 helperText={
-                                    checkInvalidityName() ? textLengthValidatorResult.message : ""
+                                    !validName ? textLengthValidatorResult.message : ""
                                 }
                             />
-                        </Validator>
                     </Grid>
                     <Grid item xs={12}>
-                        <Validator
-                            validator={textAreaLengthValidatorResult.validator}
-                            ref={refDescription}
-                        >
                             <TextField
                                 id="description"
                                 label="Descripción"
@@ -145,31 +124,31 @@ const Personal = (props: UserStateProps) => {
                                 value={description}
                                 onChange={handleDescription}
                                 helperText={
-                                    checkInvalidityDescription()
+                                    !validDescription
                                         ? textAreaLengthValidatorResult.message
                                         : ""
                                 }
-                                error={checkInvalidityDescription()}
+                                error={!validDescription}
                             />
-                        </Validator>
                     </Grid>
-                    <Grid item sm={6} xs={12}>
-                        <Validator validator={dateValidatorResult.validator} ref={refBirthday}>
-                            <TextField
-                                type="date"
-                                id="birthday"
-                                value={birthday}
-                                name="birthday"
-                                onChange={(event) => {
-                                    handleBirthday(event.target.value)
-                                }}
-                                helperText={
-                                    checkInvalidityBirthday() ? dateValidatorResult.message : ""
-                                }
-                                error={checkInvalidityBirthday()}
-                            />
-                        </Validator>
-                    </Grid>
+                    
+                    <Grid item sm={12} xs={12}>
+                                <MuiPickersUtilsProvider  libInstance={moment}  utils={MomentUtils}>
+                                    <KeyboardDatePicker
+                                        maxDate={moment().subtract(18, 'years').toDate()}
+                                        openTo="year"
+                                        views={["year", "month", "date"]}
+
+                                        label="Fecha de Nacimiento"
+                                        value={birthday}
+                                        placeholder="Fecha de Nacimiento"
+                                        onChange={(date) => {
+                                            if (date !== null) handleBirthday(date.format("MM-DD-YYYY"))
+                                        }}
+                                        format="MM/DD/yyyy"
+                                    />
+                                </MuiPickersUtilsProvider>
+                            </Grid>
                 </Grid>
                 <div className={classes.buttons}>
                     {props.stepId > 0 && (
@@ -189,7 +168,7 @@ const Personal = (props: UserStateProps) => {
                         variant="contained"
                         color="primary"
                         className={classes.button}
-                        disabled={!valid}
+                        disabled={!areAllValid()}
                         onClick={() => {
                             props.onClick(
                                 { ...props.user, name, description, birthday },

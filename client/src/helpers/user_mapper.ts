@@ -2,30 +2,31 @@ import { UserDTO } from "../dto/user";
 import { UserViewModel } from "../models/user";
 import moment from "moment";
 import { Photo } from "../components/UploadImage";
+import { MIN_AGE } from "../utils/constants";
 
 export function mapUserDTOToViewModel(user:UserDTO){
     const result:UserViewModel = {
-        age: user.age?.toString(),
-        referencePhotos: user.referencePhotos.map((url):Photo=>({file:"",url: process.env.REACT_APP_API_URL +url})),
-        profilePhoto : Array<Photo>({file:"",url:process.env.REACT_APP_API_URL +user.profilePhoto}),
-        bannerPhoto : Array<Photo>({file:"",url: process.env.REACT_APP_API_URL + user.bannerPhoto}),
-        name:user.name,
-        description: user.description,
-        price: user.price?.toString(),
-        phone: user.phone?.toString(),
-        location: user.location,
-        tags: user.tags,
-        height: user.characteristics?.height,
-        weight: user.characteristics?.weight,
-        eyes: user.characteristics?.eyes,
-        hair: user.characteristics?.hair,
-        fakeBoobs: user.characteristics?.fakeBoobs,
-        birthday: moment(user.characteristics?.birthday).format("YYYY-MM-DD"),
-        birthPlace: user.characteristics?.birthPlace,
-        zodiac: user.characteristics?.zodiac,
-        measurements: user.characteristics?.measurements,
-        orientation: user.characteristics?.orientation,
-        ethnicity: user.characteristics?.ethnicity
+        age: user.age?.toString() || "",
+        referencePhotos: (!!user.referencePhotos) ? user.referencePhotos.map((url):Photo=>({file:"",url: process.env.REACT_APP_API_URL +url})) : Array<Photo>(),
+        profilePhoto : (!!user.profilePhoto) ? Array<Photo>({file:"",url:process.env.REACT_APP_API_URL +user.profilePhoto}) : Array<Photo>(),
+        bannerPhoto : (!!user.bannerPhoto) ? Array<Photo>({file:"",url: process.env.REACT_APP_API_URL + user.bannerPhoto}) : Array<Photo>(),
+        name:user.name || "",
+        description: user.description || "",
+        price: user.price?.toString() || "",
+        phone: user.phone?.toString() || "",
+        location: user.location || "",
+        tags: user.tags || [],
+        height: user.characteristics?.height || "" ,
+        weight: user.characteristics?.weight || "",
+        eyes: user.characteristics?.eyes || "",
+        hair: user.characteristics?.hair || "",
+        fakeBoobs: user.characteristics?.fakeBoobs || false,
+        birthday:  (!!user.characteristics?.birthday) ? moment(user.characteristics?.birthday).format("YYYY-MM-DD") : moment(MIN_AGE).format("YYYY-MM-DD"), 
+        birthPlace: user.characteristics?.birthPlace || "",
+        zodiac: user.characteristics?.zodiac || "",
+        measurements: user.characteristics?.measurements || "",
+        orientation: user.characteristics?.orientation || "",
+        ethnicity: user.characteristics?.ethnicity || ""
     }
     return result;
 }
