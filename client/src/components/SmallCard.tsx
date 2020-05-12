@@ -1,29 +1,50 @@
 import React from "react"
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles"
-import Card from "@material-ui/core/Card"
 import CardActionArea from "@material-ui/core/CardActionArea"
-import Button from "@material-ui/core/Button"
-import CardContent from "@material-ui/core/CardContent"
 import CardMedia from "@material-ui/core/CardMedia"
-import CardActions from "@material-ui/core/CardActions"
-import Typography from "@material-ui/core/Typography"
 import WhatsAppIcon from "@material-ui/icons/WhatsApp"
+import { GridListTileBar, IconButton } from "@material-ui/core"
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
-        media: {
-            objectFit: "contain",
-            width: "100%",
-            height: "100%",
+        container: {
+            display: "flex",
+            position: "relative",
+            overflow: "hidden",
         },
-        button: {
-            flex: 1,
-            color: "#25D366",
-            transition: ".5s background-color",
+
+        img: {
             "&:hover": {
-                backgroundColor: "#25D366",
-                color: "white",
+                "&+div": {
+                    bottom: "0px",
+                },
             },
+        },
+        info: {
+            width: "100%",
+            position: "absolute",
+            display: "flex",
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            alignItems: "center",
+            overflow: "hidden",
+            bottom: "0px",
+            transition: "bottom .5s ease-out",
+        },
+        description: {
+            flex: "1 0 auto",
+            display: "flex",
+            flexDirection: "column",
+            marginLeft: "16px",
+            color: "#fff",
+        },
+        title: {
+            fontSize: "2vw",
+        },
+        subtitle: {
+            fontSize: "1vw",
+        },
+        icon: {
+            fontSize: "4vw ",
         },
     })
 )
@@ -33,6 +54,7 @@ interface CardProps {
     image?: string
     location?: string
     phone?: Number
+    onClick: () => void
 }
 
 export default function SmallCard(props: CardProps) {
@@ -44,32 +66,32 @@ export default function SmallCard(props: CardProps) {
     }
 
     return (
-        <Card>
-            <CardActionArea>
-                <CardMedia
-                    component="img"
-                    loading="lazy"
-                    className={classes.media}
-                    image={props.image}
-                />
-                <CardContent>
-                    <Typography gutterBottom variant="h5" component="h2">
-                        {props.name}
-                    </Typography>
-                    <Typography variant="body2" color="textSecondary" component="p">
-                        {props.location}
-                    </Typography>
-                </CardContent>
-            </CardActionArea>
-            <CardActions>
-                <Button
-                    size="large"
-                    className={classes.button}
-                    onClick={() => whatsappMessage(props.phone!)}
-                >
-                    <WhatsAppIcon></WhatsAppIcon>
-                </Button>
-            </CardActions>
-        </Card>
+        <React.Fragment>
+            <div className={classes.container}>
+                <CardActionArea className={classes.img}>
+                    <CardMedia
+                        component="img"
+                        onClick={props.onClick}
+                        alt={props.name}
+                        image="https://instagram.flim16-3.fna.fbcdn.net/v/t51.2885-15/sh0.08/e35/s640x640/96405556_2854158547965342_5470621584967640320_n.jpg?_nc_ht=instagram.flim16-3.fna.fbcdn.net&_nc_cat=106&_nc_ohc=Y_umuMXaa2gAX_1nScW&oh=c1576a3d8fcc87fd2962a2a50017c94e&oe=5EE2F33D"
+                    />
+                </CardActionArea>
+
+                <div className={classes.info}>
+                    <div className={classes.description}>
+                        <div className={classes.title}>{props.name}</div>
+                        <div className={classes.subtitle}>{props.location}</div>
+                    </div>
+                    <IconButton
+                        style={{ color: "#25D366" }}
+                        onClick={() => {
+                            whatsappMessage(props.phone!)
+                        }}
+                    >
+                        <WhatsAppIcon className={classes.icon}></WhatsAppIcon>
+                    </IconButton>
+                </div>
+            </div>
+        </React.Fragment>
     )
 }

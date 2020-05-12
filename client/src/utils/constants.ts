@@ -85,6 +85,6 @@ export const Orientations = ["", "Heterosexual", "Homosexual", "Bisexual", "Tran
 export const IMAGE_LIMITS = 4
 export const MAX_AGE = 99
 export const MIN_PRICE = 0.0
-export const MIN_AGE = moment().subtract(18,'years').toDate()
+export const MIN_AGE = moment().subtract(18, "years").toDate()
 
 export const MAX_STEPS_PROFILE = 3

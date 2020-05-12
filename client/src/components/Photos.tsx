@@ -72,7 +72,7 @@ export default function Photos(props: UserStateProps) {
                 url: window.URL.createObjectURL(photo),
             })
         )
-        
+
         setProfile(_photos)
     }
     const handleBanner = (event: any) => {
@@ -100,8 +100,6 @@ export default function Photos(props: UserStateProps) {
         return profilePhoto.length > 0 && bannerPhoto.length > 0 && referencePhotos.length > 0
     }
 
-    
-
     return (
         <React.Fragment>
             <ThemeProvider theme={theme}>
@@ -109,22 +107,26 @@ export default function Photos(props: UserStateProps) {
                     Fotos
                 </Typography>
                 <UploadImage
-
                     text="Foto de Portada"
                     value={bannerPhoto!}
-                    onChange={(event:any)=>{handleBanner(event)}}
+                    onChange={(event: any) => {
+                        handleBanner(event)
+                    }}
                 />
                 <UploadImage
-
                     text="Foto de Perfil"
                     value={profilePhoto!}
-                    onChange={(event:any)=>{handleProfile(event)}}
+                    onChange={(event: any) => {
+                        handleProfile(event)
+                    }}
                 />
                 <UploadImage
                     text="Fotos de Referencia"
                     value={referencePhotos!}
                     multiple
-                    onChange={(event:any)=>{handleReferences(event)}}
+                    onChange={(event: any) => {
+                        handleReferences(event)
+                    }}
                 />
 
                 <div className={classes.buttons}>

@@ -74,7 +74,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export default function Contact(props: UserStateProps) {
     const classes = useStyles()
-    
+
     const [price, setPrice] = useState(props.user.price)
     const [phone, setPhone] = useState(props.user.phone)
     const [location, setLocation] = useState(props.user.location)
@@ -82,9 +82,6 @@ export default function Contact(props: UserStateProps) {
 
     const [validPrice, setValidPrice] = useState(priceValidatorResult.validator(props.user.price))
     const [validPhone, setValidPhone] = useState(phoneValidatorResult.validator(props.user.phone))
-
-
-
 
     const handlePrice = (event: ChangeEvent<HTMLInputElement>) => {
         setPrice(event.target.value)
@@ -105,9 +102,15 @@ export default function Contact(props: UserStateProps) {
     }
 
     function areAllValid() {
-        return (location !== "") && (tags.length > 0) && (phone !== "" && validPhone) && (price !== "" && validPrice)
+        return (
+            location !== "" &&
+            tags.length > 0 &&
+            phone !== "" &&
+            validPhone &&
+            price !== "" &&
+            validPrice
+        )
     }
-
 
     return (
         <React.Fragment>
@@ -117,95 +120,82 @@ export default function Contact(props: UserStateProps) {
                 </Typography>
                 <Grid container spacing={3}>
                     <Grid item xs={12} sm={6}>
-                            <TextField
-                                error={!validPrice}
-                                value={price}
-                                fullWidth
-                                onChange={handlePrice}
-                                label="Price"
-                                placeholder="Precio"
-                                helperText={
-                                    !validPrice ? priceValidatorResult.message : ""
-                                }
-                                InputProps={{
-                                    startAdornment: (
-                                        <InputAdornment position="start">S/.</InputAdornment>
-                                    ),
-                                }}
-                            />
+                        <TextField
+                            error={!validPrice}
+                            value={price}
+                            fullWidth
+                            onChange={handlePrice}
+                            label="Price"
+                            placeholder="Precio"
+                            helperText={!validPrice ? priceValidatorResult.message : ""}
+                            InputProps={{
+                                startAdornment: (
+                                    <InputAdornment position="start">S/.</InputAdornment>
+                                ),
+                            }}
+                        />
                     </Grid>
                     <Grid item xs={12} sm={6}>
-                            <TextField
-                                error={!validPhone}
-                                value={phone}
-                                fullWidth
-                                onChange={handlePhone}
-                                label="Phone"
-                                placeholder="Telefono"
-                                helperText={
-                                    !validPhone ? phoneValidatorResult.message : ""
-                                }
-                                InputProps={{
-                                    startAdornment: (
-                                        <InputAdornment position="start">+51</InputAdornment>
-                                    ),
-                                }}
-                            />
+                        <TextField
+                            error={!validPhone}
+                            value={phone}
+                            fullWidth
+                            onChange={handlePhone}
+                            label="Phone"
+                            placeholder="Telefono"
+                            helperText={!validPhone ? phoneValidatorResult.message : ""}
+                            InputProps={{
+                                startAdornment: (
+                                    <InputAdornment position="start">+51</InputAdornment>
+                                ),
+                            }}
+                        />
                     </Grid>
                     <Grid item xs={12} sm={12}>
-                            <Autocomplete
-                                id="zodiac"
-                                selectOnFocus
-                                value={location}
-                                onChange={(event: any) => {
-                                    handleLocation(event.target.textContent)
-                                }}
-                                options={DISTRICTS}
-                                getOptionLabel={(options) => options}
-                                renderInput={(params) => (
-                                    <TextField
-                                        {...params}
-                                        variant="standard"
-                                        label="Distrito"
-                                        placeholder="Distrito"
-
-                                    />
-                                )}
-                            />
-
+                        <Autocomplete
+                            id="zodiac"
+                            selectOnFocus
+                            value={location}
+                            onChange={(event: any) => {
+                                handleLocation(event.target.textContent)
+                            }}
+                            options={DISTRICTS}
+                            getOptionLabel={(options) => options}
+                            renderInput={(params) => (
+                                <TextField
+                                    {...params}
+                                    variant="standard"
+                                    label="Distrito"
+                                    placeholder="Distrito"
+                                />
+                            )}
+                        />
                     </Grid>
                     <Grid item xs={12} sm={12}>
-
-                            <Autocomplete
-                                limitTags={3}
-                                multiple
-                                id="tags-services"
-                                value={tags}
-                                onChange={(event, value) => {
-                                    handleTags(value)
-                                }}
-                                renderTags={(value: string[], getTagProps) =>
-                                    value.map((option: string, index: number) => (
-                                        <Chip
-                                            variant="outlined"
-                                            color="primary"
-                                            label={option}
-                                            {...getTagProps({ index })}
-                                        />
-                                    ))
-                                }
-                                options={SERVICES}
-                                getOptionLabel={(option) => option}
-                                renderInput={(params) => (
-                                    <TextField
-                                        {...params}
-                                        label="Servicios"
-                                        placeholder="Servicios"
-
+                        <Autocomplete
+                            limitTags={3}
+                            multiple
+                            id="tags-services"
+                            value={tags}
+                            onChange={(event, value) => {
+                                handleTags(value)
+                            }}
+                            renderTags={(value: string[], getTagProps) =>
+                                value.map((option: string, index: number) => (
+                                    <Chip
+                                        variant="outlined"
+                                        color="primary"
+                                        label={option}
+                                        {...getTagProps({ index })}
                                     />
-                                )}
-                            />
-
+                                ))
+                            }
+                            options={SERVICES}
+                            getOptionLabel={(option) => option}
+                            renderInput={(params) => (
+                                <TextField {...params} label="Servicios" placeholder="Servicios" />
+                            )}
+                        />
                     </Grid>
                 </Grid>
                 <div className={classes.buttons}>

@@ -3,14 +3,25 @@ import { createStyles, makeStyles, Theme, fade } from "@material-ui/core/styles"
 import Header from "../components/Header"
 import SmallCard from "../components/SmallCard"
 import Copyright from "../components/Copyright"
+import WhatsAppIcon from "@material-ui/icons/WhatsApp"
 import { getUsers } from "../network/UserService"
 import { useHistory } from "react-router-dom"
 import Toolbar from "@material-ui/core/Toolbar"
 import SearchIcon from "@material-ui/icons/Search"
+import Typography from "@material-ui/core/Typography"
 import Autocomplete from "@material-ui/lab/Autocomplete"
 import { DISTRICTS } from "../utils/constants"
 import { getUsersByDistrict } from "../network/UserService"
-import { TextField } from "@material-ui/core"
+import {
+    TextField,
+    GridList,
+    GridListTile,
+    GridListTileBar,
+    IconButton,
+    CardMedia,
+    CardActionArea,
+    Container,
+} from "@material-ui/core"
 
 interface Profile {
     username: string
@@ -30,34 +41,6 @@ const useStyles = makeStyles((theme: Theme) =>
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-        },
-        container: {
-            borderSizing: "contenxt-box",
-            textAlign: "center",
-            width: "100%",
-            columns: "4",
-            columnGap: "0.2vw",
-            [theme.breakpoints.down("md")]: {
-                columns: "4",
-            },
-            [theme.breakpoints.down("sm")]: {
-                columns: "3",
-            },
-            [theme.breakpoints.down("xs")]: {
-                columns: "2",
-            },
-        },
-        box: {
-            width: "100%",
-            padding: "1vw",
-            overflow: "hidden",
-            breakInside: "avoid",
-            "& img": {
-                objectFit: "contain",
-                height: "100%",
-                width: "100%",
-                border: "1px",
-            },
         },
         root: {
             flexGrow: 1,
@@ -113,6 +96,12 @@ const useStyles = makeStyles((theme: Theme) =>
             "&&:after": {
                 borderBottom: "none",
             },
+        },
+        grid: {
+            padding: "0.5em",
+            display: "grid",
+            gridTemplateColumns: "repeat(4,1fr)",
+            gridGap: "2vh",
         },
     })
 )
@@ -170,7 +159,7 @@ export default function Home() {
                                     {...params}
                                     placeholder="Search..."
                                     onKeyDown={(event: any) => {
-                                        if (event.key === "Enter"){
+                                        if (event.key === "Enter") {
                                             getByDistrict(selected!)
                                         }
                                     }}
@@ -180,24 +169,22 @@ export default function Home() {
                     />
                 </div>
             </Toolbar>
-            <div className={classes.container}>
-                {users?.map((user) => (
-                    <div
-                        key={user.profilePhoto}
-                        className={classes.box}
-                        onClick={() => {
-                            handleOpen(user.username)
-                        }}
-                    >
+            <Container maxWidth="lg">
+                <div className={classes.grid}>
+                    {users?.map((user) => (
                         <SmallCard
+                            key={user.phone}
                             name={user.name}
                             location={user.location}
                             image={path + user.profilePhoto}
                             phone={user.phone}
-                        ></SmallCard>
-                    </div>
-                ))}
-            </div>
+                            onClick={() => {
+                                handleOpen(user.username)
+                            }}
+                        />
+                    ))}
+                </div>
+            </Container>
             <Copyright></Copyright>
         </div>
     )

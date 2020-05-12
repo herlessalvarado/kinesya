@@ -77,14 +77,21 @@ export default function Physics(props: UserStateProps) {
     const [zodiac, setZodiac] = useState(props.user.zodiac)
     const [ethnicity, setEthnicity] = useState(props.user.ethnicity)
     const [boobs, setBoobs] = useState(props.user.fakeBoobs)
-    
-    const [validHair, setValidHair] = useState(textLengthValidatorResult.validator(props.user.hair))
-    const [validHeight, setValidHeight] = useState(decimalValidatorResult.validator(props.user.height))
-    const [validWeight, setValidWeight] = useState(decimalValidatorResult.validator(props.user.weight))
-    const [validEyes, setValidEyes] = useState(textLengthValidatorResult.validator(props.user.eyes))
-    const [validBirthPlace, setValidBirthPlace] = useState(textLengthValidatorResult.validator(props.user.birthPlace))
-    const [validMeasurements, setValidMeasurements] = useState(textLengthValidatorResult.validator(props.user.measurements))
 
+    const [validHair, setValidHair] = useState(textLengthValidatorResult.validator(props.user.hair))
+    const [validHeight, setValidHeight] = useState(
+        decimalValidatorResult.validator(props.user.height)
+    )
+    const [validWeight, setValidWeight] = useState(
+        decimalValidatorResult.validator(props.user.weight)
+    )
+    const [validEyes, setValidEyes] = useState(textLengthValidatorResult.validator(props.user.eyes))
+    const [validBirthPlace, setValidBirthPlace] = useState(
+        textLengthValidatorResult.validator(props.user.birthPlace)
+    )
+    const [validMeasurements, setValidMeasurements] = useState(
+        textLengthValidatorResult.validator(props.user.measurements)
+    )
 
     const handleHeight = (event: ChangeEvent<HTMLInputElement>) => {
         setHeight(event.target.value)
@@ -126,10 +133,22 @@ export default function Physics(props: UserStateProps) {
     }
 
     function areAllValid() {
-        return (hair !== "" && validHair) && (weight !== "" && validWeight) && (eyes !== "" && validEyes) && (birthPlace !== "" && validBirthPlace) && (measurements != "" && validMeasurements) && (orientation !== "") && (ethnicity !== "") && (zodiac !== "")
+        return (
+            hair !== "" &&
+            validHair &&
+            weight !== "" &&
+            validWeight &&
+            eyes !== "" &&
+            validEyes &&
+            birthPlace !== "" &&
+            validBirthPlace &&
+            measurements != "" &&
+            validMeasurements &&
+            orientation !== "" &&
+            ethnicity !== "" &&
+            zodiac !== ""
+        )
     }
-
- 
 
     return (
         <React.Fragment>
@@ -139,65 +158,55 @@ export default function Physics(props: UserStateProps) {
                 </Typography>
                 <Grid container spacing={3}>
                     <Grid item xs={12} sm={6}>
-                            <TextField
-                                error={!validWeight}
-                                value={weight}
-                                fullWidth
-                                onChange={handleWeight}
-                                label="Peso"
-                                placeholder="Peso"
-                                helperText={
-                                    !validWeight ? decimalValidatorResult.message : ""
-                                }
-                                InputProps={{
-                                    endAdornment: (
-                                        <InputAdornment position="end">Kg</InputAdornment>
-                                    ),
-                                }}
-                            />
+                        <TextField
+                            error={!validWeight}
+                            value={weight}
+                            fullWidth
+                            onChange={handleWeight}
+                            label="Peso"
+                            placeholder="Peso"
+                            helperText={!validWeight ? decimalValidatorResult.message : ""}
+                            InputProps={{
+                                endAdornment: <InputAdornment position="end">Kg</InputAdornment>,
+                            }}
+                        />
                     </Grid>
 
                     <Grid item xs={12} sm={6}>
-                            <TextField
-                                error={!validHeight}
-                                value={height}
-                                onChange={handleHeight}
-                                fullWidth
-                                label="Altura"
-                                placeholder="Altura"
-                                helperText={
-                                    !validHeight ? decimalValidatorResult.message : ""
-                                }
-                                InputProps={{
-                                    endAdornment: <InputAdornment position="end">m</InputAdornment>,
-                                }}
-                            />
+                        <TextField
+                            error={!validHeight}
+                            value={height}
+                            onChange={handleHeight}
+                            fullWidth
+                            label="Altura"
+                            placeholder="Altura"
+                            helperText={!validHeight ? decimalValidatorResult.message : ""}
+                            InputProps={{
+                                endAdornment: <InputAdornment position="end">m</InputAdornment>,
+                            }}
+                        />
                     </Grid>
                     <Grid item xs={12} sm={6}>
-                            <TextField
-                                value={hair}
-                                onChange={handleHair}
-                                fullWidth
-                                label="Cabello"
-                                placeholder="Cabello"
-                                error={!validHair}
-                                helperText={
-                                    !validHair ? textLengthValidatorResult.message : ""
-                                }
-                            />
+                        <TextField
+                            value={hair}
+                            onChange={handleHair}
+                            fullWidth
+                            label="Cabello"
+                            placeholder="Cabello"
+                            error={!validHair}
+                            helperText={!validHair ? textLengthValidatorResult.message : ""}
+                        />
                     </Grid>
                     <Grid item xs={12} sm={6}>
-                            <TextField
-                                value={eyes}
-                                onChange={handleEyes}
-                                fullWidth
-                                label="Ojos"
-                                placeholder="Ojos"
-                                error={!validEyes}
-                                helperText={
-                                    !validEyes ? textLengthValidatorResult.message : ""
-                                }
-                            />
+                        <TextField
+                            value={eyes}
+                            onChange={handleEyes}
+                            fullWidth
+                            label="Ojos"
+                            placeholder="Ojos"
+                            error={!validEyes}
+                            helperText={!validEyes ? textLengthValidatorResult.message : ""}
+                        />
                     </Grid>
                     <Grid item xs={12} sm={6}>
                         <FormControlLabel
@@ -215,92 +224,86 @@ export default function Physics(props: UserStateProps) {
                         />
                     </Grid>
                     <Grid item xs={12} sm={6}>
-                            <TextField
-                                value={birthPlace}
-                                onChange={handleBirthPlace}
-                                fullWidth
-                                label="Lugar de Nacimiento"
-                                placeholder="Lugar de Nacimiento"
-                                error={!validBirthPlace}
-                                helperText={
-                                    !validBirthPlace
-                                        ? textLengthValidatorResult.message
-                                        : ""
-                                }
-                            />
+                        <TextField
+                            value={birthPlace}
+                            onChange={handleBirthPlace}
+                            fullWidth
+                            label="Lugar de Nacimiento"
+                            placeholder="Lugar de Nacimiento"
+                            error={!validBirthPlace}
+                            helperText={!validBirthPlace ? textLengthValidatorResult.message : ""}
+                        />
                     </Grid>
                     <Grid item xs={12} sm={6}>
-
-                            <Autocomplete
-                                id="zodiac"
-                                selectOnFocus
-                                value={zodiac}
-                                onChange={(event: any) => {
-                                    handleZodiac(event.target.textContent)
-                                }}
-                                options={Zodiac}
-                                getOptionLabel={(options) => options}
-                                renderInput={(params) => (
-                                    <TextField
-                                        {...params}
-                                        variant="standard"
-                                        label="Zodiaco"
-                                        placeholder="Zodiaco"
-                                    />
-                                )}
-                            />
+                        <Autocomplete
+                            id="zodiac"
+                            selectOnFocus
+                            value={zodiac}
+                            onChange={(event: any) => {
+                                handleZodiac(event.target.textContent)
+                            }}
+                            options={Zodiac}
+                            getOptionLabel={(options) => options}
+                            renderInput={(params) => (
+                                <TextField
+                                    {...params}
+                                    variant="standard"
+                                    label="Zodiaco"
+                                    placeholder="Zodiaco"
+                                />
+                            )}
+                        />
                     </Grid>
                     <Grid item xs={12} sm={6}>
-                            <TextField
-                                id="measurements"
-                                fullWidth
-                                value={measurements}
-                                onChange={handleMeasurements}
-                                label="Medidas"
-                                placeholder="Medidas"
-                            />
+                        <TextField
+                            id="measurements"
+                            fullWidth
+                            value={measurements}
+                            onChange={handleMeasurements}
+                            label="Medidas"
+                            placeholder="Medidas"
+                        />
                     </Grid>
 
                     <Grid item xs={12} sm={6}>
-
-                            <Autocomplete
-                                id="orientation"
-                                selectOnFocus
-                                value={orientation}
-                                onChange={(event: any) => {
-                                    handleOrientation(event.target.textContent)
-                                }}
-                                options={Orientations}
-                                getOptionLabel={(options) => options}
-                                renderInput={(params) => (
-                                    <TextField
-                                        {...params}
-                                        variant="standard"
-                                        label="Orientacion Sexual"
-                                        placeholder="Orientacion"
-                                    />
-                                )}
-                            />
+                        <Autocomplete
+                            id="orientation"
+                            selectOnFocus
+                            value={orientation}
+                            onChange={(event: any) => {
+                                handleOrientation(event.target.textContent)
+                            }}
+                            options={Orientations}
+                            getOptionLabel={(options) => options}
+                            renderInput={(params) => (
+                                <TextField
+                                    {...params}
+                                    variant="standard"
+                                    label="Orientacion Sexual"
+                                    placeholder="Orientacion"
+                                />
+                            )}
+                        />
                     </Grid>
                     <Grid item xs={12} sm={6}>
-                            <Autocomplete
-                                id="etnia"
-                                selectOnFocus
-                                value={ethnicity}
-                                onChange={(event: any) => {
-                                    handleEthnicity(event.target.textContent)
-                                }}
-                                options={Ethnicities}
-                                getOptionLabel={(options) => options}
-                                renderInput={(params) => (
-                                    <TextField
-                                        {...params}
-                                        variant="standard"
-                                        label="Etnia"
-                                        placeholder="Etnia"
-                                    />
-                                )}
-                            />
+                        <Autocomplete
+                            id="etnia"
+                            selectOnFocus
+                            value={ethnicity}
+                            onChange={(event: any) => {
+                                handleEthnicity(event.target.textContent)
+                            }}
+                            options={Ethnicities}
+                            getOptionLabel={(options) => options}
+                            renderInput={(params) => (
+                                <TextField
+                                    {...params}
+                                    variant="standard"
+                                    label="Etnia"
+                                    placeholder="Etnia"
+                                />
+                            )}
+                        />
                     </Grid>
                 </Grid>
 

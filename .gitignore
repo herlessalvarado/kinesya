@@ -80,6 +80,9 @@ typings/
 # nuxt.js build output
 .nuxt
 
+# rest files
+.rest
+
 # rollup.js default build output
 dist/
 
