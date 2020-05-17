@@ -1,8 +1,8 @@
 import React, { useState, ChangeEvent, FC, useEffect, useRef } from "react"
 import Grid from "@material-ui/core/Grid"
 import Typography from "@material-ui/core/Typography"
-import { MuiPickersUtilsProvider,KeyboardDatePicker } from '@material-ui/pickers';
-import MomentUtils from '@date-io/moment';
+import { MuiPickersUtilsProvider, KeyboardDatePicker } from "@material-ui/pickers"
+import MomentUtils from "@date-io/moment"
 
 import {
     createMuiTheme,
@@ -16,11 +16,11 @@ import {
 import { UserStateProps } from "../models/user"
 import {
     textLengthValidatorResult,
-    textAreaLengthValidatorResult
+    textAreaLengthValidatorResult,
 } from "../helpers/field_validators"
 import { isInvalid, isValid } from "../helpers/html_validators"
 import { MAX_STEPS_PROFILE } from "../utils/constants"
-import moment from "moment";
+import moment from "moment"
 
 const theme = createMuiTheme({
     palette: {
@@ -71,14 +71,14 @@ const Personal = (props: UserStateProps) => {
     const [birthday, setBirthday] = useState(props.user.birthday)
     const [name, setName] = useState(props.user.name)
     const [description, setDescription] = useState(props.user.description)
-    const [validName,setValidName] = useState(textLengthValidatorResult.validator(props.user.name))
-    const [validDescription,setValidDescription] = useState(textAreaLengthValidatorResult.validator(props.user.description))
-    
-    function areAllValid() {
-        return (name !== "" && validName) && (description != "" && validDescription)
-    }
+    const [validName, setValidName] = useState(textLengthValidatorResult.validator(props.user.name))
+    const [validDescription, setValidDescription] = useState(
+        textAreaLengthValidatorResult.validator(props.user.description)
+    )
 
-  
+    function areAllValid() {
+        return name !== "" && validName && description != "" && validDescription
+    }
 
     const handleName = (event: ChangeEvent<HTMLInputElement>) => {
         setName(event.target.value)
@@ -101,54 +101,49 @@ const Personal = (props: UserStateProps) => {
                 </Typography>
                 <Grid container spacing={3}>
                     <Grid item xs={12}>
-                            <TextField
-                                id="name"
-                                label="Nombre"
-                                fullWidth
-                                value={name}
-                                onChange={handleName}
-                                error={!validName}
-                                helperText={
-                                    !validName ? textLengthValidatorResult.message : ""
-                                }
-                            />
+                        <TextField
+                            id="name"
+                            label="Nombre"
+                            fullWidth
+                            value={name}
+                            onChange={handleName}
+                            error={!validName}
+                            helperText={!validName ? textLengthValidatorResult.message : ""}
+                        />
                     </Grid>
                     <Grid item xs={12}>
-                            <TextField
-                                id="description"
-                                label="Descripción"
-                                multiline
-                                rows="4"
-                                variant="outlined"
-                                fullWidth
-                                value={description}
-                                onChange={handleDescription}
-                                helperText={
-                                    !validDescription
-                                        ? textAreaLengthValidatorResult.message
-                                        : ""
-                                }
-                                error={!validDescription}
-                            />
+                        <TextField
+                            id="description"
+                            label="Descripción"
+                            multiline
+                            rows="4"
+                            variant="outlined"
+                            fullWidth
+                            value={description}
+                            onChange={handleDescription}
+                            helperText={
+                                !validDescription ? textAreaLengthValidatorResult.message : ""
+                            }
+                            error={!validDescription}
+                        />
                     </Grid>
-                    
-                    <Grid item sm={12} xs={12}>
-                                <MuiPickersUtilsProvider  libInstance={moment}  utils={MomentUtils}>
-                                    <KeyboardDatePicker
-                                        maxDate={moment().subtract(18, 'years').toDate()}
-                                        openTo="year"
-                                        views={["year", "month", "date"]}
 
-                                        label="Fecha de Nacimiento"
-                                        value={birthday}
-                                        placeholder="Fecha de Nacimiento"
-                                        onChange={(date) => {
-                                            if (date !== null) handleBirthday(date.format("MM-DD-YYYY"))
-                                        }}
-                                        format="MM/DD/yyyy"
-                                    />
-                                </MuiPickersUtilsProvider>
-                            </Grid>
+                    <Grid item sm={12} xs={12}>
+                        <MuiPickersUtilsProvider libInstance={moment} utils={MomentUtils}>
+                            <KeyboardDatePicker
+                                maxDate={moment().subtract(18, "years").toDate()}
+                                openTo="year"
+                                views={["year", "month", "date"]}
+                                label="Fecha de Nacimiento"
+                                value={birthday}
+                                placeholder="Fecha de Nacimiento"
+                                onChange={(date) => {
+                                    if (date !== null) handleBirthday(date.format("MM/DD/YYYY"))
+                                }}
+                                format="MM/DD/YYYY"
+                            />
+                        </MuiPickersUtilsProvider>
+                    </Grid>
                 </Grid>
                 <div className={classes.buttons}>
                     {props.stepId > 0 && (
