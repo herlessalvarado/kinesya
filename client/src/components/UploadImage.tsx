@@ -56,57 +56,52 @@ export interface Photo {
     url?: string
     file?: any
 }
- 
+
 export default ({ text, onChange, value, multiple }: UploadImageProps) => {
-        const classes = useStyles()
+    const classes = useStyles()
 
-        function renderImage() {
-            if (multiple) {
-                return (
-                    <Grid container spacing={3}>
-                        {value?.map((photo: Photo, index: number) => (
-                            <Grid key={index} item xs={12} sm={3}>
-                                <CardMedia
-                                    component="img"
-                                    height="200"
-                                    className={classes.media}
-                                    image={photo.url}
-                                />
-                            </Grid>
-                        ))}
-                    </Grid>
-                )
-            } else {
-                return value?.map((photo: Photo, index: number) => (
-                    <Grid key={index} item xs={12}>
-                        <CardMedia
-                            component="img"
-                            height="200"
-                            className={classes.media}
-                            image={photo.url}
-                        />
-                    </Grid>
-                ))
-            }
-        }
-
-        return (
-            <Grid container spacing={3} className={classes.grid} justify="center">
-                <Grid item xs={12} sm={6}>
-                    <label className={classes.root}>
-                        <BackupIcon color="inherit"></BackupIcon>
-                        <Typography variant="h6" color="textSecondary" component="span">
-                            {text}
-                        </Typography>
-                        <input
-                            type="file"
-                            multiple={multiple}
-                            onChange={onChange}
-                        />
-                    </label>
+    function renderImage() {
+        if (multiple) {
+            return (
+                <Grid container spacing={3}>
+                    {value?.map((photo: Photo, index: number) => (
+                        <Grid key={index} item xs={12} sm={3}>
+                            <CardMedia
+                                component="img"
+                                height="200"
+                                className={classes.media}
+                                image={photo.url}
+                            />
+                        </Grid>
+                    ))}
                 </Grid>
-                {renderImage()}
-            </Grid>
-        )
+            )
+        } else {
+            return value?.map((photo: Photo, index: number) => (
+                <Grid key={index} item xs={12}>
+                    <CardMedia
+                        component="img"
+                        height="200"
+                        className={classes.media}
+                        image={photo.url}
+                    />
+                </Grid>
+            ))
+        }
     }
 
+    return (
+        <Grid container spacing={3} className={classes.grid} justify="center">
+            <Grid item xs={12} sm={6}>
+                <label className={classes.root}>
+                    <BackupIcon color="inherit"></BackupIcon>
+                    <Typography variant="h6" color="textSecondary" component="span">
+                        {text}
+                    </Typography>
+                    <input type="file" multiple={multiple} onChange={onChange} />
+                </label>
+            </Grid>
+            {renderImage()}
+        </Grid>
+    )
+}

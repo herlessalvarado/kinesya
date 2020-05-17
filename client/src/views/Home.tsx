@@ -3,7 +3,7 @@ import { createStyles, makeStyles, Theme, fade } from "@material-ui/core/styles"
 import Header from "../components/Header"
 import SmallCard from "../components/SmallCard"
 import Copyright from "../components/Copyright"
-import { getUsers } from "../network/UserService"
+import { getUsersByPaginator } from "../network/UserService"
 import { useHistory } from "react-router-dom"
 import Toolbar from "@material-ui/core/Toolbar"
 import SearchIcon from "@material-ui/icons/Search"
@@ -11,6 +11,7 @@ import Autocomplete from "@material-ui/lab/Autocomplete"
 import { DISTRICTS } from "../utils/constants"
 import { getUsersByDistrict } from "../network/UserService"
 import { TextField } from "@material-ui/core"
+import InfiniteScroll from "react-infinite-scroller"
 
 interface Profile {
     username: string
@@ -121,7 +122,8 @@ export default function Home() {
     const classes = useStyles()
     const history = useHistory()
     const [users, setUsers] = useState(new Array<Profile>())
-    const [selected, setSelected] = useState("")
+    const [hasMore, setHasMore] = useState(true)
+    const limit = 4
 
     const path = process.env.REACT_APP_API_URL!
 
@@ -129,7 +131,7 @@ export default function Home() {
         history.push("/user/" + username)
     }
     const handleSelected = (event: any) => {
-        setSelected(event.target.textContent)
+        getByDistrict(event.target.textContent)
     }
     const getByDistrict = (district: any) => {
         getUsersByDistrict(district).then((res: Profile[]) => {
@@ -137,17 +139,14 @@ export default function Home() {
         })
     }
 
-    useEffect(() => {
-        let active = true
-        if (active) {
-            getUsers().then((res: Profile[]) => {
-                setUsers(res)
-            })
-        }
-        return () => {
-            active = false
-        }
-    }, [])
+    function loadItems(page: Number) {
+        getUsersByPaginator(page, limit).then((res: Profile[]) => {
+            if (res.length == 0) setHasMore(false)
+            else {
+                setUsers(users.concat(res))
+            }
+        })
+    }
 
     return (
         <div>
@@ -165,38 +164,32 @@ export default function Home() {
                         getOptionLabel={(option) => option}
                         onChange={handleSelected}
                         renderInput={(params) => {
-                            return (
-                                <TextField
-                                    {...params}
-                                    placeholder="Search..."
-                                    onKeyDown={(event: any) => {
-                                        if (event.key === "Enter"){
-                                            getByDistrict(selected!)
-                                        }
-                                    }}
-                                />
-                            )
+                            return <TextField {...params} placeholder="Search..." />
                         }}
                     />
                 </div>
             </Toolbar>
             <div className={classes.container}>
-                {users?.map((user) => (
-                    <div
-                        key={user.profilePhoto}
-                        className={classes.box}
-                        onClick={() => {
-                            handleOpen(user.username)
-                        }}
-                    >
-                        <SmallCard
-                            name={user.name}
-                            location={user.location}
-                            image={path + user.profilePhoto}
-                            phone={user.phone}
-                        ></SmallCard>
+                <InfiniteScroll pageStart={0} loadMore={loadItems} hasMore={hasMore}>
+                    <div>
+                        {users?.map((user) => (
+                            <div
+                                key={user.username}
+                                className={classes.box}
+                                onClick={() => {
+                                    handleOpen(user.username)
+                                }}
+                            >
+                                <SmallCard
+                                    name={user.name}
+                                    location={user.location}
+                                    image={path + user.profilePhoto}
+                                    phone={user.phone}
+                                ></SmallCard>
+                            </div>
+                        ))}
                     </div>
-                ))}
+                </InfiniteScroll>
             </div>
             <Copyright></Copyright>
         </div>

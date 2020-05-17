@@ -79,7 +79,7 @@ export default function Checkout() {
     const classes = useStyles()
     const [activeStep, setActiveStep] = React.useState(-1)
     const history = useHistory()
-    const [openToast,setOpenToast] = useState(false)
+    const [openToast, setOpenToast] = useState(false)
     const [user, setUser] = useState<UserViewModel>(NullUser)
     const [toastMessage, setToastMessage] = useState("")
 
@@ -131,7 +131,7 @@ export default function Checkout() {
                 )
         }
     }
-    useEffect(()=>{
+    useEffect(() => {
         let valid = true
         if (valid) {
             getUserByToken()
@@ -147,22 +147,21 @@ export default function Checkout() {
         return () => {
             valid = false
         }
-    },[])
+    }, [])
 
     useEffect(() => {
         let subscribe = true
         if (subscribe) {
             if (activeStep > MAX_STEPS_PROFILE) {
-                
-                const userRequest = mapViewModelToUserRequest(user);
+                const userRequest = mapViewModelToUserRequest(user)
                 updateUser(userRequest)
-                .then((message) => {
-                    setToastMessage(message)
-                    setOpenToast(true)
-                })
-                .catch((err: AxiosError) => {
-                    history.push("/login")
-                })
+                    .then((message) => {
+                        setToastMessage(message)
+                        setOpenToast(true)
+                    })
+                    .catch((err: AxiosError) => {
+                        history.push("/login")
+                    })
             }
         }
 
@@ -189,11 +188,13 @@ export default function Checkout() {
                             ))}
                         </Stepper>
                         <ToastSuccessful
-                                key="alert"
-                                open={openToast}
-                                handleClose={()=>{setOpenToast(false)}}
-                                message={toastMessage}
-                            ></ToastSuccessful>
+                            key="alert"
+                            open={openToast}
+                            handleClose={() => {
+                                setOpenToast(false)
+                            }}
+                            message={toastMessage}
+                        ></ToastSuccessful>
                         <React.Fragment>
                             {activeStep > MAX_STEPS_PROFILE ? (
                                 <React.Fragment>
