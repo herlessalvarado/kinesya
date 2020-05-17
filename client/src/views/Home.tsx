@@ -11,7 +11,7 @@ import Autocomplete from "@material-ui/lab/Autocomplete"
 import { DISTRICTS } from "../utils/constants"
 import { getUsersByDistrict } from "../network/UserService"
 import { TextField } from "@material-ui/core"
-import InfiniteScroll from 'react-infinite-scroller';
+import InfiniteScroll from "react-infinite-scroller"
 
 interface Profile {
     username: string
@@ -139,10 +139,10 @@ export default function Home() {
         })
     }
 
-    function loadItems(page: Number){
+    function loadItems(page: Number) {
         getUsersByPaginator(page, limit).then((res: Profile[]) => {
-            if(res.length == 0) setHasMore(false)
-            else{
+            if (res.length == 0) setHasMore(false)
+            else {
                 setUsers(users.concat(res))
             }
         })
@@ -164,40 +164,32 @@ export default function Home() {
                         getOptionLabel={(option) => option}
                         onChange={handleSelected}
                         renderInput={(params) => {
-                            return (
-                                <TextField
-                                    {...params}
-                                    placeholder="Search..."
-                                />
-                            )
+                            return <TextField {...params} placeholder="Search..." />
                         }}
                     />
                 </div>
             </Toolbar>
             <div className={classes.container}>
-                <InfiniteScroll
-                pageStart={0}
-                loadMore={loadItems}
-                hasMore={hasMore}>
-                <div>
-                    {users?.map((user) => (
-                    <div
-                        key={user.username}
-                        className={classes.box}
-                        onClick={() => {
-                            handleOpen(user.username)
-                        }}
-                    >
-                        <SmallCard
-                            name={user.name}
-                            location={user.location}
-                            image={path + user.profilePhoto}
-                            phone={user.phone}
-                        ></SmallCard>
+                <InfiniteScroll pageStart={0} loadMore={loadItems} hasMore={hasMore}>
+                    <div>
+                        {users?.map((user) => (
+                            <div
+                                key={user.username}
+                                className={classes.box}
+                                onClick={() => {
+                                    handleOpen(user.username)
+                                }}
+                            >
+                                <SmallCard
+                                    name={user.name}
+                                    location={user.location}
+                                    image={path + user.profilePhoto}
+                                    phone={user.phone}
+                                ></SmallCard>
+                            </div>
+                        ))}
                     </div>
-                ))}
-                </div>
-            </InfiniteScroll>
+                </InfiniteScroll>
             </div>
             <Copyright></Copyright>
         </div>
