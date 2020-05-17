@@ -73,7 +73,7 @@ export default function SmallCard(props: CardProps) {
                         component="img"
                         onClick={props.onClick}
                         alt={props.name}
-                        image="https://instagram.flim16-3.fna.fbcdn.net/v/t51.2885-15/sh0.08/e35/s640x640/96405556_2854158547965342_5470621584967640320_n.jpg?_nc_ht=instagram.flim16-3.fna.fbcdn.net&_nc_cat=106&_nc_ohc=Y_umuMXaa2gAX_1nScW&oh=c1576a3d8fcc87fd2962a2a50017c94e&oe=5EE2F33D"
+                        image={props.image}
                     />
                 </CardActionArea>
 

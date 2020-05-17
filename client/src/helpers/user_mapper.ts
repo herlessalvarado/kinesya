@@ -9,14 +9,23 @@ export function mapUserDTOToViewModel(user: UserDTO) {
         age: user.age?.toString() || "",
         referencePhotos: !!user.referencePhotos
             ? user.referencePhotos.map(
-                  (url): Photo => ({ file: "", url: process.env.REACT_APP_API_URL + url })
+                  (url): Photo => ({
+                      file: "",
+                      url: process.env.REACT_APP_API_URL + url,
+                  })
               )
             : Array<Photo>(),
         profilePhoto: !!user.profilePhoto
-            ? Array<Photo>({ file: "", url: process.env.REACT_APP_API_URL + user.profilePhoto })
+            ? Array<Photo>({
+                  file: "",
+                  url: process.env.REACT_APP_API_URL + user.profilePhoto,
+              })
             : Array<Photo>(),
         bannerPhoto: !!user.bannerPhoto
-            ? Array<Photo>({ file: "", url: process.env.REACT_APP_API_URL + user.bannerPhoto })
+            ? Array<Photo>({
+                  file: "",
+                  url: process.env.REACT_APP_API_URL + user.bannerPhoto,
+              })
             : Array<Photo>(),
         name: user.name || "",
         description: user.description || "",

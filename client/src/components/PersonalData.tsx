@@ -32,6 +32,7 @@ const theme = createMuiTheme({
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
+        
         layout: {
             width: "auto",
             marginLeft: theme.spacing(2),

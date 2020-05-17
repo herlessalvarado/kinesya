@@ -86,5 +86,5 @@ export const IMAGE_LIMITS = 4
 export const MAX_AGE = 99
 export const MIN_PRICE = 0.0
 export const MIN_AGE = moment().subtract(18, "years").toDate()
-
+export const DEFAULT_PHOTO = "https://www.travelcontinuously.com/wp-content/uploads/2018/04/empty-avatar.png"
 export const MAX_STEPS_PROFILE = 3

@@ -24,6 +24,31 @@ const theme = createMuiTheme({
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
+        label:{
+            width: "100%",
+            height: "100%",
+            alignItems: "center",
+            "& span": {
+                    marginLeft: "1vw",
+                    color: "#BF953F",
+                },
+                backgroundColor: "white",
+                color: "#BF953F",
+                display: "flex",
+                "&:hover": {
+                    cursor: "pointer"
+                },
+                justifyContent: "center",
+                "& input": {
+                    width: "0.1px",
+                    height: "0.1px",
+                    opacity: "0",
+                    overflow: "hidden",
+                    position: "absolute",
+                    zIndex: "-1",
+                },
+
+        },
         layout: {
             width: "auto",
             marginLeft: theme.spacing(2),
@@ -65,31 +90,19 @@ export default function Photos(props: UserStateProps) {
     const [bannerPhoto, setBanner] = useState(props.user.bannerPhoto)
     const [referencePhotos, setReferences] = useState(props.user.referencePhotos)
 
-    const handleProfile = (event: any) => {
-        let _photos: Array<Photo> = Array.from(event.target.files).map(
-            (photo): Photo => ({
-                file: photo,
-                url: window.URL.createObjectURL(photo),
-            })
-        )
-
-        setProfile(_photos)
+    const handleProfile = (photo: Photo) => {
+        
+        setProfile([photo])
     }
-    const handleBanner = (event: any) => {
-        let _photos: Array<Photo> = Array.from(event.target.files).map(
-            (photo): Photo => ({
-                file: photo,
-                url: window.URL.createObjectURL(photo),
-            })
-        )
-        setBanner(_photos)
+    const handleBanner = (photo: Photo) => {
+        setBanner([photo])
     }
 
     const handleReferences = (event: any) => {
         let _references = Array.from(event.target.files).map(
-            (photo): Photo => ({
-                file: photo,
-                url: window.URL.createObjectURL(photo),
+            (file): Photo => ({
+                file: file as File,
+                url: window.URL.createObjectURL(file),
             })
         )
         if (!!referencePhotos) {
@@ -99,35 +112,43 @@ export default function Photos(props: UserStateProps) {
     function areAllValid() {
         return profilePhoto.length > 0 && bannerPhoto.length > 0 && referencePhotos.length > 0
     }
-
+    
     return (
         <React.Fragment>
             <ThemeProvider theme={theme}>
-                <Typography variant="h6" gutterBottom>
-                    Fotos
-                </Typography>
-                <UploadImage
-                    text="Foto de Portada"
-                    value={bannerPhoto!}
-                    onChange={(event: any) => {
-                        handleBanner(event)
-                    }}
-                />
-                <UploadImage
-                    text="Foto de Perfil"
-                    value={profilePhoto!}
-                    onChange={(event: any) => {
-                        handleProfile(event)
-                    }}
-                />
-                <UploadImage
-                    text="Fotos de Referencia"
-                    value={referencePhotos!}
-                    multiple
-                    onChange={(event: any) => {
-                        handleReferences(event)
-                    }}
-                />
+                <Grid container direction="column" spacing={1}>
+                    <UploadImage  type="profile" onChange={handleProfile} value={profilePhoto} />
+                    <UploadImage type="cover" onChange={handleBanner} value={bannerPhoto} />
+                    <Grid item container direction="column" justify="space-between">
+                        <Grid item container justify="space-between">
+                        <Grid item>
+                            <Typography variant="h6">Destacados</Typography>
+                        </Grid>
+                        <Grid item>
+                        <label className={classes.label}>
+                            <Typography variant="button" display="block">Agregar</Typography>
+                            <input type="file" multiple onChange={handleReferences}/>
+                        </label>
+                        </Grid>
+                        </Grid>
+                        <Grid item container justify="space-between" >
+                            {
+                                referencePhotos?.map((photo:Photo)=>(
+                                    <Grid item key={photo.url} md={3} xs ={3}>
+                                        <CardMedia
+                                        component="img"
+                                        image={photo.url}
+                                        /> 
+                                    </Grid>
+                                ))
+                            }
+
+                        </Grid>
+                
+                    
+                    </Grid>
+
+                </Grid>
 
                 <div className={classes.buttons}>
                     {props.stepId > 0 && (

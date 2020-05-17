@@ -1,26 +1,22 @@
 import Typography from "@material-ui/core/Typography"
-import { FC, forwardRef } from "react"
+import { FC, forwardRef, useRef, useEffect, useState } from "react"
 import React from "react"
 import BackupIcon from "@material-ui/icons/Backup"
 import { Theme } from "@material-ui/core/styles/createMuiTheme"
 import makeStyles from "@material-ui/core/styles/makeStyles"
 import createStyles from "@material-ui/core/styles/createStyles"
 import Grid from "@material-ui/core/Grid"
-import { CardMedia } from "@material-ui/core"
+import { CardMedia, DialogContent,Dialog } from "@material-ui/core"
+import CropperImage from "./CropperImage"
+import { DEFAULT_PHOTO } from "../utils/constants"
+
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
-        media: {
-            objectFit: "contain",
-        },
-        grid: {
-            marginTop: theme.spacing(1),
-        },
         root: {
             width: "100%",
             height: "100%",
-            border: "1px solid #BF953F",
-            borderRadius: "4px",
+
             alignItems: "center",
             "& span": {
                 marginLeft: "1vw",
@@ -30,7 +26,7 @@ const useStyles = makeStyles((theme: Theme) =>
             color: "#BF953F",
             display: "flex",
             "&:hover": {
-                cursor: "pointer",
+                cursor: "pointer"
             },
             justifyContent: "center",
             "& input": {
@@ -45,11 +41,14 @@ const useStyles = makeStyles((theme: Theme) =>
     })
 )
 
+type UserImage = "profile" | "cover"
+
 interface UploadImageProps {
     text?: string
-    onChange: (event: any) => void
+    onChange: (photo: Photo) => void
     value: Array<Photo>
-    multiple?: boolean
+    type:UserImage
+
 }
 
 export interface Photo {
@@ -57,51 +56,75 @@ export interface Photo {
     file?: any
 }
 
-export default ({ text, onChange, value, multiple }: UploadImageProps) => {
+export default ({ text, onChange, value, type}: UploadImageProps) => {
     const classes = useStyles()
-
-    function renderImage() {
-        if (multiple) {
-            return (
-                <Grid container spacing={3}>
-                    {value?.map((photo: Photo, index: number) => (
-                        <Grid key={index} item xs={12} sm={3}>
-                            <CardMedia
-                                component="img"
-                                height="200"
-                                className={classes.media}
-                                image={photo.url}
-                            />
-                        </Grid>
-                    ))}
-                </Grid>
-            )
-        } else {
-            return value?.map((photo: Photo, index: number) => (
-                <Grid key={index} item xs={12}>
-                    <CardMedia
-                        component="img"
-                        height="200"
-                        className={classes.media}
-                        image={photo.url}
-                    />
-                </Grid>
-            ))
+    const [dialog, setDialog] = useState(false)
+    
+    function handleChangeInputImage(event: any) {
+        if (!!event.target.files && event.target.files.length > 0) {
+            const _photo: Photo = {
+                file: event.target.files[0] as File,
+                url: window.URL.createObjectURL(event.target.files[0]),
+            }
+            onChange(_photo)
+            setDialog(true)
         }
     }
+    function imageContainer(){
+        switch (type) {
+            case "cover":
+                return <Grid item container justify="center" >
+                    <Grid item style={{width:"30vw",marginTop:"0.5vw"}}>
+                        <CardMedia
+                        component="img"
+                        image={(value.length > 0) ? value[0].url : DEFAULT_PHOTO}
+                        />    
+                    </Grid>
+                         
+                </Grid> 
+            case "profile":
+                return <Grid item container  justify="center" >
+                    <Grid item style={{width:"20vw" ,marginTop:"0.5vw"}} >
+                    <CardMedia
+                        component="img"
+                        image={(value.length > 0) ? value[0].url : DEFAULT_PHOTO}
+                    />
+                    </Grid>
+                   
+            </Grid>
+
+        }
+   
+            
+    }
+    
 
     return (
-        <Grid container spacing={3} className={classes.grid} justify="center">
-            <Grid item xs={12} sm={6}>
-                <label className={classes.root}>
-                    <BackupIcon color="inherit"></BackupIcon>
-                    <Typography variant="h6" color="textSecondary" component="span">
-                        {text}
-                    </Typography>
-                    <input type="file" multiple={multiple} onChange={onChange} />
-                </label>
+        <Grid item container direction="column" justify="space-between">
+            <Grid item container justify="space-between">
+                <Grid item>
+                <Typography variant="h6"> {(type === "cover") ? "Foto de Portada" : "Foto de Perfil"}</Typography>
+                </Grid>
+                <Grid item>
+                    <label className={classes.root}>
+                        <Typography variant="button" display="block">Agregar</Typography>
+                        <input type="file" onChange={handleChangeInputImage} />
+                    </label>
+                </Grid>
+                <Dialog
+                disableBackdropClick
+                disableEscapeKeyDown
+            maxWidth="md"
+            open={dialog}
+            
+            aria-labelledby="max-width-dialog-title"
+        >
+            <DialogContent>
+                    <CropperImage origin={value[0]} onChange={(photo:Photo)=>{onChange(photo);setDialog(false)}} ratio={(type === "cover") ? "16:9" : "1:1"}/>
+            </DialogContent>
+        </Dialog>
             </Grid>
-            {renderImage()}
+            {imageContainer()}
         </Grid>
     )
 }
