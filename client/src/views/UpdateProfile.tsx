@@ -160,7 +160,7 @@ export default function Checkout() {
                         setOpenToast(true)
                     })
                     .catch((err: AxiosError) => {
-                        console.log(err)
+                        history.push("/login")
                     })
             }
         }

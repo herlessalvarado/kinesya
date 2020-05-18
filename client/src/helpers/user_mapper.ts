@@ -61,8 +61,8 @@ export function mapViewModelToUserRequest(user: UserViewModel) {
     user.bannerPhoto?.forEach((photo) => {
         if (!!photo.file) formData.append("banner", photo.file)
     })
-
     formData.append("name", user.name!)
+    formData.append("age", Math.abs(moment(user.birthday!).diff(moment(), "years")).toString())
     formData.append("description", user.description!)
     formData.append("price", user.price!)
     formData.append("phone", user.phone!)

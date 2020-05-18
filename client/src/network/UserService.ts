@@ -56,9 +56,22 @@ export async function getUserByToken() {
 
 export async function getUsersByDistrict(district: string): Promise<any> {
     return axios
-        .get("/users/search-by-district", {
+        .get("/users", {
             params: {
                 location: district,
+            },
+        })
+        .then((response) => {
+            return response.data
+        })
+}
+
+export async function getUsersByPaginator(page: Number, limit: Number) {
+    return axios
+        .get("/users", {
+            params: {
+                page: page,
+                limit: limit,
             },
         })
         .then((response) => {

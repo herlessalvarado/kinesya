@@ -32,7 +32,6 @@ const theme = createMuiTheme({
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
-        
         layout: {
             width: "auto",
             marginLeft: theme.spacing(2),
@@ -139,9 +138,9 @@ const Personal = (props: UserStateProps) => {
                                 value={birthday}
                                 placeholder="Fecha de Nacimiento"
                                 onChange={(date) => {
-                                    if (date !== null) handleBirthday(date.format("MM-DD-YYYY"))
+                                    if (date !== null) handleBirthday(date.format("MM/DD/YYYY"))
                                 }}
-                                format="MM/DD/yyyy"
+                                format="MM/DD/YYYY"
                             />
                         </MuiPickersUtilsProvider>
                     </Grid>
