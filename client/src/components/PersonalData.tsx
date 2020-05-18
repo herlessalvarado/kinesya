@@ -1,8 +1,8 @@
-import React, { useState, ChangeEvent, FC, useEffect, useRef } from "react"
+import React, { useState, ChangeEvent } from "react"
 import Grid from "@material-ui/core/Grid"
 import Typography from "@material-ui/core/Typography"
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from "@material-ui/pickers"
-import MomentUtils from "@date-io/moment"
+import DateFnsUtils from "@date-io/date-fns"
 
 import {
     createMuiTheme,
@@ -18,9 +18,8 @@ import {
     textLengthValidatorResult,
     textAreaLengthValidatorResult,
 } from "../helpers/field_validators"
-import { isInvalid, isValid } from "../helpers/html_validators"
-import { MAX_STEPS_PROFILE } from "../utils/constants"
-import moment from "moment"
+import { MAX_STEPS_PROFILE, DATE_FORMAT } from "../utils/constants"
+import { format, subYears } from "date-fns"
 
 const theme = createMuiTheme({
     palette: {
@@ -127,20 +126,19 @@ const Personal = (props: UserStateProps) => {
                             error={!validDescription}
                         />
                     </Grid>
-
                     <Grid item sm={12} xs={12}>
-                        <MuiPickersUtilsProvider libInstance={moment} utils={MomentUtils}>
+                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
                             <KeyboardDatePicker
-                                maxDate={moment().subtract(18, "years").toDate()}
+                                maxDate={subYears(new Date(), 18)}
                                 openTo="year"
                                 views={["year", "month", "date"]}
                                 label="Fecha de Nacimiento"
                                 value={birthday}
                                 placeholder="Fecha de Nacimiento"
                                 onChange={(date) => {
-                                    if (date !== null) handleBirthday(date.format("MM/DD/YYYY"))
+                                    if (date !== null) handleBirthday(format(date, DATE_FORMAT))
                                 }}
-                                format="MM/DD/YYYY"
+                                format="MM/dd/yyyy"
                             />
                         </MuiPickersUtilsProvider>
                     </Grid>

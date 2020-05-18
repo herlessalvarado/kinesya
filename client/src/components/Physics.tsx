@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent, useRef, useEffect } from "react"
+import React, { useState, ChangeEvent } from "react"
 import Grid from "@material-ui/core/Grid"
 import Typography from "@material-ui/core/Typography"
 import TextField from "@material-ui/core/TextField"
@@ -16,10 +16,8 @@ import {
     makeStyles,
     Theme,
 } from "@material-ui/core"
-import Autocomplete from "@material-ui/lab/Autocomplete"
+import { Autocomplete } from "@material-ui/lab"
 import { UserStateProps } from "../models/user"
-import { Validator } from "./Validator"
-import { isInvalid, isValid } from "../helpers/html_validators"
 
 const theme = createMuiTheme({
     palette: {

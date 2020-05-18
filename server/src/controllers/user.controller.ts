@@ -46,15 +46,15 @@ UserRouter.get("/users/me", auth, async (req: Request, res: Response) => {
 })
 
 UserRouter.get("/users", async (req: Request, res: Response) => {
-  
-    const result = (!!req.query.location) ? await userService.searchByDistrict(req.query.location) : await userService.getAll(req.query.page, req.query.limit)
+    const result = !!req.query.location
+        ? await userService.searchByDistrict(req.query.location)
+        : await userService.getAll(req.query.page, req.query.limit)
     if (result.success) {
         res.status(200).send(result.data)
     } else {
         res.status(400).send(result.getErrorMessages())
     }
 })
-
 
 UserRouter.get("/users/:username", async (req: Request, res: Response) => {
     const result = await userService.getByUsername(req.params.username)

@@ -1,8 +1,8 @@
 import { UserDTO } from "../dto/user"
 import { UserViewModel } from "../models/user"
-import moment from "moment"
+import { format, parse, differenceInCalendarDays } from "date-fns"
 import { Photo } from "../components/UploadImage"
-import { MIN_AGE } from "../utils/constants"
+import { DATE_FORMAT } from "../utils/constants"
 
 export function mapUserDTOToViewModel(user: UserDTO) {
     const result: UserViewModel = {
@@ -39,8 +39,8 @@ export function mapUserDTOToViewModel(user: UserDTO) {
         hair: user.characteristics?.hair || "",
         fakeBoobs: user.characteristics?.fakeBoobs || false,
         birthday: !!user.characteristics?.birthday
-            ? moment(user.characteristics?.birthday).format("YYYY-MM-DD")
-            : moment(MIN_AGE).format("YYYY-MM-DD"),
+            ? user.characteristics.birthday
+            : format(new Date(), DATE_FORMAT),
         birthPlace: user.characteristics?.birthPlace || "",
         zodiac: user.characteristics?.zodiac || "",
         measurements: user.characteristics?.measurements || "",
@@ -62,7 +62,13 @@ export function mapViewModelToUserRequest(user: UserViewModel) {
         if (!!photo.file) formData.append("banner", photo.file)
     })
     formData.append("name", user.name!)
-    formData.append("age", Math.abs(moment(user.birthday!).diff(moment(), "years")).toString())
+    formData.append(
+        "age",
+        differenceInCalendarDays(
+            new Date(),
+            parse(user.birthday, DATE_FORMAT, new Date())
+        ).toString()
+    )
     formData.append("description", user.description!)
     formData.append("price", user.price!)
     formData.append("phone", user.phone!)
@@ -82,7 +88,7 @@ export function mapViewModelToUserRequest(user: UserViewModel) {
         birthPlace: user.birthPlace,
         measurements: user.measurements,
         ethnicity: user.ethnicity,
-        birthday: moment(user.birthday).toDate(),
+        birthday: parse(user.birthday, DATE_FORMAT, new Date()),
     }
     formData.append("characteristics", JSON.stringify(characteristics))
     return formData

@@ -1,7 +1,6 @@
 import Typography from "@material-ui/core/Typography"
-import { FC, forwardRef, useRef, useEffect, useState } from "react"
+import { useState } from "react"
 import React from "react"
-import BackupIcon from "@material-ui/icons/Backup"
 import { Theme } from "@material-ui/core/styles/createMuiTheme"
 import makeStyles from "@material-ui/core/styles/makeStyles"
 import createStyles from "@material-ui/core/styles/createStyles"

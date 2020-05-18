@@ -1,6 +1,3 @@
-import moment from "moment"
-import { MIN_AGE } from "../utils/constants"
-
 interface ValidatorResult {
     validator: (value: any) => boolean
     message: string
