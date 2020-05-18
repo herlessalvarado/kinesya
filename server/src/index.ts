@@ -38,14 +38,7 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(express.static(__dirname, { dotfiles: 'allow' } ));
 app.use(express.static(process.env.PhotosFolder!));
-/*app.use(cors({origin: function (origin, callback) {
-    if (whitelist.indexOf(origin!) !== -1) {
-      callback(null, true)
-    } else {
-      callback(new Error('Not allowed by CORS'))
-    }
-    },credentials: true}));*/
- app.use(UserRouter);
+app.use(UserRouter);
 
 const httpServer = http.createServer(app);
 const httpsServer = https.createServer(credentials, app);
