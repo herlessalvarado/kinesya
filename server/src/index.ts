@@ -13,16 +13,15 @@ const connectionString = process.env.connectionString!
 
 const app = express()
 
+app.use(cors())
+app.use(express.json())
 app.use(express.static(path.join(__dirname, "build")))
-
-app.get("/", function (req, res) {
+app.use(express.static(process.env.PhotosFolder!))
+app.use(cookieParser())
+app.use("/api/", UserRouter)
+app.get("/*", function (req, res) {
     res.sendFile(path.join(__dirname, "build", "index.html"))
 })
-app.use(cookieParser())
-app.use(express.json())
-app.use(express.static(process.env.PhotosFolder!))
-app.use(cors({ origin: "*", credentials: true }))
-app.use(UserRouter)
 
 const mongo = new MongoConnection(connectionString)
 mongo.connect()

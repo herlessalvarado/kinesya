@@ -103,8 +103,6 @@ export default function Home() {
     const [hasMore, setHasMore] = useState(true)
     const limit = 4
 
-    const path = process.env.REACT_APP_API_URL!
-
     const handleOpen = (username: string) => {
         history.push("/user/" + username)
     }
@@ -157,7 +155,7 @@ export default function Home() {
                                 }}
                                 name={user.name}
                                 location={user.location}
-                                image={path + user.profilePhoto}
+                                image={user.profilePhoto}
                                 phone={user.phone}
                             ></SmallCard>
                         ))}
