@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent, useRef, useEffect } from "react"
+import React, { useState, ChangeEvent } from "react"
 import Grid from "@material-ui/core/Grid"
 import Typography from "@material-ui/core/Typography"
 import TextField from "@material-ui/core/TextField"
@@ -18,8 +18,6 @@ import {
 } from "@material-ui/core"
 import Autocomplete from "@material-ui/lab/Autocomplete"
 import { UserStateProps } from "../models/user"
-import { Validator } from "./Validator"
-import { isInvalid, isValid } from "../helpers/html_validators"
 
 const theme = createMuiTheme({
     palette: {
@@ -142,7 +140,7 @@ export default function Physics(props: UserStateProps) {
             validEyes &&
             birthPlace !== "" &&
             validBirthPlace &&
-            measurements != "" &&
+            measurements !== "" &&
             validMeasurements &&
             orientation !== "" &&
             ethnicity !== "" &&

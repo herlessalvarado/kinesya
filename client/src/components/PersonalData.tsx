@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent, FC, useEffect, useRef } from "react"
+import React, { useState, ChangeEvent } from "react"
 import Grid from "@material-ui/core/Grid"
 import Typography from "@material-ui/core/Typography"
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from "@material-ui/pickers"
@@ -18,7 +18,6 @@ import {
     textLengthValidatorResult,
     textAreaLengthValidatorResult,
 } from "../helpers/field_validators"
-import { isInvalid, isValid } from "../helpers/html_validators"
 import { MAX_STEPS_PROFILE } from "../utils/constants"
 import moment from "moment"
 
@@ -77,7 +76,7 @@ const Personal = (props: UserStateProps) => {
     )
 
     function areAllValid() {
-        return name !== "" && validName && description != "" && validDescription
+        return name !== "" && validName && description !== "" && validDescription
     }
 
     const handleName = (event: ChangeEvent<HTMLInputElement>) => {

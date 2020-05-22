@@ -1,14 +1,11 @@
-import React, { useState, ChangeEvent, useRef, useEffect } from "react"
+import React, { useState, ChangeEvent } from "react"
 import Grid from "@material-ui/core/Grid"
 import Typography from "@material-ui/core/Typography"
 import TextField from "@material-ui/core/TextField"
-import { MIN_PRICE, DISTRICTS, SERVICES, MAX_STEPS_PROFILE } from "../utils/constants"
+import { DISTRICTS, SERVICES, MAX_STEPS_PROFILE } from "../utils/constants"
 import {
     createMuiTheme,
     ThemeProvider,
-    FormControl,
-    InputLabel,
-    Input,
     InputAdornment,
     Chip,
     makeStyles,
@@ -17,16 +14,11 @@ import {
     Button,
 } from "@material-ui/core"
 import Autocomplete from "@material-ui/lab/Autocomplete"
-import { Validator } from "./Validator"
 import {
-    servicesValidatorResult,
-    decimalValidatorResult,
-    textLengthValidatorResult,
     priceValidatorResult,
     phoneValidatorResult,
 } from "../helpers/field_validators"
 import { UserStateProps } from "../models/user"
-import { isInvalid, isValid } from "../helpers/html_validators"
 
 const theme = createMuiTheme({
     palette: {
