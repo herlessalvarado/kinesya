@@ -11,20 +11,20 @@ export function mapUserDTOToViewModel(user: UserDTO) {
             ? user.referencePhotos.map(
                   (url): Photo => ({
                       file: "",
-                      url: process.env.REACT_APP_API_URL + url,
+                      url: process.env.REACT_APP_PHOTO_URL + url,
                   })
               )
             : Array<Photo>(),
         profilePhoto: !!user.profilePhoto
             ? Array<Photo>({
                   file: "",
-                  url: process.env.REACT_APP_API_URL + user.profilePhoto,
+                  url: process.env.REACT_APP_PHOTO_URL + user.profilePhoto,
               })
             : Array<Photo>(),
         bannerPhoto: !!user.bannerPhoto
             ? Array<Photo>({
                   file: "",
-                  url: process.env.REACT_APP_API_URL + user.bannerPhoto,
+                  url: process.env.REACT_APP_PHOTO_URL + user.bannerPhoto,
               })
             : Array<Photo>(),
         name: user.name || "",
