@@ -26,7 +26,7 @@ export const usersDB: User[] = [
 
 ];
 export const BadUserCreateDTO:UserCreateDTO = {
-    email: "fakeEmail.com",
+    email: "Pamela@gmail.com",
     username: "Luciana",
     password: "123qwe4r"
 }

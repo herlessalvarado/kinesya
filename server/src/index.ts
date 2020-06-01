@@ -7,6 +7,8 @@ import cookieParser from "cookie-parser"
 import static_compress from "express-static-gzip"
 import fs from "fs"
 import path from "path"
+import "reflect-metadata"
+
 
 dotenv.config()
 const PORT = process.env.PORT

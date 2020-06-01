@@ -1,4 +1,4 @@
-import UserDTO, { UserCreateDTO } from "../DTO/UserDTO";
+import { UserCreateDTO } from "../DTO/UserDTO";
 import User from "../../Data/Entities/User"
 import bcrypt from "bcryptjs"
 import {v1 as uuidv1} from "uuid"

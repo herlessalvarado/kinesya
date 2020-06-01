@@ -1,8 +1,8 @@
 import validator from "validator"
-import UserDTO, { UserCreateDTO } from "../DTO/UserDTO";
+import UserDTO, { UserCreateDTO } from "../../Application/DTO/UserDTO";
 
 
-export default abstract class UserValidator { 
+abstract class UserValidator { 
     protected  readonly errors:string[];
 
     constructor() {
@@ -18,28 +18,33 @@ export default abstract class UserValidator {
 
 export class UserCreateValidator extends UserValidator{
 
-    private readonly userBlacklist:string[];
-    private readonly user:UserCreateDTO;
+
+    private readonly _user:UserCreateDTO;
 
     validate(): void {
         this.validateEmail();
         this.validateUsername();
-
+        this.validatePassword();
     }
-    constructor(user:UserCreateDTO,userBlacklist:string[]){
+    constructor(user:UserCreateDTO){
         super();
-        this.user= user;
-        this.userBlacklist = userBlacklist;
+        this._user= user;
     }
 
+    
     validateEmail(){
-        if (!validator.isEmail(this.user.email))
+        if ( this._user.email === undefined ||!validator.isEmail(this._user.email))
             this.errors.push("Invalid Email")
     }
 
     validateUsername(){
-        if(this.userBlacklist.indexOf(this.user.username)> 0)
+        if( this._user.username === undefined || this._user.username.length <= 0)
             this.errors.push("Invalid Username")
+    }
+
+    validatePassword(){
+        if(this._user.password === undefined || this._user.password.length <= 0)
+            this.errors.push("Invalid Password")
     }
 }
 

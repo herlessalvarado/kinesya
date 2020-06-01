@@ -4,22 +4,21 @@ import User from "../../Entities/User";
 import { Zodiac, Ethnicity, Services } from "../../../shared/constants";
 import { Orientation } from "../../../utils/constants_variables";
 import UserRepository from "../UserRepository";
+import {injectable} from "inversify";
 
-
+@injectable()
 export default class MongooseUserRepository implements UserRepository {
+
     async findAll(): Promise<User[]> {
-        return await UserModel.find();
+        return await UserModel.find().exec();
     }
     async update(user: User): Promise<void> {
         const _user = await UserModel.findOneAndUpdate({ _id: user.id }, user)
         if (_user === null)
             throw new Error("This User doesnt exists");
     }
-    async getByName(name: string): Promise<User> {
-        const _user = await UserModel.findOne({ name });
-        if (_user === null)
-            throw new Error("This User doesnt exists");
-        return _user as User
+    async getByName(name: string): Promise<User|null> {
+        return await UserModel.findOne({ name }).exec();
     }
 
     async save(user: User): Promise<void> {
@@ -35,6 +34,7 @@ const userSchema = new Schema({
         required: true,
         unique: true,
         lowercase: true,
+        index:true
     },
     password: {
         type: String,
@@ -46,6 +46,7 @@ const userSchema = new Schema({
         unique: true,
         required: true,
         minlength: 6,
+        index:true
     },
     name: {
         type: String,

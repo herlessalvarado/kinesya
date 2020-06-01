@@ -4,5 +4,6 @@ export default interface UserRepository {
     save(user:User):Promise<void>;
     findAll():Promise<User[]>;
     update(user:User):Promise<void>;
-    getByName(name:string):Promise<User>;
+    getByName(name:string):Promise<User|null>;
+
 }
