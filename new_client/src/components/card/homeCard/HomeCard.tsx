@@ -39,12 +39,12 @@ export default function SmallCard(props: CardProps) {
                         <div className={classes.subtitle}>{props.location}</div>
                     </div>
                     <IconButton
-                        style={{ color: "#25D366" }}
+                        
                         onClick={() => {
                             whatsappMessage(props.phone!)
                         }}
                     >
-                        <WhatsAppIcon className={classes.icon}></WhatsAppIcon>
+                        <WhatsAppIcon className={classes.icon} ></WhatsAppIcon>
                     </IconButton>
                 </div>
             </div>

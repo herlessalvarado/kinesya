@@ -14,10 +14,7 @@ import {
     Button,
 } from "@material-ui/core"
 import Autocomplete from "@material-ui/lab/Autocomplete"
-import {
-    priceValidatorResult,
-    phoneValidatorResult,
-} from "../helpers/field_validators"
+import { priceValidatorResult, phoneValidatorResult } from "../helpers/field_validators"
 import { UserStateProps } from "../models/user"
 
 const theme = createMuiTheme({

@@ -25,20 +25,31 @@ createStyles({
         transition: "bottom .5s ease-out",
     },
     description: {
-        flex: "1 0 auto",
+        flex: "1 1 auto",
         display: "flex",
         flexDirection: "column",
         marginLeft: "16px",
         color: "#fff",
     },
     title: {
-        fontSize: "2vw",
+        fontSize: "16px",
+        [theme.breakpoints.up("md")]:{
+            fontSize: "18px"
+        }
     },
     subtitle: {
-        fontSize: "1vw",
+        fontSize: "12px",
+        [theme.breakpoints.up("md")]:{
+            fontSize: "16px"
+        }
     },
     icon: {
-        fontSize: "4vw ",
+        color: "#25D366",
+        fontSize:"28px",
+        [theme.breakpoints.up("md")]:{
+            fontSize: "32px"
+        }      
+
     },
 })
 )
