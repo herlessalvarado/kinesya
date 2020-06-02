@@ -1,0 +1,29 @@
+{
+    "header":{
+        "login": "Iniciar Sesión",
+        "register": "Regístrate",
+        "logout": "Cerrar Sesión",
+        "dashboard": "Tablero"
+    },
+    "footer": {
+        "brand": "Kinesya",
+        "copyright": "Copyright © "
+    },
+    "register": {
+        "title": "Registro",
+        "username": "Usuario",
+        "email": "Correo electrónico",
+        "password": "Contraseña",
+        "signup": "Registrarse",
+        "haveAccount": "¿Ya tienes una cuenta? Inicia sesión."
+    },
+    "login": {
+        "email": "Correo electrónico",
+        "password": "Contraseña",
+        "enter": "Iniciar Sesión",
+        "dontHaveAccount": "¿No tienes cuenta? Regístrate"
+    },
+    "toast": {
+        "register": "Ya existe  un usuario registrado con este "
+    }
+}

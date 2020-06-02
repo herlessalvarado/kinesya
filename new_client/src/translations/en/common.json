@@ -1,0 +1,29 @@
+{
+    "header":{
+        "login": "Log In",
+        "register": "Sign Up",
+        "logout": "Log Out",
+        "dashboard": "Dashboard"
+    },
+    "footer": {
+        "brand": "Kinesya",
+        "copyright": "Copyright © "
+    },
+    "register": {
+        "title": "Sign Up",
+        "username": "Username",
+        "email": "Email",
+        "password": "Password",
+        "signup": "Sign Up",
+        "haveAccount": "Have an account? Log in"
+    },
+    "login": {
+        "email": "Email",
+        "password": "Password",
+        "enter": "Log In",
+        "dontHaveAccount": "Don't have an account? Sign up"
+    },
+    "toast": {
+        "register": "There is already a registered user with "
+    }
+}
