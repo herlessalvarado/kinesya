@@ -5,5 +5,5 @@ export default interface UserRepository {
     findAll():Promise<User[]>;
     update(user:User):Promise<void>;
     getByName(name:string):Promise<User|null>;
-
+    findOnlyPublic():Promise<User[]>
 }

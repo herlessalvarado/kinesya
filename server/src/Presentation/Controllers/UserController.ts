@@ -21,6 +21,11 @@ export  function userRouter (userController:UserController){
         const response = await userController.create(req as HttpRequest)
         res.status(response.status).send(response.body)
     })
+
+    router.get("/users",async (req:Request,res:Response)=>{
+        const response = await userController.getAllUsers();
+        res.status(response.status).send(response.body)
+    })
     return router;
 }
 export class UserController {
@@ -54,6 +59,22 @@ export class UserController {
                 resp.status = INTERNAL_SERVER_ERROR
                 resp.body = getStatusText(INTERNAL_SERVER_ERROR)
             }
+        }
+        return resp;
+    }
+
+    async getAllUsers(): Promise<HttpResponse> {
+        const resp:HttpResponse = {body:"", status:OK} ;
+        try {
+
+            const users = await this.service.getAll()
+            resp.status = OK
+            resp.body = JSON.stringify(users);
+            console.log(resp.body )
+
+        } catch (error) {
+            resp.status = INTERNAL_SERVER_ERROR
+            resp.body = getStatusText(INTERNAL_SERVER_ERROR)
         }
         return resp;
     }

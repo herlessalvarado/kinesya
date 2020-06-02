@@ -2,8 +2,9 @@ import "ts-jest"
 import { UserService } from "../../src/Application/Services/UserService"
 import { mock } from 'jest-mock-extended';
 import {UserController, HttpResponse} from "../../src/Presentation/Controllers/UserController"
-import {BAD_REQUEST,INTERNAL_SERVER_ERROR,getStatusText} from 'http-status-codes'
+import {BAD_REQUEST,INTERNAL_SERVER_ERROR,getStatusText,OK} from 'http-status-codes'
 import UserServiceException from "../../src/Application/Exceptions/UserServiceException";
+import {  usersDTO } from "../Mocks/User";
 
 
 describe("User Presentation Test",()=>{
@@ -38,6 +39,16 @@ describe("User Presentation Test",()=>{
             
             expect(result.body).toStrictEqual(expected.body)
             expect(result.status).toStrictEqual(expected.status)
+        })
+    })
+    describe("find all user services",()=>{
+        test("get all public users",async ()=>{
+            userService.getAll.mockResolvedValueOnce(usersDTO)
+            const expectedResponse = <HttpResponse>{body:JSON.stringify(usersDTO),status:OK}
+
+            const response = await userController.getAllUsers();
+            
+            expect(response).toEqual(expectedResponse)
         })
     })
 })

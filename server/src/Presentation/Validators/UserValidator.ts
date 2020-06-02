@@ -69,25 +69,25 @@ export class UserUpdateValidator extends UserValidator{
 
     
     validateAge(){
-        if (!validator.isNumeric(this.user.age)){
+        if (this.user.age === undefined ||  !validator.isNumeric(this.user.age)){
             this.errors.push("Invalid Age")
         }
     } 
     validateTags(){
-        if (this.user.tags.some(v => this.tagWhitelist.indexOf(v) < 0))
+        if (this.user.tags === undefined ||  this.user.tags.some(v => this.tagWhitelist.indexOf(v) < 0))
             this.errors.push("Invalid Tags")
     }
     validatePhone(){
-        if(!validator.isMobilePhone(this.user.phone))
+        if(this.user.phone === undefined || !validator.isMobilePhone(this.user.phone))
             this.errors.push("Invalid Phone Number")
     }
     validateLocation(){
-        if(this.user.location.length < 0)
+        if(this.user.location === undefined || this.user.location.length < 0)
             this.errors.push("Invalid Location")
     }
 
     validatePrice(){
-        if(!validator.isInt(this.user.price,{min:50}))
+        if(this.user.price === undefined || !validator.isInt(this.user.price,{min:50}))
             this.errors.push("Invalid Price")
     }
 }

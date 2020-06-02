@@ -1,15 +1,22 @@
 import UserRepository from "../../src/Data/Repository/UserRepository"
 import UserService from "../../src/Application/Services/impl/UserServiceImpl";
 import User from "../../src/Data/Entities/User";
-import { usersDB, BadUserCreateDTO, GoodUserCreateDTO } from "./Mocks/User";
+import { usersDB, BadUserCreateDTO, GoodUserCreateDTO } from "../Mocks/User";
 import "reflect-metadata"
 import container,{TYPES} from "../../src/ioc/container"
 import UserServiceException from "../../src/Application/Exceptions/UserServiceException";
 import "ts-jest"
 import { injectable } from "inversify";
+import UserDTO from "../../src/Application/DTO/UserDTO";
 
 @injectable()
 class FakeUserRepository implements UserRepository {
+    findOnlyPublic(): Promise<User[]> {
+        return new Promise((resolve,reject)=>{
+            resolve(usersDB.filter(v => v.isPublic===true))
+            reject(new Error("No users"))
+        })
+    }
     save(user: User): Promise<void> {
         return new Promise((resolve,reject)=>{
             resolve()
@@ -55,5 +62,28 @@ describe('UserService tests', () => {
         test("user with unique email and username", async () => {
             await expect(userService.create(GoodUserCreateDTO)).resolves.toBe(undefined)
         })
+    })
+    describe("get all user service", () => {
+        test("get all public users", async () => {
+            const expectedUsers = <Array<UserDTO>>[{
+                username: "Pamela",
+                email: "Pamela@gmail.com"
+            },
+            {
+                username: "Alejandra",
+                email: "Alejandra@gmail.com"
+            },
+            {
+                username: "Elizabeth",
+                email: "Elizabeth@gmail.com"
+            }
+        ]
+
+        const users = await userService.getAll();
+
+        expect(users).toEqual(expectedUsers)
+
+        })
+
     })
 })

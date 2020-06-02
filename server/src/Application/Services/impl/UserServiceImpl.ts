@@ -1,6 +1,6 @@
 import UserRepository from "../../../Data/Repository/UserRepository";
-import { UserCreateDTO } from "../../DTO/UserDTO";
-import { fromUserCreateDTOtoEntity } from "../../Mappers/UserMapper";
+import UserDTO, { UserCreateDTO } from "../../DTO/UserDTO";
+import { fromUserCreateDTOtoEntity, fromEntityToUserDTO } from "../../Mappers/UserMapper";
 import { injectable, inject, LazyServiceIdentifer } from "inversify";
 import { TYPES } from "../../../ioc/container";
 import { CreateUserValidator } from "../../Validators/UserServiceValidator";
@@ -13,6 +13,10 @@ export default class UserServiceImpl implements UserService {
 
     constructor(@inject(new LazyServiceIdentifer(() => TYPES.UserRepository)) userRepository: UserRepository) {
         this.userRepository = userRepository;
+    }
+    async getAll(): Promise<Array<UserDTO>> {
+       const users =  await this.userRepository.findOnlyPublic();
+       return  users.map(u=>fromEntityToUserDTO(u));
     }
 
     async create(user: UserCreateDTO) {

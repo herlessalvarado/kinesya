@@ -8,6 +8,9 @@ import {injectable} from "inversify";
 
 @injectable()
 export default class MongooseUserRepository implements UserRepository {
+    async findOnlyPublic(): Promise<User[]> {
+        return await UserModel.find({isPublic:true}).exec();
+    }
 
     async findAll(): Promise<User[]> {
         return await UserModel.find().exec();
