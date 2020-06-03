@@ -70,7 +70,6 @@ export class UserController {
             const users = await this.service.getAll()
             resp.status = OK
             resp.body = JSON.stringify(users);
-            console.log(resp.body )
 
         } catch (error) {
             resp.status = INTERNAL_SERVER_ERROR
