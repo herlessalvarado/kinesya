@@ -5,24 +5,25 @@ export const useStyles = makeStyles((theme: Theme) =>
     toolbar: {
         borderBottom: `1px solid ${theme.palette.divider}`,        
     },
-    toolbarTitle: {
+    logo: {
         flex: 1,
     },
-    toolbarTitleXs: {
-        textAlign: 'center',
-    },
     logoXs: {
-          width: "25%",
+        display: "block",
+        margin: "auto",
     },
-    logoSm: {
-        width: "20%",
-    },
-    logoMd: {
-        width: "15%",
-    },
-    logoLg: {
-        width: "10%",
-    },
+    // logoXs: {
+    //       width: "25%",
+    // },
+    // logoSm: {
+    //     width: "20%",
+    // },
+    // logoMd: {
+    //     width: "15%",
+    // },
+    // logoLg: {
+    //     width: "10%",
+    // },
     buttons: {
         margin: "0.8vw",
     }
