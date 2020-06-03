@@ -1,34 +1,31 @@
-
-import { Schema, Document, model, Model } from "mongoose";
-import User from "../../Entities/User";
-import { Zodiac, Ethnicity, Services } from "../../../shared/constants";
-import { Orientation } from "../../../utils/constants_variables";
-import UserRepository from "../UserRepository";
-import {injectable} from "inversify";
+import { Schema, Document, model, Model } from "mongoose"
+import User from "../../Entities/User"
+import { Zodiac, Ethnicity, Services } from "../../../shared/constants"
+import { Orientation } from "../../../utils/constants_variables"
+import UserRepository from "../UserRepository"
+import { injectable } from "inversify"
 
 @injectable()
 export default class MongooseUserRepository implements UserRepository {
     async findOnlyPublic(): Promise<User[]> {
-        return await UserModel.find({isPublic:true}).exec();
+        return await UserModel.find({ isPublic: true }).exec()
     }
 
     async findAll(): Promise<User[]> {
-        return await UserModel.find().exec();
+        return await UserModel.find().exec()
     }
     async update(user: User): Promise<void> {
         const _user = await UserModel.findOneAndUpdate({ _id: user.id }, user)
-        if (_user === null)
-            throw new Error("This User doesnt exists");
+        if (_user === null) throw new Error("This User doesnt exists")
     }
-    async getByName(name: string): Promise<User|null> {
-        return await UserModel.findOne({ name }).exec();
+    async getByName(name: string): Promise<User | null> {
+        return await UserModel.findOne({ name }).exec()
     }
 
     async save(user: User): Promise<void> {
         const userDocument = new UserModel({ ...user })
         await userDocument.save()
     }
-
 }
 
 const userSchema = new Schema({
@@ -37,7 +34,7 @@ const userSchema = new Schema({
         required: true,
         unique: true,
         lowercase: true,
-        index:true
+        index: true,
     },
     password: {
         type: String,
@@ -49,7 +46,7 @@ const userSchema = new Schema({
         unique: true,
         required: true,
         minlength: 6,
-        index:true
+        index: true,
     },
     name: {
         type: String,
@@ -131,8 +128,6 @@ const userSchema = new Schema({
     },
 })
 
-type UserDocument = Document & User;
+type UserDocument = Document & User
 
 const UserModel = model<UserDocument, Model<UserDocument>>("User", userSchema)
-
-
