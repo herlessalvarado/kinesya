@@ -1,7 +1,6 @@
 export default class UserPresentationException extends Error {
-    constructor(errors:string[]){
+    constructor(errors: string[]) {
         super(errors.join(","))
-        Object.setPrototypeOf(this, UserPresentationException.prototype);
-
+        Object.setPrototypeOf(this, UserPresentationException.prototype)
     }
 }

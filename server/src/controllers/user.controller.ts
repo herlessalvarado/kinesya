@@ -1,4 +1,4 @@
-import express, { Request, Response, NextFunction } from "express"
+import express, { Request, Response } from "express"
 import { auth } from "../middleware/user.auth"
 import { UserService } from "../services/user.service"
 import { upload } from "../middleware/user.upload"

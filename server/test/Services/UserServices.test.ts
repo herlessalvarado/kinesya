@@ -8,6 +8,10 @@ import UserServiceException from "../../src/Application/Exceptions/UserServiceEx
 import "ts-jest"
 import { injectable } from "inversify";
 import UserDTO from "../../src/Application/DTO/UserDTO";
+import token from "jsonwebtoken"
+import { AuthDTO } from "../../src/Application/DTO/AuthDTO";
+import dotenv from "dotenv"
+dotenv.config()
 
 @injectable()
 class FakeUserRepository implements UserRepository {
@@ -50,6 +54,9 @@ describe('UserService tests', () => {
    
 
     describe("create service", () => {
+        afterEach(()=>{
+            jest.restoreAllMocks()
+          })
         test("user with duplicate email and username", async () => {
             expect.assertions(1)
             try {
@@ -60,7 +67,11 @@ describe('UserService tests', () => {
 
         })
         test("user with unique email and username", async () => {
-            await expect(userService.create(GoodUserCreateDTO)).resolves.toBe(undefined)
+            token.sign = jest.fn().mockImplementation((claims,key,options)=>(key === process.env.JWT_KEY!) ? "token" : "refresh_token");
+            const expectedAuthDTO:AuthDTO = {refreshToken :"refresh_token",token:"token"}
+
+            
+            await expect(userService.create(GoodUserCreateDTO)).resolves.toEqual(expectedAuthDTO)
         })
     })
     describe("get all user service", () => {
