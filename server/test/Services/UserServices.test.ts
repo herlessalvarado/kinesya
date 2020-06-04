@@ -1,6 +1,6 @@
 import UserRepository from "../../src/Data/Repository/UserRepository"
 import UserService from "../../src/Application/Services/impl/UserServiceImpl";
-import User from "../../src/Data/Entities/User";
+import {User} from "../../src/Data/Entities/User";
 import { usersDB, BadUserCreateDTO, GoodUserCreateDTO } from "../Mocks/User";
 import "reflect-metadata"
 import container,{TYPES} from "../../src/ioc/container"

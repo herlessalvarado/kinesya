@@ -15,26 +15,8 @@ interface Characteristics {
     ethnicity?: string
 }
 
-export default interface User {
-    id: string
-    email: string
-    password: string
-    username: string
-    name?: string
-    price?: string
-    age?: number
-    phone?: string
-    location?: string
-    refreshToken?: string
-    isPublic: boolean
-    profilePhoto?: string
-    bannerPhoto?: string
-    referencePhotos?: string
-    characteristics?: Characteristics
-    tags?: Array<Tag>
-}
-export class UserEntity implements User {
-    id: string = ""
+export class User {
+    Id: string = ""
     email: string = ""
     password: string = ""
     username: string = ""
@@ -50,6 +32,31 @@ export class UserEntity implements User {
     referencePhotos?: string
     characteristics?: Characteristics
     tags?: Tag[]
+
+    setId(id: string) {
+        this.Id = id
+        return this
+    }
+
+    setEmail(email: string) {
+        this.email = email
+        return this
+    }
+
+    setUsername(username: string) {
+        this.username = username
+        return this
+    }
+
+    setPassword(password: string) {
+        this.password = password
+        return this
+    }
+
+    setPublic(_public: boolean) {
+        this.isPublic = _public
+        return this
+    }
 
     updateRefreshToken() {
         this.refreshToken = generateRefreshToken(this)
