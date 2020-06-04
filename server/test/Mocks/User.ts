@@ -1,43 +1,32 @@
-import User from "../../src/Data/Entities/User";
+import {User} from "../../src/Data/Entities/User";
 import UserDTO, { UserCreateDTO } from "../../src/Application/DTO/UserDTO";
 
 export const usersDB: User[] = [
-    {
-        id: "1",
-        username: "Pamela",
-        password: "123",
-        email: "Pamela@gmail.com",
-        isPublic: true
-    },
-    {
-        id: "2",
-        username: "Fabiola",
-        password: "123",
-        email: "Fabiola@gmail.com",
-        isPublic: false
-    },
-    {
-        id: "3",
-        username: "Luciana",
-        password: "123",
-        email: "Luciana@gmail.com",
-        isPublic: false
-    },
-    {
-        id: "4",
-        username: "Alejandra",
-        password: "123",
-        email: "Alejandra@gmail.com",
-        isPublic: true
-    },
-    {
-        id: "5",
-        username: "Elizabeth",
-        password: "123",
-        email: "Elizabeth@gmail.com",
-        isPublic: true
-    },
-
+    new User().setId("1")
+    .setPassword("123")
+    .setEmail("Pamela@gmail.com")
+    .setPublic(true)
+    .setUsername("Pamela"),
+    new User().setId("2")
+    .setPassword("123")
+    .setEmail("Fabiola@gmail.com")
+    .setPublic(false)
+    .setUsername("Fabiola"),
+    new User().setId("3")
+    .setPassword("123")
+    .setEmail("Luciana@gmail.com")
+    .setPublic(false)
+    .setUsername("Luciana"),
+    new User().setId("4")
+    .setPassword("123")
+    .setEmail("Alejandra@gmail.com")
+    .setPublic(true)
+    .setUsername("Alejandra"),
+    new User().setId("5")
+    .setPassword("123")
+    .setEmail("Elizabeth@gmail.com")
+    .setPublic(true)
+    .setUsername("Elizabeth")
 ];
 
 export const usersDTO:UserDTO[] =[

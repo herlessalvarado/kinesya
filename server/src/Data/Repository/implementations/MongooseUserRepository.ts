@@ -1,9 +1,10 @@
 import { Schema, Document, model, Model } from "mongoose"
-import User from "../../Entities/User"
+
 import { Zodiac, Ethnicity, Services } from "../../../shared/constants"
 import { Orientation } from "../../../utils/constants_variables"
 import UserRepository from "../UserRepository"
 import { injectable } from "inversify"
+import { User } from "../../Entities/User"
 
 @injectable()
 export default class MongooseUserRepository implements UserRepository {
@@ -15,7 +16,7 @@ export default class MongooseUserRepository implements UserRepository {
         return await UserModel.find().exec()
     }
     async update(user: User): Promise<void> {
-        const _user = await UserModel.findOneAndUpdate({ _id: user.id }, user)
+        const _user = await UserModel.findOneAndUpdate({ _id: user.Id }, user)
         if (_user === null) throw new Error("This User doesnt exists")
     }
     async getByName(name: string): Promise<User | null> {
@@ -127,7 +128,6 @@ const userSchema = new Schema({
         enum: Services,
     },
 })
-
-type UserDocument = Document & User
+interface UserDocument extends User, Document {}
 
 const UserModel = model<UserDocument, Model<UserDocument>>("User", userSchema)

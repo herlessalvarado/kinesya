@@ -1,11 +1,11 @@
 import UserDTO, { UserCreateDTO } from "../DTO/UserDTO"
-import User, { UserEntity } from "../../Data/Entities/User"
+import { User } from "../../Data/Entities/User"
 import bcrypt from "bcryptjs"
 import { v1 as uuidv1 } from "uuid"
 
-export async function fromUserCreateDTOtoEntity(user: UserCreateDTO): Promise<UserEntity> {
-    const result = new UserEntity()
-    result.id = uuidv1()
+export async function fromUserCreateDTOtoEntity(user: UserCreateDTO): Promise<User> {
+    const result = new User()
+    result.Id = uuidv1()
     result.email = user.email
     result.username = user.username
     result.password = await bcrypt.hash(user.password, 8)
@@ -33,7 +33,7 @@ export function fromEntityToUserDTO(user: User): UserDTO {
         measurements: user.characteristics?.measurements,
         orientation: user.characteristics?.orientation,
         ethnicity: user.characteristics?.ethnicity,
-        tags: user.tags?.map((tag) => tag.nombre),
+        tags: user.tags?.map((tag: any) => tag.nombre),
         bannerPhoto: user.bannerPhoto,
     }
 }

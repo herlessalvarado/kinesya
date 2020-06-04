@@ -6,7 +6,6 @@ export const auth = async (req: Request, res: Response, next: NextFunction) => {
     try {
         if (!!token) {
             verify(token, process.env.JWT_KEY!)
-
             req.body.token = token
             next()
         } else throw new Error("Invalid Token")
