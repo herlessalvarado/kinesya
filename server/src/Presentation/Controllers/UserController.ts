@@ -1,9 +1,9 @@
 import { UserCreateValidator } from "../Validators/UserValidator"
-import { OK, CREATED, BAD_REQUEST, INTERNAL_SERVER_ERROR, getStatusText } from "http-status-codes"
-import UserServiceException from "../../Application/Exceptions/UserServiceException"
+import { OK, CREATED} from "http-status-codes"
 import { UserCreateDTO } from "../../Application/DTO/UserDTO"
 import { Router, Request, Response } from "express"
 import { UserService } from "../../Application/Services/UserService"
+import {handlerExceptions} from "../Handlers/HandlerExceptions"
 
 export interface HttpRequest {
     body: any
@@ -40,23 +40,11 @@ export class UserController {
             const _user = req.body as UserCreateDTO
             const validator = new UserCreateValidator(_user)
             validator.validate()
-            if (!validator.hasErrors()) {
-                const auth = await this.service.create(_user)
-                resp.status = CREATED
-                resp.body = auth
-            } else {
-                resp.status = BAD_REQUEST
-                resp.body = validator.getErrors()
-            }
-        } catch (error) {
-            console.log(error)
-            if (error instanceof UserServiceException) {
-                resp.status = BAD_REQUEST
-                resp.body = error.message
-            } else {
-                resp.status = INTERNAL_SERVER_ERROR
-                resp.body = getStatusText(INTERNAL_SERVER_ERROR)
-            }
+            const auth = await this.service.create(_user)
+            resp.status = CREATED
+            resp.body = auth
+        } catch (err){
+            handlerExceptions(err,resp)
         }
         return resp
     }
@@ -67,9 +55,8 @@ export class UserController {
             const users = await this.service.getAll()
             resp.status = OK
             resp.body = JSON.stringify(users)
-        } catch (error) {
-            resp.status = INTERNAL_SERVER_ERROR
-            resp.body = getStatusText(INTERNAL_SERVER_ERROR)
+        } catch (err) {
+            handlerExceptions(err,resp)
         }
         return resp
     }

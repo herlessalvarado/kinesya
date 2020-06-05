@@ -1,5 +1,6 @@
 import validator from "validator"
 import UserDTO, { UserCreateDTO } from "../../Application/DTO/UserDTO"
+import UserPresentationException from "../Exceptions/UserPresentationException"
 
 abstract class UserValidator {
     protected readonly errors: string[]
@@ -8,7 +9,13 @@ abstract class UserValidator {
         this.errors = []
     }
 
-    abstract validate(): void
+   validate(){
+       this.executeValidations()
+       if(this.errors.length > 0)
+        throw new UserPresentationException(this.errors)
+   }
+
+    abstract executeValidations():void
 
     getErrors() {
         return this.errors
@@ -19,18 +26,20 @@ abstract class UserValidator {
 }
 
 export class UserCreateValidator extends UserValidator {
+
     private readonly _user: UserCreateDTO
 
-    validate(): void {
-        this.validateEmail()
-        this.validateUsername()
-        this.validatePassword()
-    }
     constructor(user: UserCreateDTO) {
         super()
         this._user = user
     }
 
+    executeValidations(): void {
+        this.validateEmail()
+        this.validateUsername()
+        this.validatePassword()
+    }
+    
     validateEmail() {
         if (this._user.email === undefined || !validator.isEmail(this._user.email))
             this.errors.push("Invalid Email")
@@ -48,6 +57,7 @@ export class UserCreateValidator extends UserValidator {
 }
 
 export class UserUpdateValidator extends UserValidator {
+ 
     private readonly tagWhitelist: string[]
     private readonly user: UserDTO
 
@@ -57,7 +67,7 @@ export class UserUpdateValidator extends UserValidator {
         this.tagWhitelist = tagWhitelist
     }
 
-    validate(): void {
+    executeValidations(): void {
         this.validateAge()
         this.validateTags()
         this.validatePhone()

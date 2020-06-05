@@ -14,7 +14,7 @@ export default interface UserDTO {
     location?: string
     profilePhoto?: string
     bannerPhoto?: string
-    referencePhotos?: string
+    referencePhotos?: string[]
     height?: string
     weight?: string
     eyes?: string

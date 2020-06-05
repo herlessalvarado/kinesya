@@ -15,7 +15,7 @@ export function createRefreshToken(user: IUser) {
 }
 
 export const generateRefreshToken = function (user: User) {
-    const claims: Claims = { id: user.Id }
+    const claims: Claims = { id: user.id }
     return jwt.sign(claims, process.env.R_JWT_KEY!, {
         expiresIn: process.env.REFRESH_JWT_EXPIRES!,
     })
@@ -29,7 +29,7 @@ export function createStandardToken(user: IUser): string {
 }
 
 export const generateStandardToken = function (user: User): string {
-    const claims: Claims = { id: user.Id, username: user.username }
+    const claims: Claims = { id: user.id, username: user.username }
     return jwt.sign(claims, process.env.JWT_KEY!, {
         expiresIn: process.env.JWT_EXPIRES!,
     })

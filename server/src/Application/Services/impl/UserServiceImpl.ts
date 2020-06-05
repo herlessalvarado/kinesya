@@ -4,7 +4,6 @@ import { fromUserCreateDTOtoEntity, fromEntityToUserDTO } from "../../Mappers/Us
 import { injectable, inject, LazyServiceIdentifer } from "inversify"
 import { TYPES } from "../../../ioc/container"
 import { CreateUserValidator } from "../../Validators/UserServiceValidator"
-import UserServiceException from "../../Exceptions/UserServiceException"
 import { UserService } from "../UserService"
 import { generateStandardToken } from "../../../utils/tokenManager"
 
@@ -23,15 +22,11 @@ export default class UserServiceImpl implements UserService {
     }
 
     async create(user: UserCreateDTO) {
-        const validator = new CreateUserValidator(this.userRepository, user)
+        const validator = new CreateUserValidator(user,this.userRepository)
         await validator.validate()
-        if (validator.isValid()) {
-            const entity = await fromUserCreateDTOtoEntity(user)
-            entity.updateRefreshToken()
-            await this.userRepository.save(entity)
-            return { refreshToken: entity.refreshToken!, token: generateStandardToken(entity) }
-        } else {
-            throw new UserServiceException(validator.errors)
-        }
+        const entity = await fromUserCreateDTOtoEntity(user)
+        entity.updateRefreshToken()
+        await this.userRepository.save(entity)
+        return { refreshToken: entity.refreshToken!, token: generateStandardToken(entity)}
     }
 }
