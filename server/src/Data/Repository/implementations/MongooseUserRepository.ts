@@ -1,30 +1,36 @@
-import { Schema, Document, model, Model } from "mongoose"
+import { Schema, Document, model } from "mongoose"
 
 import { Zodiac, Ethnicity, Services } from "../../../shared/constants"
 import { Orientation } from "../../../utils/constants_variables"
 import UserRepository from "../UserRepository"
 import { injectable } from "inversify"
 import { User } from "../../Entities/User"
+import { UserSchema } from "../../Schema/UserSchema"
+import { fromSchemaToEntity, fromEntityToSchema } from "../../Mapper/UserMapper"
+import UserNotFoundException from "../../Exceptions/RepositoryException"
 
 @injectable()
 export default class MongooseUserRepository implements UserRepository {
     async findOnlyPublic(): Promise<User[]> {
-        return await UserModel.find({ isPublic: true }).exec()
+        const users = await UserModel.find({ isPublic: true }).exec()
+        return users.map((u)=>(fromSchemaToEntity(u)))
     }
-
     async findAll(): Promise<User[]> {
-        return await UserModel.find().exec()
+        const users =  await UserModel.find().exec()
+        return users.map((u)=>(fromSchemaToEntity(u)))
     }
     async update(user: User): Promise<void> {
-        const _user = await UserModel.findOneAndUpdate({ _id: user.Id }, user)
-        if (_user === null) throw new Error("This User doesnt exists")
+        const _user = await UserModel.findOneAndUpdate({ _id: user.id }, user).exec()
+        if (_user === null) throw new UserNotFoundException()
     }
-    async getByName(name: string): Promise<User | null> {
-        return await UserModel.findOne({ name }).exec()
+    async getByName(name: string): Promise<User> {
+        const _user = await UserModel.findOne({ name }).exec()
+        if (_user === null) throw new UserNotFoundException()
+        return fromSchemaToEntity(_user)
     }
 
     async save(user: User): Promise<void> {
-        const userDocument = new UserModel({ ...user })
+        const userDocument = new UserModel({ ...fromEntityToSchema(user) })
         await userDocument.save()
     }
 }
@@ -128,6 +134,7 @@ const userSchema = new Schema({
         enum: Services,
     },
 })
-interface UserDocument extends User, Document {}
 
-const UserModel = model<UserDocument, Model<UserDocument>>("User", userSchema)
+type UserDocument = UserSchema & Document
+
+const UserModel = model<UserDocument>("User", userSchema)

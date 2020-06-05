@@ -1,41 +1,49 @@
 import UserRepository from "../../Data/Repository/UserRepository"
 import { UserCreateDTO } from "../DTO/UserDTO"
+import UserServiceException from "../Exceptions/UserServiceException"
 
-interface UserValidator {
-    validate(): Promise<void>
-    isValid(): boolean
-    errors: string[]
+abstract class UserValidator {
+    protected readonly errors: string[]
+    protected readonly repository: UserRepository
+    constructor(userRepository: UserRepository) {
+        this.errors = []
+        this.repository = userRepository
+    }
+
+   async validate(){
+       await this.executeValidations()
+       if(this.errors.length > 0)
+        throw new UserServiceException(this.errors)
+   }
+
+    abstract executeValidations():Promise<void>
+
+    getErrors() {
+        return this.errors
+    }
+    hasErrors() {
+        return this.errors.length > 0
+    }
 }
-export class CreateUserValidator implements UserValidator {
-    private _errors: string[] = []
-    private readonly repository: UserRepository
+export class CreateUserValidator extends UserValidator {
     private readonly user: UserCreateDTO
 
-    constructor(userRepository: UserRepository, user: UserCreateDTO) {
-        this.repository = userRepository
+    constructor(user: UserCreateDTO,userRepository: UserRepository) {
+        super(userRepository)
         this.user = user
     }
-
-    get errors() {
-        return this._errors
+    async executeValidations() {
+        await this.validUniqueEmail()
+        await this.validUniqueUsername()
     }
-
-    isValid() {
-        return this._errors.length === 0
-    }
-
-    async validate() {
-        this.validUniqueEmail()
-        this.validUniqueUsername()
-    }
-
+    
     private async validUniqueEmail() {
         if ((await this.repository.findAll()).some((v) => v.email === this.user.email))
-            this._errors.push("This email already exists")
+            this.errors.push("This email already exists")
     }
     private async validUniqueUsername() {
         const users = await this.repository.findAll()
         if (users.some((v) => v.username === this.user.username))
-            this._errors.push("this username already exists")
+            this.errors.push("this username already exists")
     }
 }

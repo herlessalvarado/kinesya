@@ -13,7 +13,7 @@ describe("User Presentation Test",()=>{
     describe("create user",()=>{
         test("user create DTO with invalid inputs",async ()=>{
             
-            const expected:HttpResponse = {body:["Invalid Email","Invalid Password"],status:BAD_REQUEST}
+            const expected:HttpResponse = {body:"Invalid Email,Invalid Password",status:BAD_REQUEST}
             const result = await userController.create({body:{email:"hello",username:"pepe"}})
 
             expect(result.body).toStrictEqual(expected.body)

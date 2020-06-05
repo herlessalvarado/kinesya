@@ -5,7 +5,7 @@ import { v1 as uuidv1 } from "uuid"
 
 export async function fromUserCreateDTOtoEntity(user: UserCreateDTO): Promise<User> {
     const result = new User()
-    result.Id = uuidv1()
+    result.id = uuidv1()
     result.email = user.email
     result.username = user.username
     result.password = await bcrypt.hash(user.password, 8)
