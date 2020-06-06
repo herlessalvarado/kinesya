@@ -5,7 +5,7 @@ import { injectable, inject, LazyServiceIdentifer } from "inversify"
 import { TYPES } from "../../../ioc/container"
 import { CreateUserValidator } from "../../Validators/UserServiceValidator"
 import { UserService } from "../UserService"
-import { generateStandardToken } from "../../../utils/tokenManager"
+import { generateStandardToken, verifyRefreshToken } from "../../../utils/tokenManager"
 import { PasswordException } from "../../Exceptions/UserServiceException"
 
 @injectable()
@@ -34,7 +34,7 @@ export default class UserServiceImpl implements UserService {
     async login(user: UserLoginDTO) {
         const _user = await this.userRepository.isUserEmail(user.email);
         if(await !_user.isPasswordMatch(user.email)) throw new PasswordException();
-        _user.updateRefreshToken();
+        verifyRefreshToken(_user);
         await this.userRepository.update(_user);
         return { refreshToken: _user.refreshToken!, token: generateStandardToken(_user)};
     }

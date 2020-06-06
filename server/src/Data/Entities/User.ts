@@ -36,6 +36,7 @@ export class User implements UserSchema {
     tags?: Array<string>
 
     updateRefreshToken() {this.refreshToken = generateRefreshToken(this)}
+    removeRefreshToken() {this.refreshToken = undefined}
     async isPasswordMatch(password: string) { return bcrypt.compare(password, this.password) }
 
     setId(id: string) {this.id = id; return this}

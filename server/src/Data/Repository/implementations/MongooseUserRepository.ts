@@ -94,7 +94,7 @@ const userSchema = new Schema({
         default: false,
     },
     referencePhotos: [String],
-    refresh_token: {
+    refreshToken: {
         type: String,
     },
     characteristics: {
