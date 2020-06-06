@@ -11,13 +11,22 @@ import UserNotFoundException from "../../Exceptions/RepositoryException"
 
 @injectable()
 export default class MongooseUserRepository implements UserRepository {
+    async findByEmailOrNull(email: string): Promise<User | null> {
+        const _user = await UserModel.findOne({ email }).exec()
+        return _user === null ? _user : fromSchemaToEntity(_user)
+    }
+    async findByUsernameOrNull(username: string): Promise<User | null> {
+        const _user = await UserModel.findOne({ username }).exec()
+        return _user === null ? _user : fromSchemaToEntity(_user)
+    }
+
     async findOnlyPublic(): Promise<User[]> {
         const users = await UserModel.find({ isPublic: true }).exec()
-        return users.map((u)=>(fromSchemaToEntity(u)))
+        return users.map((u) => fromSchemaToEntity(u))
     }
     async findAll(): Promise<User[]> {
-        const users =  await UserModel.find().exec()
-        return users.map((u)=>(fromSchemaToEntity(u)))
+        const users = await UserModel.find().exec()
+        return users.map((u) => fromSchemaToEntity(u))
     }
     async update(user: User): Promise<void> {
         const _user = await UserModel.findOneAndUpdate({ _id: user.id }, user).exec()

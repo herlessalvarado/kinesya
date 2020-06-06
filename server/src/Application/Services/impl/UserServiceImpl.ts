@@ -22,11 +22,11 @@ export default class UserServiceImpl implements UserService {
     }
 
     async create(user: UserCreateDTO) {
-        const validator = new CreateUserValidator(user,this.userRepository)
+        const validator = new CreateUserValidator(user, this.userRepository)
         await validator.validate()
         const entity = await fromUserCreateDTOtoEntity(user)
         entity.updateRefreshToken()
         await this.userRepository.save(entity)
-        return { refreshToken: entity.refreshToken!, token: generateStandardToken(entity)}
+        return { refreshToken: entity.refreshToken!, token: generateStandardToken(entity) }
     }
 }

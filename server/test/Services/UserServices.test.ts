@@ -15,6 +15,16 @@ dotenv.config()
 
 @injectable()
 class FakeUserRepository implements UserRepository {
+    findByEmailOrNull(email: string): Promise<User|null> {
+        return new Promise((resolve,reject)=>{
+            resolve((email !== BadUserCreateDTO.email )? new User(): null )
+        })
+    }
+    findByUsernameOrNull(username: string): Promise<User|null> {
+        return new Promise((resolve,reject)=>{
+            resolve((username !== BadUserCreateDTO.username )? new User(): null )
+        })
+    }
     findOnlyPublic(): Promise<User[]> {
         return new Promise((resolve,reject)=>{
             resolve(usersDB.filter(v => v.isPublic===true))

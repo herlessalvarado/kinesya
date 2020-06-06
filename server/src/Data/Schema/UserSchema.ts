@@ -1,4 +1,3 @@
-
 export interface CharacteristicsSchema {
     height?: number
     weight?: number
@@ -13,7 +12,7 @@ export interface CharacteristicsSchema {
     ethnicity?: string
 }
 
-export interface UserSchema { 
+export interface UserSchema {
     id: string
     email: string
     password: string
