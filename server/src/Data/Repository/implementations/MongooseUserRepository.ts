@@ -35,7 +35,7 @@ export default class MongooseUserRepository implements UserRepository {
     }
 
     async isUserEmail(email: string): Promise<User> {
-        const _user = await UserModel.findOne({ email: email }).exec()
+        const _user = await UserModel.findOne({ email }).exec()
         if (_user === null) throw new UserNotFoundException()
         return fromSchemaToEntity(_user)
     }

@@ -6,7 +6,7 @@ import { TYPES } from "../../../ioc/container"
 import { CreateUserValidator } from "../../Validators/UserServiceValidator"
 import { UserService } from "../UserService"
 import { generateStandardToken } from "../../../utils/tokenManager"
-import bcrypt from "bcryptjs"
+import { PasswordException } from "../../Exceptions/UserServiceException"
 
 @injectable()
 export default class UserServiceImpl implements UserService {
@@ -33,10 +33,9 @@ export default class UserServiceImpl implements UserService {
 
     async login(user: UserLoginDTO) {
         const _user = await this.userRepository.isUserEmail(user.email);
-        const isPasswordMatch = bcrypt.compare(user.password, _user.password);
-        if(!isPasswordMatch) throw new Error;
+        if(await !_user.isPasswordMatch(user.email)) throw new PasswordException();
         _user.updateRefreshToken();
-        await this.userRepository.save(_user);
+        await this.userRepository.update(_user);
         return { refreshToken: _user.refreshToken!, token: generateStandardToken(_user)};
     }
 }
