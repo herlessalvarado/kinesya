@@ -1,6 +1,6 @@
 import { UserCreateValidator } from "../Validators/UserValidator"
 import { OK, CREATED} from "http-status-codes"
-import { UserCreateDTO } from "../../Application/DTO/UserDTO"
+import { UserCreateDTO, UserLoginDTO } from "../../Application/DTO/UserDTO"
 import { Router, Request, Response } from "express"
 import { UserService } from "../../Application/Services/UserService"
 import {handlerExceptions} from "../Handlers/HandlerExceptions"
@@ -18,6 +18,11 @@ export function userRouter(userController: UserController) {
     router.post("/users", async (req: Request, res: Response) => {
         const response = await userController.create(req as HttpRequest)
         res.status(response.status).send(response.body)
+    })
+
+    router.post("/users/login", async (req: Request, res: Response) => {
+        const response = await userController.login(req as HttpRequest);
+        res.status(response.status).send(response.body);
     })
 
     router.get("/users", async (req: Request, res: Response) => {
@@ -47,6 +52,19 @@ export class UserController {
             handlerExceptions(err,resp)
         }
         return resp
+    }
+
+    async login(req: HttpRequest): Promise<HttpResponse> {
+        const resp: HttpResponse = { body: "", status: OK };
+        try {
+            const _user = req.body as UserLoginDTO;
+            const auth = await this.service.login(_user);
+            resp.status = CREATED;
+            resp.body = auth;
+        } catch (err) {
+            handlerExceptions(err, resp);
+        }
+        return resp;
     }
 
     async getAllUsers(): Promise<HttpResponse> {

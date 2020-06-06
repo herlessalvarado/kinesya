@@ -1,11 +1,12 @@
 import UserRepository from "../../../Data/Repository/UserRepository"
-import UserDTO, { UserCreateDTO } from "../../DTO/UserDTO"
+import UserDTO, { UserCreateDTO, UserLoginDTO } from "../../DTO/UserDTO"
 import { fromUserCreateDTOtoEntity, fromEntityToUserDTO } from "../../Mappers/UserMapper"
 import { injectable, inject, LazyServiceIdentifer } from "inversify"
 import { TYPES } from "../../../ioc/container"
 import { CreateUserValidator } from "../../Validators/UserServiceValidator"
 import { UserService } from "../UserService"
 import { generateStandardToken } from "../../../utils/tokenManager"
+import bcrypt from "bcryptjs"
 
 @injectable()
 export default class UserServiceImpl implements UserService {
@@ -28,5 +29,14 @@ export default class UserServiceImpl implements UserService {
         entity.updateRefreshToken()
         await this.userRepository.save(entity)
         return { refreshToken: entity.refreshToken!, token: generateStandardToken(entity)}
+    }
+
+    async login(user: UserLoginDTO) {
+        const _user = await this.userRepository.isUserEmail(user.email);
+        const isPasswordMatch = bcrypt.compare(user.password, _user.password);
+        if(!isPasswordMatch) throw new Error;
+        _user.updateRefreshToken();
+        await this.userRepository.save(_user);
+        return { refreshToken: _user.refreshToken!, token: generateStandardToken(_user)};
     }
 }
