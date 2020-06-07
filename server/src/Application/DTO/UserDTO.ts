@@ -4,6 +4,11 @@ export interface UserCreateDTO {
     username: string
 }
 
+export interface UserLoginDTO {
+    email: string
+    password: string
+}
+
 export default interface UserDTO {
     username: string
     name?: string

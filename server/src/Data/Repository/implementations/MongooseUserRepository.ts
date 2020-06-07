@@ -42,6 +42,12 @@ export default class MongooseUserRepository implements UserRepository {
         const userDocument = new UserModel({ ...fromEntityToSchema(user) })
         await userDocument.save()
     }
+
+    async isUserEmail(email: string): Promise<User> {
+        const _user = await UserModel.findOne({ email }).exec()
+        if (_user === null) throw new UserNotFoundException()
+        return fromSchemaToEntity(_user)
+    }
 }
 
 const userSchema = new Schema({
@@ -97,7 +103,7 @@ const userSchema = new Schema({
         default: false,
     },
     referencePhotos: [String],
-    refresh_token: {
+    refreshToken: {
         type: String,
     },
     characteristics: {

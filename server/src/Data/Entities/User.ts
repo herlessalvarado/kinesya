@@ -1,5 +1,6 @@
 import { generateRefreshToken } from "../../utils/tokenManager"
 import { UserSchema } from "../Schema/UserSchema"
+import bcrypt from "bcryptjs"
 
 interface Characteristics {
     height?: number
@@ -33,9 +34,15 @@ export class User implements UserSchema {
     characteristics?: Characteristics
     tags?: Array<string>
 
+<<<<<<< HEAD
     updateRefreshToken() {
         this.refreshToken = generateRefreshToken(this)
     }
+=======
+    updateRefreshToken() {this.refreshToken = generateRefreshToken(this)}
+    removeRefreshToken() {this.refreshToken = undefined}
+    async isPasswordMatch(password: string) { return await bcrypt.compare(password, this.password) }
+>>>>>>> feature/backend-refactor
 
     setId(id: string) {
         this.id = id

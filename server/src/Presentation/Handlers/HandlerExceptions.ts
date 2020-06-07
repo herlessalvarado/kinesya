@@ -1,4 +1,4 @@
-import UserServiceException from "../../Application/Exceptions/UserServiceException"
+import UserServiceException, { PasswordException } from "../../Application/Exceptions/UserServiceException"
 import { HttpResponse } from "../Controllers/UserController"
 import { BAD_REQUEST, NOT_FOUND, INTERNAL_SERVER_ERROR, getStatusText } from "http-status-codes"
 import UserNotFoundException from "../../Data/Exceptions/RepositoryException"
@@ -17,7 +17,15 @@ export function handlerExceptions(error: Error, resp: HttpResponse) {
         case UserPresentationException:
             resp.status = BAD_REQUEST
             resp.body = error.message
+<<<<<<< HEAD
             break
+=======
+            break;
+        case PasswordException:
+            resp.status = BAD_REQUEST
+            resp.body = error.message
+            break;
+>>>>>>> feature/backend-refactor
         default:
             resp.status = INTERNAL_SERVER_ERROR
             resp.body = getStatusText(INTERNAL_SERVER_ERROR)
