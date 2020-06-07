@@ -1,18 +1,26 @@
 import { UserCreateValidator } from "../Validators/UserValidator"
 import { OK, CREATED } from "http-status-codes"
-import { UserCreateDTO, UserLoginDTO } from "../../Application/DTO/UserDTO"
+import UserDTO, { UserCreateDTO, UserLoginDTO } from "../../Application/DTO/UserDTO"
 import { Router, Request, Response } from "express"
 import { UserService } from "../../Application/Services/UserService"
 import { handlerExceptions } from "../Handlers/HandlerExceptions"
 import { Paginator } from "../../Data/Helper/query"
+import { trackPhotos } from "../../utils/fileManager"
+import { auth } from "../../middleware/user.auth"
+import { upload } from "../../middleware/user.upload"
 
 export interface HttpRequest {
     body: any
     query?: { location: string } & Paginator
+    files?: any
 }
 export interface HttpResponse {
     body: any
     status: number
+}
+
+export interface HttpAuthRequest {
+    body: { refreshToken: string }
 }
 
 export function userRouter(userController: UserController) {
@@ -23,12 +31,17 @@ export function userRouter(userController: UserController) {
     })
 
     router.post("/users/login", async (req: Request, res: Response) => {
-        const response = await userController.login(req as HttpRequest)
+        const response = await userController.login(req as HttpAuthRequest)
         res.status(response.status).send(response.body)
     })
 
     router.get("/users", async (req: Request, res: Response) => {
         const response = await userController.getAllUsers(req as HttpRequest)
+        res.status(response.status).send(response.body)
+    })
+
+    router.put("/users", [upload, auth], async (req: Request, res: Response) => {
+        const response = await userController.updateUser(req as HttpRequest)
         res.status(response.status).send(response.body)
     })
 
@@ -80,6 +93,32 @@ export class UserController {
             )
             resp.status = OK
             resp.body = JSON.stringify(users)
+        } catch (err) {
+            handlerExceptions(err, resp)
+        }
+        return resp
+    }
+
+    async generateRefreshToken(req: HttpAuthRequest): Promise<HttpResponse> {
+        const resp: HttpResponse = { body: "", status: OK }
+        try {
+            const auth = await this.service.generateToken(req.body?.refreshToken)
+            resp.status = OK
+            resp.body = auth
+        } catch (err) {
+            handlerExceptions(err, resp)
+        }
+        return resp
+    }
+
+    async updateUser(req: HttpRequest): Promise<HttpResponse> {
+        const resp: HttpResponse = { body: "", status: OK }
+        const user = req.body as UserDTO
+        if (!!req.files) trackPhotos(user, req.files)
+        try {
+            await this.service.updateUserByToken(req.body.token, user)
+            resp.status = OK
+            resp.body = "User details updated successfully"
         } catch (err) {
             handlerExceptions(err, resp)
         }

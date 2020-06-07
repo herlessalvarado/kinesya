@@ -1,11 +1,20 @@
 import UserRepository from "../../../Data/Repository/UserRepository"
 import UserDTO, { UserCreateDTO, UserLoginDTO } from "../../DTO/UserDTO"
-import { fromUserCreateDTOtoEntity, fromEntityToUserDTO } from "../../Mappers/UserMapper"
+import {
+    fromUserCreateDTOtoEntity,
+    fromEntityToUserDTO,
+    updateEntityFromUserDTO,
+} from "../../Mappers/UserMapper"
 import { injectable, inject, LazyServiceIdentifer } from "inversify"
 import { TYPES } from "../../../ioc/container"
 import { CreateUserValidator } from "../../Validators/UserServiceValidator"
 import { UserService } from "../UserService"
-import { generateStandardToken, verifyRefreshToken } from "../../../utils/tokenManager"
+import {
+    generateStandardToken,
+    verifyRefreshTokenAndUpdate,
+    getClaimsFromToken,
+    verifyRefreshToken,
+} from "../../../utils/tokenManager"
 import { PasswordException } from "../../Exceptions/UserServiceException"
 import { equals } from "../../../Data/Helper/query"
 
@@ -17,6 +26,23 @@ export default class UserServiceImpl implements UserService {
         @inject(new LazyServiceIdentifer(() => TYPES.UserRepository)) userRepository: UserRepository
     ) {
         this.userRepository = userRepository
+    }
+    async updateUserByToken(token: string, user: UserDTO): Promise<void> {
+        const claims = getClaimsFromToken(token)
+
+        const _user = await this.userRepository.findOne({
+            where: [equals("username", claims.username)],
+        })
+        const userDB = updateEntityFromUserDTO(_user, user)
+        await this.userRepository.update(userDB)
+    }
+    async generateToken(refreshToken: string) {
+        const claims = getClaimsFromToken(refreshToken)
+        const _user = await this.userRepository.findOne({
+            where: [equals("username", claims.username)],
+        })
+        verifyRefreshToken(_user.refreshToken!)
+        return { refreshToken: _user.refreshToken!, token: generateStandardToken(_user) }
     }
     async getAll(page?: number, limit?: number, location?: string): Promise<Array<UserDTO>> {
         const criteria: string[] = []
@@ -46,7 +72,7 @@ export default class UserServiceImpl implements UserService {
     async login(user: UserLoginDTO) {
         const _user = await this.userRepository.findOne({ where: [equals("email", user.email)] })
         if (!(await _user.isPasswordMatch(user.password))) throw new PasswordException()
-        verifyRefreshToken(_user)
+        verifyRefreshTokenAndUpdate(_user)
         await this.userRepository.update(_user)
         return { refreshToken: _user.refreshToken!, token: generateStandardToken(_user) }
     }

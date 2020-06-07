@@ -1,7 +1,7 @@
 
 import UserService from "../../src/Application/Services/impl/UserServiceImpl";
 import { BadUserCreateDTO, GoodUserCreateDTO, GoodUserLoginDTO, BadUserLoginDTO, MockUserEntity, usersDB } from "../Mocks/User";
-import UserServiceException, { PasswordException } from "../../src/Application/Exceptions/UserServiceException";
+import UserServiceException, { PasswordException, TokenExpiredException } from "../../src/Application/Exceptions/UserServiceException";
 import "ts-jest"
 
 import token from "jsonwebtoken"
@@ -96,12 +96,6 @@ describe('UserService tests', () => {
     })
 
     describe("login user service", () => {
-        beforeAll(() => {
-            jest.restoreAllMocks()
-            jest.mock("bcryptjs", () => ({
-                __esModule: true,
-            }))
-        })
         afterEach(() => {
             jest.resetAllMocks()
         })
@@ -128,6 +122,42 @@ describe('UserService tests', () => {
                 expect(error).toBeInstanceOf(PasswordException)
             }
         })
+        describe("Generate Token",()=>{
+            afterEach(() => {
+                jest.resetAllMocks()
+            })
+            test("Valid Refresh Token",async()=>{
+                token.decode = jest.fn().mockReturnValue({id:"id"})
+                token.verify = jest.fn().mockReturnValue(undefined)
+                token.sign = jest.fn().mockReturnValue("new token");
+                MockUserEntity.refreshToken = "refresh token"
+                MongooseUserRepository.prototype.findOne = jest.fn().mockResolvedValue
+                (MockUserEntity)
+                _userService = container.get<UserService>(TYPES.UserService);
+                const expected:AuthDTO = {refreshToken :"refresh token", token:"new token"}
+                const auth = await _userService.generateToken("old token")
+                expect(auth).toEqual(expected)
+
+            })
+
+            test("Invalid Refresh Token",async()=>{
+                expect.assertions(1)
+                token.decode = jest.fn().mockReturnValue({id:"id"})
+                token.verify = jest.fn().mockImplementationOnce(()=>{
+                    throw new TokenExpiredException()
+                })
+                MockUserEntity.refreshToken = "refresh token"
+                MongooseUserRepository.prototype.findOne = jest.fn().mockResolvedValue
+                (MockUserEntity)
+                _userService = container.get<UserService>(TYPES.UserService);
+                try {
+                   await _userService.generateToken("old token")
+                } catch (error) {
+                    expect(error).toBeInstanceOf(TokenExpiredException)
+                }
+            })
+        })
+
     })
 
 })
