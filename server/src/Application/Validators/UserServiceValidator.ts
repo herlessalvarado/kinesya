@@ -1,6 +1,7 @@
 import UserRepository from "../../Data/Repository/UserRepository"
 import { UserCreateDTO } from "../DTO/UserDTO"
 import UserServiceException from "../Exceptions/UserServiceException"
+import { equals } from "../../Data/Helper/query"
 
 abstract class UserValidator {
     protected readonly errors: string[]
@@ -10,13 +11,12 @@ abstract class UserValidator {
         this.repository = userRepository
     }
 
-   async validate(){
-       await this.executeValidations()
-       if(this.errors.length > 0)
-        throw new UserServiceException(this.errors)
-   }
+    async validate() {
+        await this.executeValidations()
+        if (this.errors.length > 0) throw new UserServiceException(this.errors)
+    }
 
-    abstract executeValidations():Promise<void>
+    abstract executeValidations(): Promise<void>
 
     getErrors() {
         return this.errors
@@ -28,7 +28,7 @@ abstract class UserValidator {
 export class CreateUserValidator extends UserValidator {
     private readonly user: UserCreateDTO
 
-    constructor(user: UserCreateDTO,userRepository: UserRepository) {
+    constructor(user: UserCreateDTO, userRepository: UserRepository) {
         super(userRepository)
         this.user = user
     }
@@ -36,14 +36,20 @@ export class CreateUserValidator extends UserValidator {
         await this.validUniqueEmail()
         await this.validUniqueUsername()
     }
-    
+
     private async validUniqueEmail() {
-        if ((await this.repository.findAll()).some((v) => v.email === this.user.email))
+        if (
+            (await this.repository.findOneOrNull({ where: [equals("email", this.user.email)] })) !==
+            null
+        )
             this.errors.push("This email already exists")
     }
     private async validUniqueUsername() {
-        const users = await this.repository.findAll()
-        if (users.some((v) => v.username === this.user.username))
+        if (
+            (await this.repository.findOneOrNull({
+                where: [equals("username", this.user.username)],
+            })) !== null
+        )
             this.errors.push("this username already exists")
     }
 }

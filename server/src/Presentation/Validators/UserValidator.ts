@@ -9,13 +9,12 @@ abstract class UserValidator {
         this.errors = []
     }
 
-   validate(){
-       this.executeValidations()
-       if(this.errors.length > 0)
-        throw new UserPresentationException(this.errors)
-   }
+    validate() {
+        this.executeValidations()
+        if (this.errors.length > 0) throw new UserPresentationException(this.errors)
+    }
 
-    abstract executeValidations():void
+    abstract executeValidations(): void
 
     getErrors() {
         return this.errors
@@ -26,7 +25,6 @@ abstract class UserValidator {
 }
 
 export class UserCreateValidator extends UserValidator {
-
     private readonly _user: UserCreateDTO
 
     constructor(user: UserCreateDTO) {
@@ -39,7 +37,7 @@ export class UserCreateValidator extends UserValidator {
         this.validateUsername()
         this.validatePassword()
     }
-    
+
     validateEmail() {
         if (this._user.email === undefined || !validator.isEmail(this._user.email))
             this.errors.push("Invalid Email")
@@ -57,7 +55,6 @@ export class UserCreateValidator extends UserValidator {
 }
 
 export class UserUpdateValidator extends UserValidator {
- 
     private readonly tagWhitelist: string[]
     private readonly user: UserDTO
 

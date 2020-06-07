@@ -7,6 +7,7 @@ import { CreateUserValidator } from "../../Validators/UserServiceValidator"
 import { UserService } from "../UserService"
 import { generateStandardToken, verifyRefreshToken } from "../../../utils/tokenManager"
 import { PasswordException } from "../../Exceptions/UserServiceException"
+import { equals } from "../../../Data/Helper/query"
 
 @injectable()
 export default class UserServiceImpl implements UserService {
@@ -17,25 +18,36 @@ export default class UserServiceImpl implements UserService {
     ) {
         this.userRepository = userRepository
     }
-    async getAll(): Promise<Array<UserDTO>> {
-        const users = await this.userRepository.findOnlyPublic()
+    async getAll(page?: number, limit?: number, location?: string): Promise<Array<UserDTO>> {
+        const criteria: string[] = []
+        if (!!location) criteria.push(equals("location", location))
+        const users = await this.userRepository.findAll({
+            where: [...criteria],
+            paginator:
+                !!page && !!limit
+                    ? {
+                          page: page > 0 ? (page - 1) * limit : 0,
+                          limit: page * limit,
+                      }
+                    : undefined,
+        })
         return users.map((u) => fromEntityToUserDTO(u))
     }
 
     async create(user: UserCreateDTO) {
-        const validator = new CreateUserValidator(user,this.userRepository)
+        const validator = new CreateUserValidator(user, this.userRepository)
         await validator.validate()
         const entity = await fromUserCreateDTOtoEntity(user)
         entity.updateRefreshToken()
         await this.userRepository.save(entity)
-        return { refreshToken: entity.refreshToken!, token: generateStandardToken(entity)}
+        return { refreshToken: entity.refreshToken!, token: generateStandardToken(entity) }
     }
 
     async login(user: UserLoginDTO) {
-        const _user = await this.userRepository.isUserEmail(user.email);
-        if(!await _user.isPasswordMatch(user.password)) throw new PasswordException();
-        verifyRefreshToken(_user);
-        await this.userRepository.update(_user);
-        return { refreshToken: _user.refreshToken!, token: generateStandardToken(_user)};
+        const _user = await this.userRepository.findOne({ where: [equals("email", user.email)] })
+        if (!(await _user.isPasswordMatch(user.password))) throw new PasswordException()
+        verifyRefreshToken(_user)
+        await this.userRepository.update(_user)
+        return { refreshToken: _user.refreshToken!, token: generateStandardToken(_user) }
     }
 }

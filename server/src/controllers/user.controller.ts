@@ -44,7 +44,7 @@ UserRouter.get("/users/me", auth, async (req: Request, res: Response) => {
         res.status(400).send(result.getErrorMessages())
     }
 })
-
+//FALTA
 UserRouter.get("/users", async (req: Request, res: Response) => {
     const result = !!req.query.location
         ? await userService.searchByDistrict(req.query.location)
@@ -68,7 +68,7 @@ UserRouter.get("/users/:username", async (req: Request, res: Response) => {
 /*
     UPDATE USER
                 */
-
+//FALTA
 UserRouter.put("/users", [upload, auth], async (req: Request, res: Response) => {
     if (!!req.body.characteristics) req.body.characteristics = JSON.parse(req.body.characteristics)
     const result = await userService.updateUser(req.body.token, req.body, req.files)
@@ -92,6 +92,7 @@ UserRouter.post("/users/me/logout", async (req: Request, res: Response) => {
     }
 })
 
+//FALTA
 UserRouter.post("/users/token", async (req: Request, res: Response) => {
     const refresh_token = req.body.refresh_token
     const result = await userService.generateToken(refresh_token)
