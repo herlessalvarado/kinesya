@@ -9,6 +9,7 @@ import { Paginator } from "../../Data/Helper/query"
 export interface HttpRequest {
     body: any
     query?: { location: string } & Paginator
+    params?: any
 }
 export interface HttpResponse {
     body: any
@@ -31,6 +32,21 @@ export function userRouter(userController: UserController) {
         const response = await userController.getAllUsers(req as HttpRequest)
         res.status(response.status).send(response.body)
     })
+
+    router.post("/users/me/logout", async (req: Request, res: Response) => {
+        const response = await userController.logout(req as HttpRequest)
+        res.status(response.status).send(response.body)
+    })
+
+    router.get("/users/:username", async (req: Request, res: Response) => {
+        const response = await userController.getByUsername(req as HttpRequest)
+        res.status(response.status).send(response.body)
+    })
+
+    // router.get("/users/me", auth, async (req: Request, res: Response) => {
+    //     const response = await userController.getCurrentUser(req as HttpRequest)
+    //     res.status(response.status).send(response.body)
+    // }
 
     return router
 }
@@ -85,4 +101,42 @@ export class UserController {
         }
         return resp
     }
+
+    async logout(req: HttpRequest): Promise<HttpResponse> {
+        const resp: HttpResponse = { body: "", status: OK }
+        try {
+            const message = await this.service.logout(req.body.refreshToken);
+            resp.status = OK
+            resp.body = message
+        } catch (err) {
+            handlerExceptions(err, resp)
+        }
+        return resp
+    }
+
+    async getByUsername(req: HttpRequest): Promise<HttpResponse> {
+        const resp: HttpResponse = { body: "", status: OK }
+        try {
+            const _user = await this.service.getByUsername(req.params.username);
+            resp.status = OK
+            resp.body = JSON.stringify(_user)
+        } catch (err) {
+            handlerExceptions(err, resp)
+        }
+        return resp
+    }
+
+    async getCurrentUser(req: HttpRequest): Promise<HttpResponse> {
+        const resp: HttpResponse = { body: "", status: OK }
+        try {
+            const _user = await this.service.getCurrentUser(req.body.refreshToken);
+            resp.status = OK
+            resp.body = JSON.stringify(_user)
+        } catch (err) {
+            handlerExceptions(err, resp)
+        }
+        return resp
+    }
+
+
 }
