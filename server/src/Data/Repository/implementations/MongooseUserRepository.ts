@@ -27,11 +27,12 @@ export default class MongooseUserRepository implements UserRepository {
             _query.$where(criteria)
         })
         const _user = await _query.exec()
+
         return _user === null ? _user : fromSchemaToEntity(_user)
     }
 
     async findAll(query: Query): Promise<User[]> {
-        const _query = UserModel.find(/* { isPublic: true } */)
+        const _query = UserModel.find({ isPublic: true })
         query.where.forEach((criteria) => {
             _query.$where(criteria)
         })

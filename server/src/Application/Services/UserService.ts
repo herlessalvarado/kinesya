@@ -8,4 +8,6 @@ export interface UserService {
     logout(refreshToken: string | undefined): Promise<string>
     getByUsername(username: string): Promise<UserDTO>
     getCurrentUser(refreshToken: string | undefined): Promise<UserDTO>
+    generateToken(refreshToken: string): Promise<AuthDTO>
+    updateUserByToken(token: string, user: UserDTO): Promise<void>
 }
