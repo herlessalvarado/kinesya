@@ -78,8 +78,6 @@ export default class UserServiceImpl implements UserService {
     }
 
     async logout(refreshToken: string | undefined): Promise<string> {
-        //ask if okay
-        //falta tests
         const _user = await this.userRepository.findOne({ where: [equals("refreshToken", refreshToken)]});
         _user.removeRefreshToken();
         await this.userRepository.update(_user);
@@ -87,15 +85,11 @@ export default class UserServiceImpl implements UserService {
     }
 
     async getByUsername(username: string): Promise<UserDTO> {
-        //ask if okay
-        //falta controller y test
         const _user = await this.userRepository.findOne({ where: [equals("username", username)]});
         return fromEntityToUserDTO(_user);
     }
 
     async getCurrentUser(refreshToken: string | undefined): Promise<UserDTO> {
-        //ask if okay
-        //falta controller y test
         const _user = await this.userRepository.findOne({ where: [equals("refreshToken", refreshToken)]});
         return fromEntityToUserDTO(_user);
     }

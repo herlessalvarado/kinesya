@@ -46,15 +46,15 @@ export function userRouter(userController: UserController) {
         res.status(response.status).send(response.body)
     })
 
+    router.get("/users/me", auth, async (req: Request, res: Response) => {
+        const response = await userController.getCurrentUser(req as HttpRequest)
+        res.status(response.status).send(response.body)
+    })
+
     router.get("/users/:username", async (req: Request, res: Response) => {
         const response = await userController.getByUsername(req as HttpRequest)
         res.status(response.status).send(response.body)
     })
-
-    // router.get("/users/me", auth, async (req: Request, res: Response) => {
-    //     const response = await userController.getCurrentUser(req as HttpRequest)
-    //     res.status(response.status).send(response.body)
-    // }
 
     router.put("/users", [upload, auth], async (req: Request, res: Response) => {
         const response = await userController.updateUser(req as HttpRequest)
@@ -125,6 +125,7 @@ export class UserController {
             handlerExceptions(err, resp)
         }
         return resp
+    }
           
     async generateRefreshToken(req: HttpAuthRequest): Promise<HttpResponse> {
         const resp: HttpResponse = { body: "", status: OK }
@@ -148,6 +149,7 @@ export class UserController {
             handlerExceptions(err, resp)
         }
         return resp
+    }
 
     async updateUser(req: HttpRequest): Promise<HttpResponse> {
         const resp: HttpResponse = { body: "", status: OK }
