@@ -33,7 +33,7 @@ export default class UserServiceImpl implements UserService {
 
     async login(user: UserLoginDTO) {
         const _user = await this.userRepository.isUserEmail(user.email);
-        if(await !_user.isPasswordMatch(user.email)) throw new PasswordException();
+        if(!await _user.isPasswordMatch(user.password)) throw new PasswordException();
         verifyRefreshToken(_user);
         await this.userRepository.update(_user);
         return { refreshToken: _user.refreshToken!, token: generateStandardToken(_user)};

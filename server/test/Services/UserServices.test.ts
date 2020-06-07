@@ -1,7 +1,7 @@
 import UserRepository from "../../src/Data/Repository/UserRepository"
 import UserService from "../../src/Application/Services/impl/UserServiceImpl";
 import {User} from "../../src/Data/Entities/User";
-import { usersDB, BadUserCreateDTO, GoodUserCreateDTO } from "../Mocks/User";
+import { usersDB, BadUserCreateDTO, GoodUserCreateDTO, GoodUserLoginDTO, BadUserLoginDTO } from "../Mocks/User";
 import "reflect-metadata"
 import container,{TYPES} from "../../src/ioc/container"
 import UserServiceException from "../../src/Application/Exceptions/UserServiceException";
@@ -11,6 +11,7 @@ import UserDTO from "../../src/Application/DTO/UserDTO";
 import token from "jsonwebtoken"
 import { AuthDTO } from "../../src/Application/DTO/AuthDTO";
 import dotenv from "dotenv"
+import bcrypt from "bcryptjs"
 dotenv.config()
 
 @injectable()
@@ -34,10 +35,19 @@ class FakeUserRepository implements UserRepository {
         })
     }
     update(user: User): Promise<void> {
-        throw new Error("Method not implemented.");
+        return new Promise((resolve,reject)=>{
+            resolve()
+            reject(new Error("DB Error"))
+        })
     }
     getByName(name: string): Promise<User> {
         throw new Error("Method not implemented.");
+    }
+    isUserEmail(email: string): Promise<User> {
+        return new Promise((resolve,reject)=>{
+            resolve(usersDB.find(v => v.email===email))
+            reject(new Error("No users"))
+        })
     }
 
 } 
@@ -97,4 +107,27 @@ describe('UserService tests', () => {
         })
 
     })
+    
+    describe("login user service", () => {
+        test("login valid user", async () => {
+            token.sign = jest.fn().mockImplementation((claims,key,options)=>(key === process.env.JWT_KEY!) ? "token" : "refresh_token");
+            const expectedAuthDTO:AuthDTO = {refreshToken :"refresh_token",token:"token"}
+
+            const login = await userService.login(GoodUserLoginDTO)
+            expect(login).toEqual(expectedAuthDTO)
+        })
+        test("login invalid password", async () => {
+            jest.mock("bcryptjs",()=>({
+                __esModule:true,
+            }))
+            bcrypt.compare = jest.fn().mockResolvedValueOnce(false);
+            expect.assertions(1)
+            try {
+                await userService.login(BadUserLoginDTO);
+            } catch (error) {
+                expect(1).toEqual(1)
+            }
+        })
+    })
+
 })
