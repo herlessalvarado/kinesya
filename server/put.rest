@@ -1,0 +1,8 @@
+PUT http://localhost:8000/users
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlZGE3MGFmOWM3MTZhNDU2NDBlN2FkNCIsInVzZXJuYW1lIjoiSm9zZTAxMDIiLCJpYXQiOjE1OTE1NTE3MjAsImV4cCI6MTU5MTU1MjYyMH0.4LsGrPCr9NmUrswOVPAens0Ymwm4sZm8vkrVQYDaSC8
+Content-Type: application/json
+
+{
+    "price":"12.45",
+    "eyes":"blue"
+}

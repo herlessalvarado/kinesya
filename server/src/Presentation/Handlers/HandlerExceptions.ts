@@ -1,8 +1,15 @@
 import UserServiceException, {
     PasswordException,
+    TokenExpiredException,
 } from "../../Application/Exceptions/UserServiceException"
 import { HttpResponse } from "../Controllers/UserController"
-import { BAD_REQUEST, NOT_FOUND, INTERNAL_SERVER_ERROR, getStatusText } from "http-status-codes"
+import {
+    BAD_REQUEST,
+    NOT_FOUND,
+    INTERNAL_SERVER_ERROR,
+    getStatusText,
+    UNAUTHORIZED,
+} from "http-status-codes"
 import UserNotFoundException from "../../Data/Exceptions/RepositoryException"
 import UserPresentationException from "../Exceptions/UserPresentationException"
 
@@ -21,7 +28,11 @@ export function handlerExceptions(error: Error, resp: HttpResponse) {
             resp.body = error.message
             break
         case PasswordException:
-            resp.status = BAD_REQUEST
+            resp.status = UNAUTHORIZED
+            resp.body = error.message
+            break
+        case TokenExpiredException:
+            resp.status = UNAUTHORIZED
             resp.body = error.message
             break
         default:

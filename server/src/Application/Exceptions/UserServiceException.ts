@@ -11,3 +11,10 @@ export class PasswordException extends Error {
         Object.setPrototypeOf(this, new.target.prototype)
     }
 }
+
+export class TokenExpiredException extends Error {
+    constructor() {
+        super("RefreshToken has been expired")
+        Object.setPrototypeOf(this, new.target.prototype)
+    }
+}

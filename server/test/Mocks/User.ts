@@ -34,8 +34,8 @@ export const usersDB: User[] = [
     .setUsername("Elizabeth")
 ];
 
-export const MockUserEntity = new User().setId("1")
-.setPassword("123")
+export const MockUserEntity = new User().setId("1").setRefreshToken("refresh Token")
+.setPassword("1234")
 .setEmail("Pamela@gmail.com")
 .setPublic(true)
 .setUsername("Pamela")
