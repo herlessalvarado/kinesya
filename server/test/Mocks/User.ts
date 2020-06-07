@@ -6,28 +6,39 @@ export const usersDB: User[] = [
     .setPassword("123")
     .setEmail("Pamela@gmail.com")
     .setPublic(true)
+    .setLocation("Chorrillos")
     .setUsername("Pamela"),
     new User().setId("2")
     .setPassword("123")
     .setEmail("Fabiola@gmail.com")
     .setPublic(false)
+    .setLocation("Chorrillos")
     .setUsername("Fabiola"),
     new User().setId("3")
     .setPassword("123")
     .setEmail("Luciana@gmail.com")
     .setPublic(false)
+    .setLocation("Chorrillos")
     .setUsername("Luciana"),
     new User().setId("4")
     .setPassword("123")
     .setEmail("Alejandra@gmail.com")
     .setPublic(true)
+    .setLocation("Chorrillos")
     .setUsername("Alejandra"),
     new User().setId("5")
     .setPassword("123")
     .setEmail("Elizabeth@gmail.com")
     .setPublic(true)
+    .setLocation("Chorrillos")
     .setUsername("Elizabeth")
 ];
+
+export const MockUserEntity = new User().setId("1")
+.setPassword("123")
+.setEmail("Pamela@gmail.com")
+.setPublic(true)
+.setUsername("Pamela")
 
 export const usersDTO:UserDTO[] =[
     {

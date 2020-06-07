@@ -7,7 +7,7 @@ export default class UserServiceException extends Error {
 
 export class PasswordException extends Error {
     constructor() {
-        super("Password no coincide"); 
+        super("Password no coincide")
         Object.setPrototypeOf(this, new.target.prototype)
     }
 }

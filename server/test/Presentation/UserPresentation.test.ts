@@ -54,7 +54,7 @@ describe("User Presentation Test",()=>{
             userService.getAll.mockResolvedValueOnce(usersDTO)
             const expectedResponse = <HttpResponse>{body:JSON.stringify(usersDTO),status:OK}
 
-            const response = await userController.getAllUsers();
+            const response = await userController.getAllUsers({body:"",query:{limit:20,location:"Chorrillos",page:0}});
             
             expect(response).toEqual(expectedResponse)
         })

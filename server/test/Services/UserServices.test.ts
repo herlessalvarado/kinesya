@@ -1,141 +1,131 @@
-import UserRepository from "../../src/Data/Repository/UserRepository"
+
 import UserService from "../../src/Application/Services/impl/UserServiceImpl";
-import {User} from "../../src/Data/Entities/User";
-import { usersDB, BadUserCreateDTO, GoodUserCreateDTO, GoodUserLoginDTO, BadUserLoginDTO } from "../Mocks/User";
-import "reflect-metadata"
-import container,{TYPES} from "../../src/ioc/container"
-import UserServiceException from "../../src/Application/Exceptions/UserServiceException";
+import { BadUserCreateDTO, GoodUserCreateDTO, GoodUserLoginDTO, BadUserLoginDTO, MockUserEntity, usersDB } from "../Mocks/User";
+import UserServiceException, { PasswordException } from "../../src/Application/Exceptions/UserServiceException";
 import "ts-jest"
-import { injectable } from "inversify";
-import UserDTO from "../../src/Application/DTO/UserDTO";
+
 import token from "jsonwebtoken"
 import { AuthDTO } from "../../src/Application/DTO/AuthDTO";
 import dotenv from "dotenv"
 import bcrypt from "bcryptjs"
+
+import { Query, equals } from "../../src/Data/Helper/query";
+import "reflect-metadata"
+import container, { TYPES } from "../../src/ioc/container";
+import MongooseUserRepository from "../../src/Data/Repository/implementations/MongooseUserRepository"
+import UserDTO from "../../src/Application/DTO/UserDTO";
 dotenv.config()
 
-@injectable()
-class FakeUserRepository implements UserRepository {
-    findByEmailOrNull(email: string): Promise<User|null> {
-        return new Promise((resolve,reject)=>{
-            resolve((email !== BadUserCreateDTO.email )? new User(): null )
-        })
-    }
-    findByUsernameOrNull(username: string): Promise<User|null> {
-        return new Promise((resolve,reject)=>{
-            resolve((username !== BadUserCreateDTO.username )? new User(): null )
-        })
-    }
-    findOnlyPublic(): Promise<User[]> {
-        return new Promise((resolve,reject)=>{
-            resolve(usersDB.filter(v => v.isPublic===true))
-            reject(new Error("No users"))
-        })
-    }
-    save(user: User): Promise<void> {
-        return new Promise((resolve,reject)=>{
-            resolve()
-            reject(new Error("DB Error"))
-        })
-    }
-    findAll(): Promise<User[]> {
-        return new Promise((resolve,reject)=>{
-            resolve(usersDB)
-            reject(new Error("No users"))
-        })
-    }
-    update(user: User): Promise<void> {
-        return new Promise((resolve,reject)=>{
-            resolve()
-            reject(new Error("DB Error"))
-        })
-    }
-    getByName(name: string): Promise<User> {
-        throw new Error("Method not implemented.");
-    }
-    isUserEmail(email: string): Promise<User> {
-        return new Promise((resolve,reject)=>{
-            resolve(usersDB.find(v => v.email===email))
-            reject(new Error("No users"))
-        })
-    }
-
-} 
-
-
-
 describe('UserService tests', () => {
-    let userService: UserService;
-    beforeAll(()=>{
-        container.unbind(TYPES.UserRepository);
-        container.bind<UserRepository>(TYPES.UserRepository).to(FakeUserRepository);
-        userService = container.get<UserService>(TYPES.UserService);
-    })
-   
 
-    describe("create service", () => {
-        afterEach(()=>{
+    let _userService: UserService;
+
+    describe("create user service", () => {
+        beforeEach(() => {
             jest.restoreAllMocks()
-          })
+
+        })
         test("user with duplicate email and username", async () => {
             expect.assertions(1)
+            MongooseUserRepository.prototype.save = jest.fn().mockResolvedValue(undefined)
+            MongooseUserRepository.prototype.findOneOrNull = jest.fn().mockResolvedValue(MockUserEntity)
+            _userService = container.get<UserService>(TYPES.UserService);
+
             try {
-                await userService.create(BadUserCreateDTO);
+                await _userService.create(BadUserCreateDTO);
             } catch (error) {
-                expect(error).toEqual(new UserServiceException(["This email already exists","this username already exists"]))
+                expect(error).toEqual(new UserServiceException(["This email already exists", "this username already exists"]))
             }
 
         })
         test("user with unique email and username", async () => {
-            token.sign = jest.fn().mockImplementation((claims,key,options)=>(key === process.env.JWT_KEY!) ? "token" : "refresh_token");
-            const expectedAuthDTO:AuthDTO = {refreshToken :"refresh_token",token:"token"}
+            token.sign = jest.fn().mockImplementation((claims, key, options) => (key === process.env.JWT_KEY!) ? "token" : "refresh_token");
+            MongooseUserRepository.prototype.save = jest.fn().mockResolvedValue(undefined)
+            MongooseUserRepository.prototype.findOneOrNull = jest.fn().mockResolvedValue(null)
+            _userService = container.get<UserService>(TYPES.UserService);
+            const expectedAuthDTO: AuthDTO = { refreshToken: "refresh_token", token: "token" }
 
-            
-            await expect(userService.create(GoodUserCreateDTO)).resolves.toEqual(expectedAuthDTO)
+
+            await expect(_userService.create(GoodUserCreateDTO)).resolves.toEqual(expectedAuthDTO)
         })
     })
     describe("get all user service", () => {
-        test("get all public users", async () => {
+        test("get all users", async () => {
             const expectedUsers = <Array<UserDTO>>[{
                 username: "Pamela",
-                email: "Pamela@gmail.com"
+                email: "Pamela@gmail.com",
+                location: "Chorrillos"
             },
             {
                 username: "Alejandra",
-                email: "Alejandra@gmail.com"
+                email: "Alejandra@gmail.com",
+                location: "Chorrillos"
             },
             {
                 username: "Elizabeth",
-                email: "Elizabeth@gmail.com"
+                email: "Elizabeth@gmail.com",
+                location: "Chorrillos"
             }
-        ]
+            ]
+            MongooseUserRepository.prototype.findAll = jest.fn().mockResolvedValue(usersDB.filter((v) => v.isPublic === true))
 
-        const users = await userService.getAll();
+            const users = await _userService.getAll(1, 5, "Chorrillos");
 
-        expect(users).toEqual(expectedUsers)
+            expect(users).toEqual(expectedUsers)
 
         })
 
-    })
-    
-    describe("login user service", () => {
-        test("login valid user", async () => {
-            token.sign = jest.fn().mockImplementation((claims,key,options)=>(key === process.env.JWT_KEY!) ? "token" : "refresh_token");
-            const expectedAuthDTO:AuthDTO = {refreshToken :"refresh_token",token:"token"}
+        test("valid query builder", async () => {
+            MongooseUserRepository.prototype.findAll = jest.fn().mockResolvedValue(usersDB)
+            const expectedQuery: Query = {
+                where: [equals("location", "Chorrillos")],
+                paginator: {
+                    page: 0,
+                    limit: 5
+                }
+            }
 
-            const login = await userService.login(GoodUserLoginDTO)
+            await _userService.getAll(1, 5, "Chorrillos");
+
+            expect(MongooseUserRepository.prototype.findAll).toHaveBeenCalledWith(expectedQuery)
+
+        })
+
+
+
+    })
+
+    describe("login user service", () => {
+        beforeAll(() => {
+            jest.restoreAllMocks()
+            jest.mock("bcryptjs", () => ({
+                __esModule: true,
+            }))
+        })
+        afterEach(() => {
+            jest.resetAllMocks()
+        })
+        test("login valid user", async () => {
+            token.sign = jest.fn().mockImplementation((claims, key, options) => (key === process.env.JWT_KEY!) ? "token" : "refresh_token");
+            const expectedAuthDTO: AuthDTO = { refreshToken: "refresh_token", token: "token" }
+            bcrypt.compare = jest.fn().mockResolvedValueOnce(true);
+            MongooseUserRepository.prototype.findOne = jest.fn().mockResolvedValue(MockUserEntity)
+            MongooseUserRepository.prototype.update = jest.fn().mockResolvedValue(undefined)
+            _userService = container.get<UserService>(TYPES.UserService);
+
+            const login = await _userService.login(GoodUserLoginDTO)
             expect(login).toEqual(expectedAuthDTO)
         })
         test("login invalid password", async () => {
-            jest.mock("bcryptjs",()=>({
-                __esModule:true,
-            }))
             bcrypt.compare = jest.fn().mockResolvedValueOnce(false);
+            MongooseUserRepository.prototype.findOne = jest.fn().mockResolvedValue(MockUserEntity)
+            MongooseUserRepository.prototype.update = jest.fn().mockResolvedValue(undefined)
+            _userService = container.get<UserService>(TYPES.UserService);
             expect.assertions(1)
             try {
-                await userService.login(BadUserLoginDTO);
+                await _userService.login(BadUserLoginDTO);
             } catch (error) {
-                expect(1).toEqual(1)
+                expect(error).toBeInstanceOf(PasswordException)
             }
         })
     })

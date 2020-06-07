@@ -1,8 +1,7 @@
-POST http://localhost:8000/users
+POST http://localhost:8000/users/login
 Content-Type: application/json
 
 {
-    "email":"josemowa4532b@gmail.com",
-    "password":"Joseluis123qwe",
-    "username":"Jose0101"
+    "email":"josemowa4532a@gmail.com",
+    "password":"Joseluis123qwe"
 }

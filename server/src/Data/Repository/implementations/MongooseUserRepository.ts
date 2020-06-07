@@ -8,45 +8,46 @@ import { User } from "../../Entities/User"
 import { UserSchema } from "../../Schema/UserSchema"
 import { fromSchemaToEntity, fromEntityToSchema } from "../../Mapper/UserMapper"
 import UserNotFoundException from "../../Exceptions/RepositoryException"
+import { Query } from "../../Helper/query"
 
 @injectable()
 export default class MongooseUserRepository implements UserRepository {
-    async findByEmailOrNull(email: string): Promise<User | null> {
-        const _user = await UserModel.findOne({ email }).exec()
-        return _user === null ? _user : fromSchemaToEntity(_user)
+    async findOne(query: Query): Promise<User> {
+        const _query = UserModel.findOne()
+        query.where.forEach((criteria) => {
+            _query.$where(criteria)
+        })
+        const _user = await _query.exec()
+        if (_user === null) throw new UserNotFoundException()
+        return fromSchemaToEntity(_user)
     }
-    async findByUsernameOrNull(username: string): Promise<User | null> {
-        const _user = await UserModel.findOne({ username }).exec()
+    async findOneOrNull(query: Query): Promise<User | null> {
+        const _query = UserModel.findOne()
+        query.where.forEach((criteria) => {
+            _query.$where(criteria)
+        })
+        const _user = await _query.exec()
         return _user === null ? _user : fromSchemaToEntity(_user)
     }
 
-    async findOnlyPublic(): Promise<User[]> {
-        const users = await UserModel.find({ isPublic: true }).exec()
+    async findAll(query: Query): Promise<User[]> {
+        const _query = UserModel.find(/* { isPublic: true } */)
+        query.where.forEach((criteria) => {
+            _query.$where(criteria)
+        })
+        if (!!query.paginator) _query.skip(query.paginator.page).limit(query.paginator.limit)
+        const users = await _query.exec()
         return users.map((u) => fromSchemaToEntity(u))
     }
-    async findAll(): Promise<User[]> {
-        const users = await UserModel.find().exec()
-        return users.map((u) => fromSchemaToEntity(u))
-    }
+
     async update(user: User): Promise<void> {
         const _user = await UserModel.findOneAndUpdate({ _id: user.id }, user).exec()
         if (_user === null) throw new UserNotFoundException()
-    }
-    async getByName(name: string): Promise<User> {
-        const _user = await UserModel.findOne({ name }).exec()
-        if (_user === null) throw new UserNotFoundException()
-        return fromSchemaToEntity(_user)
     }
 
     async save(user: User): Promise<void> {
         const userDocument = new UserModel({ ...fromEntityToSchema(user) })
         await userDocument.save()
-    }
-
-    async isUserEmail(email: string): Promise<User> {
-        const _user = await UserModel.findOne({ email }).exec()
-        if (_user === null) throw new UserNotFoundException()
-        return fromSchemaToEntity(_user)
     }
 }
 
@@ -150,6 +151,6 @@ const userSchema = new Schema({
     },
 })
 
-type UserDocument = UserSchema & Document
+export type UserDocument = UserSchema & Document
 
 const UserModel = model<UserDocument>("User", userSchema)
