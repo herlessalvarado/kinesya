@@ -27,9 +27,12 @@ function App() {
                 <Route path="/register">
                     <Register />
                 </Route>
-                <PrivateRoute path="/dashboard" redirect="/login">
+                {/* <PrivateRoute path="/dashboard" redirect="/login">
                     <Dashboard />
-                </PrivateRoute>
+                </PrivateRoute> */}
+                <Route path="/dashboard">
+                    <Dashboard />
+                </Route>
             </Switch>
             </Suspense>
         </Router>
