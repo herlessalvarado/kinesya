@@ -6,4 +6,5 @@ export default interface UserRepository {
     update(user: User): Promise<void>
     getByName(name: string): Promise<User>
     findOnlyPublic(): Promise<User[]>
+    isUserEmail(email: string): Promise<User>
 }

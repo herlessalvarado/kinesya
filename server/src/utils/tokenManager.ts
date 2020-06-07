@@ -34,3 +34,11 @@ export const generateStandardToken = function (user: User): string {
         expiresIn: process.env.JWT_EXPIRES!,
     })
 }
+
+export const verifyRefreshToken = function (user: User): void {
+    jwt.verify(user.refreshToken!, process.env.R_JWT_KEY!, function (err) {
+        if (!!err) {
+            user.updateRefreshToken()
+        }
+    })
+}

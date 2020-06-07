@@ -1,5 +1,5 @@
 import {User} from "../../src/Data/Entities/User";
-import UserDTO, { UserCreateDTO } from "../../src/Application/DTO/UserDTO";
+import UserDTO, { UserCreateDTO, UserLoginDTO } from "../../src/Application/DTO/UserDTO";
 
 export const usersDB: User[] = [
     new User().setId("1")
@@ -52,4 +52,14 @@ export const GoodUserCreateDTO:UserCreateDTO = {
     email: "pamel123@gmail.com",
     username: "Fabiolita",
     password: "123qwe4r"
+}
+
+export const GoodUserLoginDTO: UserLoginDTO = {
+    email: "Pamela@gmail.com",
+    password: "123"
+}
+
+export const BadUserLoginDTO: UserLoginDTO = {
+    email: "Pamela@gmail.com",
+    password: "1234qwer"
 }
