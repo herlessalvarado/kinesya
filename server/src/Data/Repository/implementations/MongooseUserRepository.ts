@@ -1,7 +1,6 @@
 import { Schema, Document, model } from "mongoose"
 
-import { Zodiac, Ethnicity, Services } from "../../../shared/constants"
-import { Orientation } from "../../../utils/constants_variables"
+import { Orientation, Zodiac, Ethnicity, Services } from "../../../utils/constants_variables"
 import UserRepository from "../UserRepository"
 import { injectable } from "inversify"
 import { User } from "../../Entities/User"

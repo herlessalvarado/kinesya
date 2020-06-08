@@ -78,19 +78,23 @@ export default class UserServiceImpl implements UserService {
     }
 
     async logout(refreshToken: string | undefined): Promise<string> {
-        const _user = await this.userRepository.findOne({ where: [equals("refreshToken", refreshToken)]});
-        _user.removeRefreshToken();
-        await this.userRepository.update(_user);
-        return "The refresh token has been removed!";
+        const _user = await this.userRepository.findOne({
+            where: [equals("refreshToken", refreshToken)],
+        })
+        _user.removeRefreshToken()
+        await this.userRepository.update(_user)
+        return "The refresh token has been removed!"
     }
 
     async getByUsername(username: string): Promise<UserDTO> {
-        const _user = await this.userRepository.findOne({ where: [equals("username", username)]});
-        return fromEntityToUserDTO(_user);
+        const _user = await this.userRepository.findOne({ where: [equals("username", username)] })
+        return fromEntityToUserDTO(_user)
     }
 
     async getCurrentUser(refreshToken: string | undefined): Promise<UserDTO> {
-        const _user = await this.userRepository.findOne({ where: [equals("refreshToken", refreshToken)]});
-        return fromEntityToUserDTO(_user);
+        const _user = await this.userRepository.findOne({
+            where: [equals("refreshToken", refreshToken)],
+        })
+        return fromEntityToUserDTO(_user)
     }
 }

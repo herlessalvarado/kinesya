@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express"
-import {auth} from "../../src/middleware/user.auth"
+import {auth} from "../../src/Presentation/Middleware/auth"
 import "ts-jest"
 import { mock } from 'jest-mock-extended';
 import dotenv from "dotenv"

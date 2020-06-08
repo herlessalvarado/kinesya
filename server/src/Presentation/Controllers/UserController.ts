@@ -6,8 +6,8 @@ import { UserService } from "../../Application/Services/UserService"
 import { handlerExceptions } from "../Handlers/HandlerExceptions"
 import { Paginator } from "../../Data/Helper/query"
 import { trackPhotos } from "../../utils/fileManager"
-import { auth } from "../../middleware/user.auth"
-import { upload } from "../../middleware/user.upload"
+import { auth } from "../Middleware/auth"
+import { upload } from "../Middleware/upload"
 
 export interface HttpRequest {
     body: any
@@ -118,7 +118,7 @@ export class UserController {
     async logout(req: HttpRequest): Promise<HttpResponse> {
         const resp: HttpResponse = { body: "", status: OK }
         try {
-            const message = await this.service.logout(req.body.refreshToken);
+            const message = await this.service.logout(req.body.refreshToken)
             resp.status = OK
             resp.body = message
         } catch (err) {
@@ -126,7 +126,7 @@ export class UserController {
         }
         return resp
     }
-          
+
     async generateRefreshToken(req: HttpAuthRequest): Promise<HttpResponse> {
         const resp: HttpResponse = { body: "", status: OK }
         try {
@@ -142,7 +142,7 @@ export class UserController {
     async getByUsername(req: HttpRequest): Promise<HttpResponse> {
         const resp: HttpResponse = { body: "", status: OK }
         try {
-            const _user = await this.service.getByUsername(req.params.username);
+            const _user = await this.service.getByUsername(req.params.username)
             resp.status = OK
             resp.body = JSON.stringify(_user)
         } catch (err) {
@@ -168,7 +168,7 @@ export class UserController {
     async getCurrentUser(req: HttpRequest): Promise<HttpResponse> {
         const resp: HttpResponse = { body: "", status: OK }
         try {
-            const _user = await this.service.getCurrentUser(req.body.refreshToken);
+            const _user = await this.service.getCurrentUser(req.body.refreshToken)
             resp.status = OK
             resp.body = JSON.stringify(_user)
         } catch (err) {
@@ -176,5 +176,4 @@ export class UserController {
         }
         return resp
     }
-
 }
