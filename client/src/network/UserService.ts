@@ -1,7 +1,7 @@
 import axios from "axios"
 import headers, { handlerLogOutError } from "./axiosConfig"
 import { getRefreshToken, AuthOn } from "../cache/CookieManager"
-
+axios.defaults.baseURL = process.env.REACT_APP_API_URL
 export const getNewToken = () => {
     return axios
         .post("/users/token", { refresh_token: getRefreshToken() })
@@ -13,7 +13,7 @@ export const getNewToken = () => {
 }
 
 export const _getUserByToken = () => {
-    return axios.get("users/me", headers()).then((response) => {
+    return axios.get("/users/me", headers()).then((response) => {
         return response.data
     })
 }

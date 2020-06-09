@@ -1,16 +1,13 @@
 import React, { lazy, Suspense } from "react"
-import axios from "axios"
+
 import PrivateRoute from "./routing/PrivateRoute"
 import "croppie/croppie.css"
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom"
-import Profile from "./views/Profile"
+const Profile = lazy(() => import("./views/Profile"))
 const Home = lazy(() => import("./views/Home"))
 const Login = lazy(() => import("./views/Login"))
 const Register = lazy(() => import("./views/Register"))
 const UpdateProfile = lazy(() => import("./views/UpdateProfile"))
-
-axios.defaults.baseURL = process.env.REACT_APP_API_URL
-axios.defaults.withCredentials = true
 
 function App() {
     return (
