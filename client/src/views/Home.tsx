@@ -102,9 +102,7 @@ export default function Home() {
     const [users, setUsers] = useState(new Array<Profile>())
     const [hasMore, setHasMore] = useState(true)
     const limit = 4
-
-    const path = process.env.REACT_APP_API_URL!
-
+    const path = process.env.REACT_APP_PHOTO_URL!
     const handleOpen = (username: string) => {
         history.push("/user/" + username)
     }

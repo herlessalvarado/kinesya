@@ -16,7 +16,7 @@ import {
     makeStyles,
     Theme,
 } from "@material-ui/core"
-import Autocomplete from "@material-ui/lab/Autocomplete"
+import { Autocomplete } from "@material-ui/lab"
 import { UserStateProps } from "../models/user"
 
 const theme = createMuiTheme({

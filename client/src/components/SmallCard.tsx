@@ -3,7 +3,7 @@ import { createStyles, makeStyles, Theme } from "@material-ui/core/styles"
 import CardActionArea from "@material-ui/core/CardActionArea"
 import CardMedia from "@material-ui/core/CardMedia"
 import WhatsAppIcon from "@material-ui/icons/WhatsApp"
-import { IconButton } from "@material-ui/core"
+import IconButton from "@material-ui/core/IconButton"
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
