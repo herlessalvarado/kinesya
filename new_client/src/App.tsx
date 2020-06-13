@@ -10,7 +10,7 @@ const Register = lazy(()=>import('./views/public/register/Register'))
 const Dashboard = lazy(()=>import('./views/user/dashboard/Dashboard')) 
 
 axios.defaults.baseURL = process.env.REACT_APP_API_URL
-axios.defaults.withCredentials = true
+// axios.defaults.withCredentials = true
 
 function App() {
 
@@ -27,12 +27,12 @@ function App() {
                 <Route path="/register">
                     <Register />
                 </Route>
-                {/* <PrivateRoute path="/dashboard" redirect="/login">
+                <PrivateRoute path="/dashboard" redirect="/login">
                     <Dashboard />
-                </PrivateRoute> */}
-                <Route path="/dashboard">
+                </PrivateRoute>
+                {/* <Route path="/dashboard">
                     <Dashboard />
-                </Route>
+                </Route> */}
             </Switch>
             </Suspense>
         </Router>

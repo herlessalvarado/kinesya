@@ -4,15 +4,16 @@ import { getRefreshToken, AuthOn } from '../cache/cookies/cookieManager'
 
 export const getNewToken = () => {
     return axios
-        .post("/users/token", { refresh_token: getRefreshToken() })
+        .post("/users/token", { refreshToken: getRefreshToken() })
         .then((result) => {
-            AuthOn(result.data.token, result.data.refresh_token)
+            AuthOn(result.data.token, result.data.refreshToken)
             return result
         })
         .catch(handlerLogOutError)
 }
 
 export const _getUserByToken = () => {
+    console.log(headers())
     return axios.get("users/me", headers()).then((response) => {
         return response.data
     })
@@ -31,14 +32,14 @@ export async function getUserByUsername(username: string) {
 
 export async function logInUser(email: string, password: string) {
     return axios.post("/users/login", { email, password }).then((result) => {
-        AuthOn(result.data.token, result.data.refresh_token)
+        AuthOn(result.data.token, result.data.refreshToken)
         return result.data
     })
 }
 
 export async function signUp(username: string, email: string, password: string): Promise<string> {
     return axios.post("/users", { username, email, password }).then((result) => {
-        AuthOn(result.data.token, result.data.refresh_token)
+        AuthOn(result.data.token, result.data.refreshToken)
         return result.data
     })
 }
