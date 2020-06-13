@@ -25,10 +25,10 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import HomeIcon from '@material-ui/icons/Home';
 import Copyright from '../../../components/footer/Footer';
-import Promote from '../promote/Promote';
-import HomeCard from '../../../components/card/homeCard/HomeCard'
+import Pricing from '../pricing/Pricing';
+import HomeCard from '../../../components/card/homeCard/HomeCard';
 import LoginGirl from '../../../assets/loginGirl.jpg'
-import { ReactComponent as Logo } from '../../../assets/logo/kinesya.svg'
+import { ReactComponent as Logo } from '../../../assets/logo/kinesya.svg';
 import { useTranslation } from 'react-i18next';
 import { BrowserRouter as Router, Switch, Route, Link, useRouteMatch } from "react-router-dom";
 
@@ -36,7 +36,8 @@ const drawerWidth = 240;
 
 function preventDefault(event: any) {
     event.preventDefault();
-  }
+}
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -115,6 +116,9 @@ const useStyles = makeStyles((theme) => ({
   fixedHeight: {
     height: 240,
   },
+  depositContext: {
+    flex: 1,
+  }
 }));
 
 export default function Dashboard() {
@@ -212,9 +216,11 @@ export default function Dashboard() {
             <Route exact path={path}>
                 <div className={classes.appBarSpacer} />
                 <Container maxWidth="lg" className={classes.container}>
+                    <Typography component="h1" variant="h5"  color="textPrimary" gutterBottom>
+                        Bienvenida, nombre
+                    </Typography>
                     <Grid container spacing={3}>
-                        <Grid item xs={12} md={12} lg={12}>
-                        <Paper className={fixedHeightPaper}>
+                        <Grid item xs={12} md={8} lg={9}>
                             <HomeCard
                                 onClick={() => preventDefault}
                                 name='Herless'
@@ -222,7 +228,22 @@ export default function Dashboard() {
                                 image={LoginGirl}
                                 phone={946659610}
                             ></HomeCard>
-                        </Paper>
+                        </Grid>
+                        <Grid item xs={12} md={4} lg={3}>
+                            <Paper className={fixedHeightPaper}>
+                                <Typography component="h2" variant="h6" color="primary" gutterBottom>
+                                    Facturación
+                                </Typography>
+                                <Typography component="p" variant="h6">
+                                    Su ciclo se renovará en 5 días
+                                </Typography>
+                                <Typography color="textSecondary" className={classes.depositContext}>
+                                    el 15 de Junio del 2020
+                                </Typography>
+                                <Link to={`${url}`} style={{ color: "inherit", textDecoration: "inherit" }}>
+                                    Más info
+                                </Link>
+                            </Paper>
                         </Grid>  
                     </Grid>
                     <Box pt={4}>
@@ -250,7 +271,7 @@ export default function Dashboard() {
                 <Container maxWidth="lg" className={classes.container}>
                     <Grid container spacing={3}>
                         <Grid item xs={12} md={12} lg={12}>
-                            <Promote />
+                            <Pricing />
                         </Grid>
                     </Grid>
                     <Box pt={4}>
