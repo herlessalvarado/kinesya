@@ -25,5 +25,28 @@
     },
     "toast": {
         "register": "There is already a registered user with "
+    },
+    "dashboard": {
+        "pricing": {
+            "title": "Pricing",
+            "description": "Soon you will be able to show your profile as top",
+            "weekly": {
+                "title": "7 days",
+                "price": "S/. 99",
+                "info": "Show your profile as top for one week"
+            },
+            "biweekly": {
+                "title": "15 days",
+                "price": "S/. 149",
+                "info": "Show your profile as top for two weeks"
+            },
+            "monthly": {
+                "title": "30 days",
+                "price": "S/. 199",
+                "subheader": "Most popular",
+                "info": "Show your profile as top for one month"
+            },
+            "button": "Get started"
+        }
     }
 }

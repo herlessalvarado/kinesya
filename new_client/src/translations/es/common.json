@@ -25,5 +25,28 @@
     },
     "toast": {
         "register": "Ya existe  un usuario registrado con este "
+    },
+    "dashboard": {
+        "pricing": {
+            "title": "Tarifas",
+            "description": "Pronto podrás mostrar tu perfil como top",
+            "weekly": {
+                "title": "7 días",
+                "price": "S/. 99",
+                "info": "Muestra tu perfil en el top por una semana"
+            },
+            "biweekly": {
+                "title": "15 días",
+                "price": "S/. 149",
+                "info": "Muestra tu perfil en el top por dos semanas"
+            },
+            "monthly": {
+                "title": "30 días",
+                "price": "S/. 199",
+                "subheader": "Más popular",
+                "info": "Muestra tu perfil en el top por un mes"
+            },
+            "button": "Comencemos"
+        }
     }
 }

@@ -11,9 +11,9 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import DashboardIcon from '@material-ui/icons/Dashboard';
-import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
+import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 import PersonIcon from '@material-ui/icons/Person';
-import BarChartIcon from '@material-ui/icons/BarChart';
+import SettingsIcon from '@material-ui/icons/Settings';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
@@ -28,6 +28,8 @@ import Copyright from '../../../components/footer/Footer';
 import Promote from '../promote/Promote';
 import HomeCard from '../../../components/card/homeCard/HomeCard'
 import LoginGirl from '../../../assets/loginGirl.jpg'
+import { ReactComponent as Logo } from '../../../assets/logo/kinesya.svg'
+import { useTranslation } from 'react-i18next';
 import { BrowserRouter as Router, Switch, Route, Link, useRouteMatch } from "react-router-dom";
 
 const drawerWidth = 240;
@@ -117,6 +119,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Dashboard() {
   const classes = useStyles();
+  const { t } = useTranslation('common');
   const [open, setOpen] = React.useState(true);
   
   let { path, url } = useRouteMatch();
@@ -145,17 +148,13 @@ export default function Dashboard() {
                 <MenuIcon />
             </IconButton>
             <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
-                Dashboard
+                <Logo />
             </Typography>
             <IconButton color="inherit">
-                {/* <Badge color="secondary"> */}
-                    <HomeIcon />
-                {/* </Badge> */}
+                <HomeIcon />
             </IconButton>
             <IconButton color="inherit">
-                {/* <Badge color="secondary"> */}
-                    <ExitToAppIcon />
-                {/* </Badge> */}
+                <ExitToAppIcon />
             </IconButton>
             </Toolbar>
         </AppBar>
@@ -189,20 +188,20 @@ export default function Dashboard() {
                         <ListItemText primary="Profile" />
                     </ListItem>
                 </Link>
-                <Link to={`${url}/promote`} style={{ color: "inherit", textDecoration: "inherit" }}>
+                <Link to={`${url}/pricing`} style={{ color: "inherit", textDecoration: "inherit" }}>
                     <ListItem button>
                         <ListItemIcon>
-                            <ShoppingCartIcon />
+                            <AttachMoneyIcon />
                         </ListItemIcon>
-                        <ListItemText primary="Promote" />
+                        <ListItemText primary="Pricing" />
                     </ListItem>
                 </Link>
-                <Link to={`${url}/config`} style={{ color: "inherit", textDecoration: "inherit" }}>
+                <Link to={`${url}/settings`} style={{ color: "inherit", textDecoration: "inherit" }}>
                     <ListItem button>
                         <ListItemIcon>
-                            <BarChartIcon />
+                            <SettingsIcon />
                         </ListItemIcon>
-                        <ListItemText primary="Config" />
+                        <ListItemText primary="Settings" />
                     </ListItem>
                 </Link>
             </List>
@@ -214,7 +213,6 @@ export default function Dashboard() {
                 <div className={classes.appBarSpacer} />
                 <Container maxWidth="lg" className={classes.container}>
                     <Grid container spacing={3}>
-                        {/* Chart */}
                         <Grid item xs={12} md={12} lg={12}>
                         <Paper className={fixedHeightPaper}>
                             <HomeCard
@@ -236,7 +234,6 @@ export default function Dashboard() {
                 <div className={classes.appBarSpacer} />
                 <Container maxWidth="lg" className={classes.container}>
                     <Grid container spacing={3}>
-                        {/* Chart */}
                         <Grid item xs={12} md={8} lg={9}>
                         <Paper className={fixedHeightPaper}>
                             <h1>Aqui va tu stepper Jose</h1>
@@ -248,15 +245,12 @@ export default function Dashboard() {
                     </Box>
                 </Container>
             </Route>
-            <Route path={`${path}/promote`}>
+            <Route path={`${path}/pricing`}>
                 <div className={classes.appBarSpacer} />
                 <Container maxWidth="lg" className={classes.container}>
                     <Grid container spacing={3}>
-                        {/* Chart */}
-                        <Grid item xs={12} md={6} lg={4}>
-                        <Paper className={fixedHeightPaper}>
+                        <Grid item xs={12} md={12} lg={12}>
                             <Promote />
-                        </Paper>
                         </Grid>
                     </Grid>
                     <Box pt={4}>
