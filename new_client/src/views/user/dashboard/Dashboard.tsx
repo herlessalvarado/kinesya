@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, lazy, useState } from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
@@ -26,12 +26,17 @@ import HomeIcon from '@material-ui/icons/Home';
 import Copyright from '../../../components/footer/Footer';
 import Pricing from '../pricing/Pricing';
 import HomeCard from '../../../components/card/homeCard/HomeCard';
-import LoginGirl from '../../../assets/loginGirl.jpg'
 import { ReactComponent as Logo } from '../../../assets/logo/kinesya.svg';
 import { useTranslation } from 'react-i18next';
-import { BrowserRouter as Router, Switch, Route, Link, useRouteMatch } from "react-router-dom";
-import Profile from "../profile/Profile"
-import { AuthOff } from '../../../cache/cookies/cookieManager';
+import { BrowserRouter as Router, Switch, Route, Link, useRouteMatch, useHistory } from "react-router-dom";
+import { AuthOff, setUser, getUser } from '../../../cache/cookies/cookieManager';
+import { getUserByToken } from '../../../network/userService';
+import { mapUserDTOToViewModel } from '../../../commons/user_mapper';
+import { UserDTO } from '../../../dto/user';
+import { NullUser } from '../../../models/user';
+import { DEFAULT_PHOTO } from '../../../commons/constants';
+const Profile = lazy(()=>import('../profile/Profile')) 
+
 
 const drawerWidth = 240;
 
@@ -126,9 +131,10 @@ const useStyles = makeStyles((theme) => ({
 export default function Dashboard() {
   const classes = useStyles();
   const { t } = useTranslation('common');
-  const [open, setOpen] = React.useState(true);
-  
+  const [open, setOpen] = useState(false);
+  const history = useHistory()
   let { path, url } = useRouteMatch();
+  const [user,setCurrentUser] = useState(NullUser) 
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -137,6 +143,29 @@ export default function Dashboard() {
     setOpen(false);
   };
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
+
+
+  useEffect(() => {
+    let valid = true
+    if (valid) {
+        getUserByToken()
+            .then((res) => {
+                const  _user =  mapUserDTOToViewModel(res as UserDTO)
+                setUser(_user)
+                if (_user.name.length > 0)
+                {
+                  setCurrentUser(_user)
+                }
+                
+            })
+            .catch(() => {
+                history.push("/login")
+            })
+    }
+    return () => {
+        valid = false
+    }
+}, [])
 
   return (
     <div className={classes.root}>
@@ -222,21 +251,22 @@ export default function Dashboard() {
             <Divider />
         </Drawer>
         <main className={classes.content}>
+        {console.log(user)}
         <Switch>
             <Route exact path={path}>
                 <div className={classes.appBarSpacer} />
                 <Container maxWidth="xl" className={classes.container}>
                     <Typography component="h1" variant="h5"  color="textPrimary" gutterBottom>
-                        Bienvenida, nombre
+                        Bienvenida {user.name}
                     </Typography>
                     <Grid container spacing={3}>
                         <Grid item xs={12} md={8} lg={9}>
                             <HomeCard
                                 onClick={() => preventDefault}
-                                name='Herless'
-                                location='Lima'
-                                image={LoginGirl}
-                                phone={946659610}
+                                name={user.name}
+                                location={user.location}
+                                image={user.bannerPhoto[0].url ||  DEFAULT_PHOTO }
+                                phone={Number(user.phone)}
                             ></HomeCard>
                         </Grid>
                         <Grid item xs={12} md={4} lg={3}>
@@ -263,16 +293,12 @@ export default function Dashboard() {
             </Route>
             <Route path={`${path}/profile`}>
                 <div className={classes.appBarSpacer} />
-                <Container maxWidth="xl" className={classes.container}>
-                    <Grid container spacing={3}>
-                        <Grid item xs={12} md={12} >
-                        <Profile/>
-                        </Grid>
-                    </Grid>
+                        <Profile  />
+                        
                     <Box pt={4}>
                         <Copyright />
                     </Box>
-                </Container>
+                
             </Route>
             <Route path={`${path}/pricing`}>
                 <div className={classes.appBarSpacer} />

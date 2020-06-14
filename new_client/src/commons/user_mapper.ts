@@ -1,6 +1,6 @@
 import { UserDTO } from "../dto/user"
 import { UserViewModel } from "../models/user"
-import { format, parse, differenceInCalendarDays, subYears } from "date-fns"
+import { format, parse, differenceInCalendarYears, subYears } from "date-fns"
 import { Photo } from "../components/photo/UploadImage"
 import { DATE_FORMAT } from "../commons/constants"
 
@@ -64,7 +64,7 @@ export function mapViewModelToUserRequest(user: UserViewModel) {
     formData.append("name", user.name!)
     formData.append(
         "age",
-        differenceInCalendarDays(
+        differenceInCalendarYears(
             new Date(),
             parse(user.birthday, DATE_FORMAT, new Date())
         ).toString()

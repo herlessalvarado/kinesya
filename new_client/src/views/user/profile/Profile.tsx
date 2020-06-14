@@ -11,25 +11,26 @@ import Physics from "../../../components/profile/physics/Physics"
 import Contact from "../../../components/profile/contact/Contact"
 import Photos from "../../../components/profile/images/Photos"
 import { useHistory } from "react-router-dom"
-import { UserViewModel, NullUser } from "../../../models/user"
+import { UserViewModel,} from "../../../models/user"
 import { MAX_STEPS_PROFILE } from "../../../commons/constants"
-import { mapViewModelToUserRequest, mapUserDTOToViewModel } from "../../../commons/user_mapper"
-import { updateUser, getUserByToken } from "../../../network/userService"
+import { mapViewModelToUserRequest } from "../../../commons/user_mapper"
+import { updateUser } from "../../../network/userService"
 import { AxiosError } from "axios"
 import Toast from "../../../components/toast/Toast"
 import { UserDTO } from "../../../dto/user"
 import {useStyles} from "./styles"
 import { StepContent, Hidden } from "@material-ui/core"
+import { getUser } from "../../../cache/cookies/cookieManager"
 
 
 const steps = ["Datos personales", "Físico", "Contacto y servicios", "Fotos"]
 
 export default function Checkout() {
     const classes = useStyles()
-    const [activeStep, setActiveStep] = React.useState(-1)
+    const [activeStep, setActiveStep] = React.useState(0)
     const history = useHistory()
     const [openToast, setOpenToast] = useState(false)
-    const [user, setUser] = useState<UserViewModel>(NullUser)
+    const [user, setUser] = useState<UserViewModel>(getUser())
     const [toastMessage, setToastMessage] = useState("")
 
     function stepContentFactory() {
@@ -93,23 +94,7 @@ export default function Checkout() {
                 )
         }
     }
-    useEffect(() => {
-        let valid = true
-        if (valid) {
-            getUserByToken()
-                .then((res) => {
-                    const userViewModel = mapUserDTOToViewModel(res as UserDTO)
-                    setUser(userViewModel)
-                    setActiveStep(0)
-                })
-                .catch(() => {
-                    history.push("/login")
-                })
-        }
-        return () => {
-            valid = false
-        }
-    }, [])
+    
 
     useEffect(() => {
         let subscribe = true
