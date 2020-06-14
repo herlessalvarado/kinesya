@@ -33,6 +33,10 @@ export const useStyles = makeStyles((theme: Theme) =>
         },
         logo: {
             width: "30%"
+        },
+        registerUrl:{
+            textDecoration: "none",
+            color:theme.palette.primary.main
         }
     })
 )

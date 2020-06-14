@@ -12,6 +12,7 @@ export interface UserLoginDTO {
 export default interface UserDTO {
     username: string
     name?: string
+    description?: string
     email: string
     price?: string
     age?: string

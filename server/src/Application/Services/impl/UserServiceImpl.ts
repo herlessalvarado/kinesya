@@ -91,9 +91,10 @@ export default class UserServiceImpl implements UserService {
         return fromEntityToUserDTO(_user)
     }
 
-    async getCurrentUser(refreshToken: string | undefined): Promise<UserDTO> {
+    async getCurrentUser(token: string | undefined): Promise<UserDTO> {
+        const claims = getClaimsFromToken(token!)
         const _user = await this.userRepository.findOne({
-            where: [equals("refreshToken", refreshToken)],
+            where: [equals("username", claims.username)],
         })
         return fromEntityToUserDTO(_user)
     }

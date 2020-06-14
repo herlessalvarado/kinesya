@@ -26,7 +26,7 @@ app.use(cookieParser())
 app.use(userRouter(userController))
 /* app.get("*", function (req, res) {
     res.sendFile(path.join(__dirname, "build", "index.html"))
-}) */
+})*/
 DBManager.connect()
 app.listen(PORT, () => {
     console.log(`Running on ${PORT}`)

@@ -1,7 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import Drawer from '@material-ui/core/Drawer';
 import Box from '@material-ui/core/Box';
 import AppBar from '@material-ui/core/AppBar';
@@ -31,6 +30,8 @@ import LoginGirl from '../../../assets/loginGirl.jpg'
 import { ReactComponent as Logo } from '../../../assets/logo/kinesya.svg';
 import { useTranslation } from 'react-i18next';
 import { BrowserRouter as Router, Switch, Route, Link, useRouteMatch } from "react-router-dom";
+import Profile from "../profile/Profile"
+import { AuthOff } from '../../../cache/cookies/cookieManager';
 
 const drawerWidth = 240;
 
@@ -44,6 +45,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
   },
   toolbar: {
+    backgroundColor: "white",
     paddingRight: 24, // keep right padding when drawer closed
   },
   toolbarIcon: {
@@ -137,10 +139,8 @@ export default function Dashboard() {
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
   return (
-    <Router>
-        <div className={classes.root}>
-        <CssBaseline />
-        <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)}>
+    <div className={classes.root}>
+        <AppBar position="absolute"  className={clsx(classes.appBar, open && classes.appBarShift)}>
             <Toolbar className={classes.toolbar}>
             <IconButton
                 edge="start"
@@ -154,14 +154,24 @@ export default function Dashboard() {
             <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
                 <Logo />
             </Typography>
+            <Link to="/" style={{ color: "inherit", textDecoration: "inherit" }}>
             <IconButton color="inherit">
+           
                 <HomeIcon />
+            
+                
             </IconButton>
-            <IconButton color="inherit">
-                <ExitToAppIcon />
+            </Link> 
+            <Link to="/login" style={{ color: "inherit", textDecoration: "inherit" }}>
+            <IconButton color="inherit" onClick={()=>{AuthOff()}}>
+                
+                <ExitToAppIcon  />
+                
             </IconButton>
+            </Link>
             </Toolbar>
         </AppBar>
+    <Router>
         <Drawer
             variant="permanent"
             classes={{
@@ -215,7 +225,7 @@ export default function Dashboard() {
         <Switch>
             <Route exact path={path}>
                 <div className={classes.appBarSpacer} />
-                <Container maxWidth="lg" className={classes.container}>
+                <Container maxWidth="xl" className={classes.container}>
                     <Typography component="h1" variant="h5"  color="textPrimary" gutterBottom>
                         Bienvenida, nombre
                     </Typography>
@@ -253,12 +263,10 @@ export default function Dashboard() {
             </Route>
             <Route path={`${path}/profile`}>
                 <div className={classes.appBarSpacer} />
-                <Container maxWidth="lg" className={classes.container}>
+                <Container maxWidth="xl" className={classes.container}>
                     <Grid container spacing={3}>
-                        <Grid item xs={12} md={8} lg={9}>
-                        <Paper className={fixedHeightPaper}>
-                            <h1>Aqui va tu stepper Jose</h1>
-                        </Paper>
+                        <Grid item xs={12} md={12} >
+                        <Profile/>
                         </Grid>
                     </Grid>
                     <Box pt={4}>
@@ -268,7 +276,7 @@ export default function Dashboard() {
             </Route>
             <Route path={`${path}/pricing`}>
                 <div className={classes.appBarSpacer} />
-                <Container maxWidth="lg" className={classes.container}>
+                <Container maxWidth="xl" className={classes.container}>
                     <Grid container spacing={3}>
                         <Grid item xs={12} md={12} lg={12}>
                             <Pricing />
@@ -281,7 +289,8 @@ export default function Dashboard() {
             </Route>
         </Switch>
         </main>
+        </Router>
         </div>
-    </Router>
+    
   );
 }

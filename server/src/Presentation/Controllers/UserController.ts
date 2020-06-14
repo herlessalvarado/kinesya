@@ -153,6 +153,7 @@ export class UserController {
 
     async updateUser(req: HttpRequest): Promise<HttpResponse> {
         const resp: HttpResponse = { body: "", status: OK }
+
         const user = req.body as UserDTO
         if (!!req.files) trackPhotos(user, req.files)
         try {
@@ -168,7 +169,7 @@ export class UserController {
     async getCurrentUser(req: HttpRequest): Promise<HttpResponse> {
         const resp: HttpResponse = { body: "", status: OK }
         try {
-            const _user = await this.service.getCurrentUser(req.body.refreshToken)
+            const _user = await this.service.getCurrentUser(req.body.token)
             resp.status = OK
             resp.body = JSON.stringify(_user)
         } catch (err) {

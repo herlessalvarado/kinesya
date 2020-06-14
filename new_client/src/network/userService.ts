@@ -13,7 +13,6 @@ export const getNewToken = () => {
 }
 
 export const _getUserByToken = () => {
-    console.log(headers())
     return axios.get("users/me", headers()).then((response) => {
         return response.data
     })
@@ -45,7 +44,7 @@ export async function signUp(username: string, email: string, password: string):
 }
 
 export async function _updateUser(formData: any) {
-    return axios.put("/users", formData, headers()).then((res) => res.data.message)
+    return axios.put("/users", formData, headers()).then((res) => res.data)
 }
 export async function updateUser(formData: any) {
     return _updateUser(formData).catch(() => getNewToken().then(() => _updateUser(formData)))

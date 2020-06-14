@@ -3,6 +3,7 @@ import axios from 'axios'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import PrivateRoute from './routing/PrivateRoute'
 import { withTranslation } from 'react-i18next';
+import "croppie/croppie.css"
 import CircularProgress from '@material-ui/core/CircularProgress'
 const Home = lazy(() => import('./views/public/home/Home'))
 const Login = lazy(()=>import('./views/public/login/Login'))
@@ -27,12 +28,9 @@ function App() {
                 <Route path="/register">
                     <Register />
                 </Route>
-                {/* <PrivateRoute path="/dashboard" redirect="/login">
+                <PrivateRoute path="/dashboard" redirect="/login">
                     <Dashboard />
-                </PrivateRoute> */}
-                <Route path="/dashboard">
-                    <Dashboard />
-                </Route>
+                </PrivateRoute>
             </Switch>
             </Suspense>
         </Router>

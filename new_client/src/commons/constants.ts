@@ -86,3 +86,4 @@ export const MIN_PRICE = 0.0
 export const DEFAULT_PHOTO =
     "https://www.travelcontinuously.com/wp-content/uploads/2018/04/empty-avatar.png"
 export const MAX_STEPS_PROFILE = 3
+export const DATE_FORMAT = "MM/dd/yyyy"

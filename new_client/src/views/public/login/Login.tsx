@@ -10,7 +10,7 @@ import { useStyles } from './styles'
 import { getJWT } from '../../../cache/cookies/cookieManager'
 import { AxiosError } from 'axios'
 import Toast from '../../../components/toast/Toast'
-import Link from '@material-ui/core/Link'
+import {Link} from  "react-router-dom"
 import Logo from '../../../assets/logo.png'
 import { logInUser } from '../../../network/userService'
 import { useTranslation } from 'react-i18next';
@@ -52,7 +52,7 @@ export default function Login() {
                 cleanFields()
             })
             .catch((err: AxiosError) => {
-                setToastMessage(err.response?.data?.message)
+                setToastMessage(err.response?.data)
                 setOpenToast(true)
             })
     }
@@ -110,8 +110,8 @@ export default function Login() {
                             </Button>
                             <Grid container>
                                 <Grid item>
-                                    <Link href="/register" variant="body2">
-                                    { t('login.dontHaveAccount') }
+                                    <Link to="/register"   className={classes.registerUrl} >
+                                    <span >{ t('login.dontHaveAccount') }</span>
                                     </Link>
                                 </Grid>
                             </Grid>

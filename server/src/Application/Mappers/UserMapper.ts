@@ -17,8 +17,11 @@ export function fromEntityToUserDTO(user: User): UserDTO {
     return {
         username: user.username,
         email: user.email,
+        hair: user.characteristics?.hair,
         name: user.name,
+        description: user.description,
         price: user.price,
+        profilePhoto: user.profilePhoto,
         age: user.age?.toString(),
         phone: user.phone,
         location: user.location,
@@ -33,7 +36,7 @@ export function fromEntityToUserDTO(user: User): UserDTO {
         measurements: user.characteristics?.measurements,
         orientation: user.characteristics?.orientation,
         ethnicity: user.characteristics?.ethnicity,
-        tags: user.tags?.map((tag: any) => tag.nombre),
+        tags: user.tags,
         bannerPhoto: user.bannerPhoto,
     }
 }
@@ -41,7 +44,9 @@ export function fromEntityToUserDTO(user: User): UserDTO {
 export function updateEntityFromUserDTO(user: User, dto: UserDTO): User {
     return user
         .setName(dto.name ?? user.name)
+        .setPublic(true)
         .setPrice(dto.price ?? user.price)
+        .setDescription(dto.description ?? user.description)
         .setAge(!!dto.age ? parseInt(dto.age) : user.age)
         .setPhone(dto.phone ?? user.phone)
         .setLocation(dto.location ?? user.location)

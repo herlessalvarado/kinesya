@@ -30,6 +30,7 @@ export class User implements UserSchema {
     isPublic: boolean = false
     profilePhoto?: string
     bannerPhoto?: string
+    description?: string
     referencePhotos?: Array<string>
     characteristics?: Characteristics
     tags?: Array<string>
@@ -56,6 +57,12 @@ export class User implements UserSchema {
         this.username = username
         return this
     }
+
+    setDescription(description?: string) {
+        this.description = description
+        return this
+    }
+
     setPassword(password: string) {
         this.password = password
         return this

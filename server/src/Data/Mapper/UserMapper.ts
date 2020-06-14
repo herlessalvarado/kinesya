@@ -5,6 +5,7 @@ export function fromSchemaToEntity(user: UserSchema) {
     return new User()
         .setId(user.id)
         .setLocation(user.location)
+        .setDescription(user.description)
         .setPassword(user.password)
         .setPhone(user.phone)
         .setProfilePhoto(user.profilePhoto)
@@ -27,6 +28,7 @@ export function fromEntityToSchema(user: User) {
         email: user.email,
         password: user.password,
         username: user.username,
+        description: user.description,
         name: user.name,
         price: user.price,
         age: user.age,
