@@ -1,6 +1,5 @@
 import React, { useState, ChangeEvent } from "react"
 import Grid from "@material-ui/core/Grid"
-import Typography from "@material-ui/core/Typography"
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from "@material-ui/pickers"
 import DateFnsUtils from "@date-io/date-fns"
 import {

@@ -1,10 +1,8 @@
 import React, { useState, ChangeEvent } from "react"
 import Grid from "@material-ui/core/Grid"
-import Typography from "@material-ui/core/Typography"
 import TextField from "@material-ui/core/TextField"
 import { Zodiac, Orientations, Ethnicities, MAX_STEPS_PROFILE } from "../../../commons/constants"
 import { textLengthValidatorResult, decimalValidatorResult } from "../../../commons/field_validators"
-
 import {
     FormControlLabel,
     Checkbox,
@@ -14,9 +12,6 @@ import {
 import { Autocomplete } from "@material-ui/lab"
 import { UserStateProps } from "../../../models/user"
 import {useStyles} from "./styles"
-
-
-
 
 export default function Physics(props: UserStateProps) {
     const classes = useStyles()

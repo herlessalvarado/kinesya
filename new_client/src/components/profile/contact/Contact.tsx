@@ -1,6 +1,5 @@
 import React, { useState, ChangeEvent } from "react"
 import { Grid } from "@material-ui/core"
-import Typography from "@material-ui/core/Typography"
 import TextField from "@material-ui/core/TextField"
 import { DISTRICTS, SERVICES, MAX_STEPS_PROFILE } from "../../../commons/constants"
 import {

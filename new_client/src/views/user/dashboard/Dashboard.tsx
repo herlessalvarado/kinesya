@@ -29,7 +29,7 @@ import HomeCard from '../../../components/card/homeCard/HomeCard';
 import { ReactComponent as Logo } from '../../../assets/logo/kinesya.svg';
 import { useTranslation } from 'react-i18next';
 import { BrowserRouter as Router, Switch, Route, Link, useRouteMatch, useHistory } from "react-router-dom";
-import { AuthOff, setUser, getUser } from '../../../cache/cookies/cookieManager';
+import { AuthOff, setUser } from '../../../cache/cookies/cookieManager';
 import { getUserByToken } from '../../../network/userService';
 import { mapUserDTOToViewModel } from '../../../commons/user_mapper';
 import { UserDTO } from '../../../dto/user';
@@ -51,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
   },
   toolbar: {
     backgroundColor: "white",
-    paddingRight: 24, // keep right padding when drawer closed
+    paddingRight: 24,
   },
   toolbarIcon: {
     display: 'flex',
