@@ -9,12 +9,11 @@ import UploadImage, { Photo } from "../../photo/UploadImage"
 import { IMAGE_LIMITS, MAX_STEPS_PROFILE } from "../../../commons/constants"
 import { UserStateProps } from "../../../models/user"
 import {useStyles} from "./styles"
-
-
+import { useTranslation } from "react-i18next";
 
 export default function Photos(props: UserStateProps) {
     const classes = useStyles()
-
+    const { t } = useTranslation("common")
     const [profilePhoto, setProfile] = useState(props.user.profilePhoto)
     const [bannerPhoto, setBanner] = useState(props.user.bannerPhoto)
     const [referencePhotos, setReferences] = useState(props.user.referencePhotos)
@@ -49,12 +48,12 @@ export default function Photos(props: UserStateProps) {
                     <Grid item container direction="column" justify="space-between">
                         <Grid item container justify="space-between">
                             <Grid item>
-                                <Typography variant="h6">Destacados</Typography>
+                                <Typography variant="h6">{t("dashboard.profile.image.featured")}</Typography>
                             </Grid>
                             <Grid item>
                                 <label className={classes.label}>
                                     <Typography variant="button" display="block">
-                                        Agregar
+                                        {t("dashboard.profile.image.upload")}
                                     </Typography>
                                     <input type="file" multiple onChange={handleReferences} />
                                 </label>
@@ -80,7 +79,7 @@ export default function Photos(props: UserStateProps) {
                             }}
                             className={classes.button}
                         >
-                            Atrás
+                            {t("dashboard.profile.continue.back")}
                         </Button>
                     )}
                     <Button
@@ -95,7 +94,7 @@ export default function Photos(props: UserStateProps) {
                             )
                         }}
                     >
-                        {props.stepId === MAX_STEPS_PROFILE ? "Confirmar" : "Siguiente"}
+                        {props.stepId === MAX_STEPS_PROFILE ? t("dashboard.profile.continue.confirm") : t("dashboard.profile.continue.next")}
                     </Button>
                 </div>
         </React.Fragment>

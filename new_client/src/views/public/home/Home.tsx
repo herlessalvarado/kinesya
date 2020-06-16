@@ -10,10 +10,12 @@ import InfiniteScroll from 'react-infinite-scroller'
 import HomeCard from '../../../components/card/homeCard/HomeCard'
 import { getUsersByPaginator } from '../../../network/userService'
 import { useHistory } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
 export default function Home() {
   const classes = useStyles()
   const history = useHistory()
+  const { t } = useTranslation('common')
   const [users, setUsers] = React.useState(new Array<Profile>())
   const [hasMore, setHasMore] = React.useState(true)
   const limit = 4
@@ -43,7 +45,7 @@ export default function Home() {
                   <SearchIcon />
                 </div>
                 <InputBase
-                  placeholder="Search…"
+                  placeholder={ t('home.search') }
                   classes={{
                     root: classes.inputRoot,
                     input: classes.inputInput,

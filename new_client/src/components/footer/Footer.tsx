@@ -1,7 +1,7 @@
-import React from 'react'
-import Typography from '@material-ui/core/Typography'
-import Link from '@material-ui/core/Link'
-import { useStyles } from './styles'
+import React from 'react';
+import Typography from '@material-ui/core/Typography';
+import { useStyles } from './styles';
+import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 export default function Copyright() {
@@ -12,7 +12,7 @@ export default function Copyright() {
         <footer className={classes.footer}>
             <Typography variant="body2" color="textSecondary" align="center">
                 { t('footer.copyright') }
-                <Link color="inherit" href="/">
+                <Link to= '/' style={{ color: "inherit", textDecoration: "inherit" }}>
                     { t('footer.brand') }
                 </Link>{" "}
                 {new Date().getFullYear()}

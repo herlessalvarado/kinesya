@@ -270,7 +270,7 @@ export default function Header() {
 							aria-labelledby="nested-list-subheader"
 							subheader={
 								<ListSubheader component="div" id="nested-list-subheader">
-									Profile
+									{t("header.profile")}
 								</ListSubheader>
 							}
 						>
@@ -283,7 +283,7 @@ export default function Header() {
               <ListItemIcon>
                 <LanguageIcon/>
               </ListItemIcon>
-              <ListItemText primary="Language" />
+              <ListItemText primary={t("header.language")} />
               {openLanguage ? <ExpandLess /> : <ExpandMore />}
             </ListItem>
 						<Collapse in={openLanguage} timeout="auto" unmountOnExit>

@@ -2,6 +2,8 @@ import Croppie from "croppie"
 import React, { useEffect, useRef, useState } from "react"
 import { Photo } from "../../photo/UploadImage"
 import { Button } from "@material-ui/core"
+import { useTranslation } from "react-i18next";
+
 export type ImageRatio = "1:1" | "16:9"
 
 interface CropperProps {
@@ -10,6 +12,7 @@ interface CropperProps {
     ratio: ImageRatio
 }
 export default (props: CropperProps) => {
+    const { t } = useTranslation("common")
     const croppingArea = useRef<HTMLDivElement>(null)
     const [croppie, setCroppie] = useState<Croppie>()
 
@@ -66,7 +69,7 @@ export default (props: CropperProps) => {
         <div style={{ display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
             <div ref={croppingArea}></div>
             <Button fullWidth variant="outlined" color="primary" onClick={handleSave}>
-                Guardar
+                {t("dashboard.profile.image.save")}
             </Button>
         </div>
     )

@@ -55,8 +55,7 @@ export default function Register() {
                 history.push("/login")
             })
             .catch((err: AxiosError) => {
-                const { property } = JSON.parse(err.response?.data?.message)
-
+                const property = err.response?.data
                 setToastMessage(` ${t('register.title')} ${property}`)
                 setOpenToast(true)
             })

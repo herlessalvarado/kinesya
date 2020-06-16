@@ -12,9 +12,11 @@ import {
 import { Autocomplete } from "@material-ui/lab"
 import { UserStateProps } from "../../../models/user"
 import {useStyles} from "./styles"
+import { useTranslation } from "react-i18next";
 
 export default function Physics(props: UserStateProps) {
     const classes = useStyles()
+    const { t } = useTranslation("common")
     const [hair, setHair] = useState(props.user.hair)
     const [orientation, setOrientation] = useState(props.user.orientation)
     const [height, setHeight] = useState(props.user.height)
@@ -107,8 +109,7 @@ export default function Physics(props: UserStateProps) {
                             value={weight}
                             fullWidth
                             onChange={handleWeight}
-                            label="Peso"
-                            placeholder="Peso"
+                            label={t("dashboard.profile.physics.weight")}
                             helperText={!validWeight ? decimalValidatorResult.message : ""}
                             InputProps={{
                                 endAdornment: <InputAdornment position="end">Kg</InputAdornment>,
@@ -122,8 +123,7 @@ export default function Physics(props: UserStateProps) {
                             value={height}
                             onChange={handleHeight}
                             fullWidth
-                            label="Altura"
-                            placeholder="Altura"
+                            label={t("dashboard.profile.physics.height")}
                             helperText={!validHeight ? decimalValidatorResult.message : ""}
                             InputProps={{
                                 endAdornment: <InputAdornment position="end">m</InputAdornment>,
@@ -135,8 +135,7 @@ export default function Physics(props: UserStateProps) {
                             value={hair}
                             onChange={handleHair}
                             fullWidth
-                            label="Cabello"
-                            placeholder="Cabello"
+                            label={t("dashboard.profile.physics.hair")}
                             error={!validHair}
                             helperText={!validHair ? textLengthValidatorResult.message : ""}
                         />
@@ -146,8 +145,7 @@ export default function Physics(props: UserStateProps) {
                             value={eyes}
                             onChange={handleEyes}
                             fullWidth
-                            label="Ojos"
-                            placeholder="Ojos"
+                            label={t("dashboard.profile.physics.eyes")}
                             error={!validEyes}
                             helperText={!validEyes ? textLengthValidatorResult.message : ""}
                         />
@@ -164,7 +162,7 @@ export default function Physics(props: UserStateProps) {
                                     name="checkedFakeBoobs"
                                 />
                             }
-                            label="Tetas Falsas"
+                            label={t("dashboard.profile.physics.fakeTits")}
                         />
                     </Grid>
                     <Grid item xs={12} sm={6}>
@@ -172,8 +170,7 @@ export default function Physics(props: UserStateProps) {
                             value={birthPlace}
                             onChange={handleBirthPlace}
                             fullWidth
-                            label="Lugar de Nacimiento"
-                            placeholder="Lugar de Nacimiento"
+                            label={t("dashboard.profile.physics.birthplace")}
                             error={!validBirthPlace}
                             helperText={!validBirthPlace ? textLengthValidatorResult.message : ""}
                         />
@@ -192,8 +189,7 @@ export default function Physics(props: UserStateProps) {
                                 <TextField
                                     {...params}
                                     variant="standard"
-                                    label="Zodiaco"
-                                    placeholder="Zodiaco"
+                                    label={t("dashboard.profile.physics.zodiac")}
                                 />
                             )}
                         />
@@ -204,8 +200,7 @@ export default function Physics(props: UserStateProps) {
                             fullWidth
                             value={measurements}
                             onChange={handleMeasurements}
-                            label="Medidas"
-                            placeholder="Medidas"
+                            label={t("dashboard.profile.physics.measurements")}
                         />
                     </Grid>
 
@@ -223,8 +218,7 @@ export default function Physics(props: UserStateProps) {
                                 <TextField
                                     {...params}
                                     variant="standard"
-                                    label="Orientacion Sexual"
-                                    placeholder="Orientacion"
+                                    label={t("dashboard.profile.physics.sexualOrientation")}
                                 />
                             )}
                         />
@@ -243,8 +237,7 @@ export default function Physics(props: UserStateProps) {
                                 <TextField
                                     {...params}
                                     variant="standard"
-                                    label="Etnia"
-                                    placeholder="Etnia"
+                                    label={t("dashboard.profile.physics.ethnicity")}
                                 />
                             )}
                         />
@@ -274,7 +267,7 @@ export default function Physics(props: UserStateProps) {
                             }}
                             className={classes.button}
                         >
-                            Atrás
+                            {t("dashboard.profile.continue.back")}
                         </Button>
                     )}
                     <Button
@@ -301,7 +294,7 @@ export default function Physics(props: UserStateProps) {
                             )
                         }}
                     >
-                        {props.stepId === MAX_STEPS_PROFILE ? "Confirmar" : "Siguiente"}
+                        {props.stepId === MAX_STEPS_PROFILE ? t("dashboard.profile.continue.confirm") : t("dashboard.profile.continue.next")}
                     </Button>
                 </div>
         </React.Fragment>

@@ -14,10 +14,11 @@ import {
 import { MAX_STEPS_PROFILE, DATE_FORMAT } from "../../../commons/constants"
 import { format, subYears } from "date-fns"
 import {useStyles} from "./styles"
-
+import { useTranslation } from "react-i18next";
 
 const Personal = (props: UserStateProps) => {
     const classes = useStyles()
+    const { t } = useTranslation("common")
     const [birthday, setBirthday] = useState(props.user.birthday)
     const [name, setName] = useState(props.user.name)
     const [description, setDescription] = useState(props.user.description)
@@ -49,7 +50,7 @@ const Personal = (props: UserStateProps) => {
                     <Grid item xs={12}>
                         <TextField
                             id="name"
-                            label="Nombre"
+                            label={t("dashboard.profile.personal.name")}
                             fullWidth
                             value={name}
                             onChange={handleName}
@@ -60,7 +61,7 @@ const Personal = (props: UserStateProps) => {
                     <Grid item xs={12}>
                         <TextField
                             id="description"
-                            label="Descripción"
+                            label={t("dashboard.profile.personal.description")}
                             multiline
                             rows="4"
                             variant="outlined"
@@ -79,9 +80,8 @@ const Personal = (props: UserStateProps) => {
                                 maxDate={subYears(new Date(), 18)}
                                 openTo="year"
                                 views={["year", "month", "date"]}
-                                label="Fecha de Nacimiento"
+                                label={t("dashboard.profile.personal.birthdate")}
                                 value={birthday}
-                                placeholder="Fecha de Nacimiento"
                                 onChange={(date) => {
                                     if (date !== null) handleBirthday(format(date, DATE_FORMAT))
                                 }}
@@ -116,7 +116,7 @@ const Personal = (props: UserStateProps) => {
                             )
                         }}
                     >
-                        {props.stepId === MAX_STEPS_PROFILE ? "Confirmar" : "Siguiente"}
+                        {props.stepId === MAX_STEPS_PROFILE ? t("dashboard.profile.continue.confirm")  : t("dashboard.profile.continue.next")}
                     </Button>
                 </div>
         </React.Fragment>

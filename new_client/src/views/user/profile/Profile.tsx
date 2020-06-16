@@ -8,7 +8,6 @@ import PersonalData from "../../../components/profile/data/PersonalData"
 import Physics from "../../../components/profile/physics/Physics"
 import Contact from "../../../components/profile/contact/Contact"
 import Photos from "../../../components/profile/images/Photos"
-import { useHistory } from "react-router-dom"
 import { UserViewModel,} from "../../../models/user"
 import { MAX_STEPS_PROFILE } from "../../../commons/constants"
 import { mapViewModelToUserRequest } from "../../../commons/user_mapper"
@@ -18,17 +17,21 @@ import Toast from "../../../components/toast/Toast"
 import {useStyles} from "./styles"
 import { StepContent, Hidden } from "@material-ui/core"
 import { getUser } from "../../../cache/cookies/cookieManager"
+import { useTranslation } from 'react-i18next'
 
+interface ProfileProps {
+    callback: () => void
+}
 
-const steps = ["Datos personales", "Físico", "Contacto y servicios", "Fotos"]
-
-export default function Checkout() {
+export default function Profile(props: ProfileProps) {
     const classes = useStyles()
+    const { t } = useTranslation('common')
     const [activeStep, setActiveStep] = React.useState(0)
-    const history = useHistory()
     const [openToast, setOpenToast] = useState(false)
     const [user, setUser] = useState<UserViewModel>(getUser())
     const [toastMessage, setToastMessage] = useState("")
+
+    const steps = [t('dashboard.profile.stepper.personalData'), t('dashboard.profile.stepper.physics'), t('dashboard.profile.stepper.contact'), t('dashboard.profile.stepper.photos')]
 
     function stepContentFactory() {
         switch (activeStep) {
@@ -80,12 +83,10 @@ export default function Checkout() {
                 return (
                     <React.Fragment>
                     <Typography variant="h5" gutterBottom>
-                        Gracias por completar tu perfil.
+                        {t('dashboard.profile.finish.thanks')}
                     </Typography>
                     <Typography variant="subtitle1">
-                        Tu perfil pasará por un proceso de veracidad de la
-                        información y fotos; una vez comprobado, se te enviará un
-                        correo con la confirmación y todos podran ver tu perfil.
+                        {t('dashboard.profile.finish.message')}
                     </Typography>
                 </React.Fragment>
                 )
@@ -102,10 +103,9 @@ export default function Checkout() {
                     .then((message) => {
                         setOpenToast(true)
                         setToastMessage(message)
-                        
                     })
                     .catch((err: AxiosError) => {
-                        history.push("/login")
+                        props.callback();
                     })
             }
         }
@@ -120,7 +120,7 @@ export default function Checkout() {
                <main className={classes.layout}>
                     <Paper className={classes.paper}>
                         <Typography component="h1" variant="h4" align="center">
-                            Perfil
+                            {t('dashboard.profile.stepper.profile')}
                         </Typography>
                         <Hidden smDown >
                             <Stepper activeStep={activeStep} className={classes.stepper}>

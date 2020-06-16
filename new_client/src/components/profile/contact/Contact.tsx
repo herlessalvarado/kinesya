@@ -11,12 +11,11 @@ import Autocomplete from "@material-ui/lab/Autocomplete"
 import { priceValidatorResult, phoneValidatorResult } from "../../../commons/field_validators"
 import { UserStateProps } from "../../../models/user"
 import {useStyles} from "./styles"
-
-
-
+import { useTranslation } from "react-i18next";
 
 export default function Contact(props: UserStateProps) {
     const classes = useStyles()
+    const { t } = useTranslation("common")
 
     const [price, setPrice] = useState(props.user.price)
     const [phone, setPhone] = useState(props.user.phone)
@@ -64,8 +63,8 @@ export default function Contact(props: UserStateProps) {
                             value={price}
                             fullWidth
                             onChange={handlePrice}
-                            label="Price"
-                            placeholder="Precio"
+                            label={t("dashboard.profile.contact.price")} 
+                            placeholder={t("dashboard.profile.contact.price")} 
                             helperText={!validPrice ? priceValidatorResult.message : ""}
                             InputProps={{
                                 startAdornment: (
@@ -80,8 +79,8 @@ export default function Contact(props: UserStateProps) {
                             value={phone}
                             fullWidth
                             onChange={handlePhone}
-                            label="Phone"
-                            placeholder="Telefono"
+                            label={t("dashboard.profile.contact.phone")} 
+                            placeholder={t("dashboard.profile.contact.phone")} 
                             helperText={!validPhone ? phoneValidatorResult.message : ""}
                             InputProps={{
                                 startAdornment: (
@@ -104,8 +103,8 @@ export default function Contact(props: UserStateProps) {
                                 <TextField
                                     {...params}
                                     variant="standard"
-                                    label="Distrito"
-                                    placeholder="Distrito"
+                                    label={t("dashboard.profile.contact.district")} 
+                                    placeholder={t("dashboard.profile.contact.district")} 
                                 />
                             )}
                         />
@@ -132,7 +131,7 @@ export default function Contact(props: UserStateProps) {
                             options={SERVICES}
                             getOptionLabel={(option) => option}
                             renderInput={(params) => (
-                                <TextField {...params} label="Servicios" placeholder="Servicios" />
+                                <TextField {...params} label={t("dashboard.profile.contact.services")}  placeholder={t("dashboard.profile.contact.services")}  />
                             )}
                         />
                     </Grid>
@@ -148,7 +147,7 @@ export default function Contact(props: UserStateProps) {
                             }}
                             className={classes.button}
                         >
-                            Atrás
+                            {t("dashboard.profile.continue.back")}
                         </Button>
                     )}
                     <Button
@@ -163,7 +162,7 @@ export default function Contact(props: UserStateProps) {
                             )
                         }}
                     >
-                        {props.stepId === MAX_STEPS_PROFILE ? "Confirmar" : "Siguiente"}
+                        {props.stepId === MAX_STEPS_PROFILE ? t("dashboard.profile.continue.confirm")  : t("dashboard.profile.continue.next")}
                     </Button>
                 </div>
         </React.Fragment>

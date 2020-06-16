@@ -8,6 +8,7 @@ import LoadingScreen from './components/progress/LoadingScreen';
 const Home = lazy(() => import('./views/public/home/Home'))
 const Login = lazy(()=>import('./views/public/login/Login'))
 const Register = lazy(()=>import('./views/public/register/Register'))
+const User = lazy(()=>import('./views/public/user/User'));
 const Dashboard = lazy(()=>import('./views/user/dashboard/Dashboard')) 
 
 axios.defaults.baseURL = process.env.REACT_APP_API_URL
@@ -27,6 +28,9 @@ function App() {
                 </Route>
                 <Route path="/register">
                     <Register />
+                </Route>
+                <Route path="/user/:username">
+                    <User />
                 </Route>
                 <PrivateRoute path="/dashboard" redirect="/login">
                     <Dashboard />

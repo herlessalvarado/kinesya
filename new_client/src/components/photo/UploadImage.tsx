@@ -6,6 +6,7 @@ import { CardMedia, DialogContent, Dialog } from "@material-ui/core"
 import CropperImage from "../profile/images/CropperImage"
 import { DEFAULT_PHOTO } from "../../commons/constants"
 import {useStyles} from "./styles"
+import { useTranslation } from "react-i18next";
 
 type UserImage = "profile" | "cover"
 
@@ -22,8 +23,9 @@ export interface Photo {
 }
 
 export default ({ text, onChange, value, type }: UploadImageProps) => {
-    const classes = useStyles()
-    const [dialog, setDialog] = useState(false)
+    const classes = useStyles();
+    const { t } = useTranslation("common");
+    const [dialog, setDialog] = useState(false);
 
     function handleChangeInputImage(event: any) {
         if (!!event.target.files && event.target.files.length > 0) {
@@ -68,13 +70,13 @@ export default ({ text, onChange, value, type }: UploadImageProps) => {
                 <Grid item>
                     <Typography variant="h6">
                         {" "}
-                        {type === "cover" ? "Foto de Portada" : "Foto de Perfil"}
+                        {type === "cover" ? t("dashboard.profile.image.cover") : t("dashboard.profile.image.profile")}
                     </Typography>
                 </Grid>
                 <Grid item>
                     <label className={classes.root}>
                         <Typography variant="button" display="block">
-                            Agregar
+                            {t("dashboard.profile.image.upload")} 
                         </Typography>
                         <input type="file" onChange={handleChangeInputImage} />
                     </label>

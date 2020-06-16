@@ -132,7 +132,7 @@ export default function Dashboard() {
   const classes = useStyles();
   const { t } = useTranslation('common');
   const [open, setOpen] = useState(false);
-  const history = useHistory()
+  const history = useHistory();
   let { path, url } = useRouteMatch();
   const [user,setCurrentUser] = useState(NullUser) 
 
@@ -143,7 +143,6 @@ export default function Dashboard() {
     setOpen(false);
   };
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
-
 
   useEffect(() => {
     let valid = true
@@ -185,17 +184,12 @@ export default function Dashboard() {
             </Typography>
             <Link to="/" style={{ color: "inherit", textDecoration: "inherit" }}>
             <IconButton color="inherit">
-           
                 <HomeIcon />
-            
-                
             </IconButton>
             </Link> 
             <Link to="/login" style={{ color: "inherit", textDecoration: "inherit" }}>
-            <IconButton color="inherit" onClick={()=>{AuthOff()}}>
-                
+            <IconButton color="inherit" onClick={()=>{AuthOff()}}>      
                 <ExitToAppIcon  />
-                
             </IconButton>
             </Link>
             </Toolbar>
@@ -220,7 +214,7 @@ export default function Dashboard() {
                         <ListItemIcon>
                             <DashboardIcon />
                         </ListItemIcon>
-                        <ListItemText primary="Dashboard" />
+                        <ListItemText primary={ t('dashboard.menu.dashboard') } />
                     </ListItem>
                 </Link>
                 <Link to={`${url}/profile`} style={{ color: "inherit", textDecoration: "inherit" }}>
@@ -228,7 +222,7 @@ export default function Dashboard() {
                         <ListItemIcon>
                             <PersonIcon />
                         </ListItemIcon>
-                        <ListItemText primary="Profile" />
+                        <ListItemText primary={ t('dashboard.menu.profile') } />
                     </ListItem>
                 </Link>
                 <Link to={`${url}/pricing`} style={{ color: "inherit", textDecoration: "inherit" }}>
@@ -236,7 +230,7 @@ export default function Dashboard() {
                         <ListItemIcon>
                             <AttachMoneyIcon />
                         </ListItemIcon>
-                        <ListItemText primary="Pricing" />
+                        <ListItemText primary={ t('dashboard.menu.pricing') } />
                     </ListItem>
                 </Link>
                 <Link to={`${url}/settings`} style={{ color: "inherit", textDecoration: "inherit" }}>
@@ -244,20 +238,19 @@ export default function Dashboard() {
                         <ListItemIcon>
                             <SettingsIcon />
                         </ListItemIcon>
-                        <ListItemText primary="Settings" />
+                        <ListItemText primary={ t('dashboard.menu.settings') }/>
                     </ListItem>
                 </Link>
             </List>
             <Divider />
         </Drawer>
         <main className={classes.content}>
-        {console.log(user)}
         <Switch>
             <Route exact path={path}>
                 <div className={classes.appBarSpacer} />
                 <Container maxWidth="xl" className={classes.container}>
                     <Typography component="h1" variant="h5"  color="textPrimary" gutterBottom>
-                        Bienvenida {user.name}
+                      { t('dashboard.home.welcome') } {user.name}
                     </Typography>
                     <Grid container spacing={3}>
                         <Grid item xs={12} md={8} lg={9}>
@@ -272,16 +265,16 @@ export default function Dashboard() {
                         <Grid item xs={12} md={4} lg={3}>
                             <Paper className={fixedHeightPaper}>
                                 <Typography component="h2" variant="h6" color="primary" gutterBottom>
-                                    Facturación
+                                  { t('dashboard.home.billing') }
                                 </Typography>
                                 <Typography component="p" variant="h6">
-                                    Su ciclo se renovará en 5 días
+                                  { t('dashboard.home.soon') }
                                 </Typography>
                                 <Typography color="textSecondary" className={classes.depositContext}>
-                                    el 15 de Junio del 2020
+                                  { t('dashboard.home.date') }
                                 </Typography>
-                                <Link to={`${url}`} style={{ color: "inherit", textDecoration: "inherit" }}>
-                                    Más info
+                                <Link to={`${url}/pricing`} style={{ color: "inherit", textDecoration: "inherit" }}>
+                                  { t('dashboard.home.pricing') }
                                 </Link>
                             </Paper>
                         </Grid>  
@@ -293,8 +286,7 @@ export default function Dashboard() {
             </Route>
             <Route path={`${path}/profile`}>
                 <div className={classes.appBarSpacer} />
-                        <Profile  />
-                        
+                        <Profile callback={() => {history.push("/login")}} />
                     <Box pt={4}>
                         <Copyright />
                     </Box>
