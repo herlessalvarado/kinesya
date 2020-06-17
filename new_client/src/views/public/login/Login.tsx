@@ -11,9 +11,10 @@ import { getJWT } from '../../../cache/cookies/cookieManager'
 import { AxiosError } from 'axios'
 import Toast from '../../../components/toast/Toast'
 import {Link} from  "react-router-dom"
-import Logo from '../../../assets/logo.png'
+// import Logo from '../../../assets/logo.png'
 import { logInUser } from '../../../network/userService'
-import { useTranslation } from 'react-i18next';
+import { ReactComponent as Logo } from '../../../assets/logo/kinesya.svg'
+import { useTranslation } from 'react-i18next'
 
 export default function Login() {
     const classes = useStyles()
@@ -63,7 +64,10 @@ export default function Login() {
                     <Grid item xs={false} sm={4} md={7} className={classes.image} />
                     <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
                         <div className={classes.paper}>
-                            <img className={classes.logo} src={Logo} alt="Logo" />
+                            {/* <img className={classes.logo} src={Logo} alt="Logo" /> */}
+                            <Link to="/">
+                                <Logo />
+                            </Link>
                             <form className={classes.form} autoComplete="off">
                                 <TextField
                                     variant="outlined"
@@ -102,6 +106,7 @@ export default function Login() {
                                 fullWidth
                                 variant="contained"
                                 className={classes.button}
+                                color="primary"
                                 onClick={() => {
                                     LogIn(email, password)
                                 }}

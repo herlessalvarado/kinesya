@@ -25,7 +25,7 @@ export const useStyles = makeStyles((theme: Theme) =>
         },
         button: {
             margin: theme.spacing(3, 0, 2),
-            background: "linear-gradient(90deg,#e8d3af,#cda777)!important",
+            // background: "linear-gradient(90deg,#e8d3af,#cda777)!important",
         },
         form: {
             width: "100%",

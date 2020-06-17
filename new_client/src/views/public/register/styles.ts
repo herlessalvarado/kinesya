@@ -14,7 +14,8 @@ export const useStyles = makeStyles((theme: Theme) =>
         },
         submit: {
             margin: theme.spacing(3, 0, 2),
-            background: "linear-gradient(90deg,#e8d3af,#cda777)!important",
+            // background: "linear-gradient(90deg,#e8d3af,#cda777)!important",
+            // background: "linear-gradient(90deg, rgba(184,107,119,1) 0%, rgba(207,152,159,1) 35%, rgba(224,188,191,1) 100%)"
         },
         loginUrl:{
             textDecoration: "none",

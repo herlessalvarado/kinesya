@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme: Theme) =>
         profile: {
             display: "block",
             position: "relative",
-            border: `#BF953F solid 3px`,
+            border: `#DF6F7F solid 3px`,
             borderRadius: "5px",
             width: "200px",
             height: "200px",
@@ -58,11 +58,8 @@ const useStyles = makeStyles((theme: Theme) =>
             },
         },
         box: {
-            width: "100%",
-            overflow: "hidden",
-            breakInside: "avoid",
-            paddingLeft: "2vw",
-            wordWrap: "break-word",
+            border: `1px solid #DF6F7F`,
+            borderRadius: `1px`,
         },
         info: {
             textAlign: "left",
@@ -91,13 +88,14 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         button: {
             margin: theme.spacing(1),
-            border: `1px solid #BF953F`,
-            backgroundColor: "black",
-            color: "#BF953F",
-            "&:hover": {
-                backgroundColor: "#BF953F",
-                color: "black",
-            },
+            border: `1px solid`
+            // border: `1px solid #BF953F`,
+            // backgroundColor: "black",
+            // color: "#BF953F",
+            // "&:hover": {
+            //     backgroundColor: "#BF953F",
+            //     color: "black",
+            // },
         },
         root: {
             "& > *": {
@@ -142,17 +140,15 @@ export default function UserDetails(props: UserByUsernameProps) {
                 </Typography>
             </div>
             <Grid container spacing={3} className={classes.grid}>
-                <Grid item xs={12} sm={6} md={4}>
-                    <div className={classes.box}>
-                        <Typography
-                            style={{ color: "black", textAlign: "justify" }}
-                            gutterBottom
-                        >
-                            {props.user.description}
-                        </Typography>
-                    </div>
+                <Grid item xs={12} sm={6} md={4} >
+                    <Typography
+                        style={{ color: "black", textAlign: "justify" }}
+                        gutterBottom
+                    >
+                        {props.user.description}
+                    </Typography>
                 </Grid>
-                <Grid item xs={12} sm={6} md={4}>
+                <Grid item xs={12} sm={6} md={4} >
                     <div className={classes.info}>
                         <div>
                             <Typography
@@ -289,7 +285,7 @@ export default function UserDetails(props: UserByUsernameProps) {
                         </div>
                     </div>
                 </Grid>
-                <Grid item xs={12} sm={6} md={4}>
+                <Grid item xs={12} sm={6} md={4} >
                     <div className={classes.info}>
                         <div>
                             <Typography
@@ -411,12 +407,12 @@ export default function UserDetails(props: UserByUsernameProps) {
             <div className={classes.container}>
             <Grid container spacing={3} className={classes.grid}>
                 <Grid item xs={6}>
-                    <Button className={classes.button}>
+                    <Button className={classes.button} color="primary">
                         {t("user.price")} {props.user.price}
                     </Button>
                 </Grid>
                 <Grid item xs={6}>
-                    <Button className={classes.button}>
+                    <Button className={classes.button} color="primary">
                         {t("user.phone")} {props.user.phone}
                     </Button>
                 </Grid>

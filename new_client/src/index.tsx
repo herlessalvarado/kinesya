@@ -25,7 +25,7 @@ i18next.init({
 const theme = createMuiTheme({
   palette: {
      primary: {
-       main: "#BF953F",
+       main: "#DF6F7F",
      },
   },
 });

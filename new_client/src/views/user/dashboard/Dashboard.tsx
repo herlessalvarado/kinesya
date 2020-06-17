@@ -172,7 +172,6 @@ export default function Dashboard() {
             <Toolbar className={classes.toolbar}>
             <IconButton
                 edge="start"
-                color="inherit"
                 aria-label="open drawer"
                 onClick={handleDrawerOpen}
                 className={clsx(classes.menuButton, open && classes.menuButtonHidden)}
@@ -183,12 +182,12 @@ export default function Dashboard() {
                 <Logo />
             </Typography>
             <Link to="/" style={{ color: "inherit", textDecoration: "inherit" }}>
-            <IconButton color="inherit">
+            <IconButton>
                 <HomeIcon />
             </IconButton>
             </Link> 
             <Link to="/login" style={{ color: "inherit", textDecoration: "inherit" }}>
-            <IconButton color="inherit" onClick={()=>{AuthOff()}}>      
+            <IconButton onClick={()=>{AuthOff()}}>      
                 <ExitToAppIcon  />
             </IconButton>
             </Link>

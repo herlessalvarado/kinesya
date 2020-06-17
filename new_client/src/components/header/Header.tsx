@@ -204,7 +204,9 @@ export default function Header() {
 				{/* HEADER NORMAL PARA SM, MD AND UP */}
 				<Hidden xsDown>
 					<div className={classes.logo}>
-						<Logo />
+						<Link to="/">
+							<Logo />
+						</Link>
 					</div>
 					{headerLinks()}
 
@@ -249,7 +251,9 @@ export default function Header() {
 				{/* HEADER SOLO PARA XS */}
 				<Hidden smUp>
 					<div className={classes.logoXs}>
-						<Logo />
+						<Link to="/">
+							<Logo />
+						</Link>
 					</div>
 					<IconButton
 						onClick={handleOpen}

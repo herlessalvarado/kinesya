@@ -114,6 +114,7 @@ export default function Register() {
                                 fullWidth
                                 variant="contained"
                                 className={classes.submit}
+                                color="primary"
                                 onClick={() => SignUp(username, email, password)}
                             >
                                 { t('register.signup') }
