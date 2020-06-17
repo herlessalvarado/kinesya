@@ -4,13 +4,15 @@ import { useStyles } from './styles'
 import Header from '../../../components/header/Header'
 import Toolbar from '@material-ui/core/Toolbar'
 import SearchIcon from '@material-ui/icons/Search'
-import InputBase from '@material-ui/core/InputBase'
 import { Profile } from './schema'
 import InfiniteScroll from 'react-infinite-scroller'
 import HomeCard from '../../../components/card/homeCard/HomeCard'
-import { getUsersByPaginator } from '../../../network/userService'
+import { getUsersByPaginator, getUsersByDistrict } from '../../../network/userService'
 import { useHistory } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import Autocomplete from '@material-ui/lab/Autocomplete'
+import TextField from '@material-ui/core/TextField'
+import { DISTRICTS } from '../../../commons/constants'
 
 export default function Home() {
   const classes = useStyles()
@@ -24,6 +26,14 @@ export default function Home() {
 
   const handleOpen = (username: string) => {
     history.push("/user/" + username)
+  }
+  const handleSelected = (event: any) => {
+    getByDistrict(event.target.textContent)
+  }
+  const getByDistrict = (district: any) => {
+    getUsersByDistrict(district).then((res: Profile[]) => {
+        setUsers(res)
+    })
   }
   function loadItems(page: Number) {
     getUsersByPaginator(page, limit).then((res: Profile[]) => {
@@ -40,19 +50,23 @@ export default function Home() {
           <Container maxWidth="lg">
             <Header />
             <Toolbar className={classes.root}>
-              <div className={classes.search}>
-                <div className={classes.searchIcon}>
-                  <SearchIcon />
-                </div>
-                <InputBase
-                  placeholder={ t('home.search') }
-                  classes={{
-                    root: classes.inputRoot,
-                    input: classes.inputInput,
-                  }}
-                  inputProps={{ "aria-label": "search" }}
-                />
-                </div>
+              <Autocomplete
+                id="search"
+                freeSolo
+                size="small"
+                options={DISTRICTS}
+                getOptionLabel={(option) => option}
+                fullWidth
+                onChange={handleSelected}
+                renderInput={(params) => (
+                  <div className={classes.search}>
+                    <div className={classes.searchIcon}>
+                        <SearchIcon />
+                    </div>
+                    <TextField {...params} className={classes.inputInput} variant="standard" />
+                  </div>
+                )}
+              />
             </Toolbar>
             <main>
             <Container maxWidth="lg">
