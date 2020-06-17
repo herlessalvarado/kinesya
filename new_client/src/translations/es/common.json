@@ -134,6 +134,10 @@
                 "info": "Muestra tu perfil en el top por un mes"
             },
             "button": "Comencemos"
+        },
+        "settings": {
+            "title": "Ajustes",
+            "language": "Idioma"
         }
     }
 }

@@ -134,6 +134,10 @@
                 "info": "Show your profile as top for one month"
             },
             "button": "Get started"
+        },
+        "settings": {
+            "title": "Settings",
+            "language": "Language"
         }
     }
 }

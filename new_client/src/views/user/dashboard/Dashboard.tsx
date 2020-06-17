@@ -25,6 +25,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import HomeIcon from '@material-ui/icons/Home';
 import Copyright from '../../../components/footer/Footer';
 import Pricing from '../pricing/Pricing';
+import Settings from '../settings/Settings';
 import HomeCard from '../../../components/card/homeCard/HomeCard';
 import { ReactComponent as Logo } from '../../../assets/logo/kinesya.svg';
 import { useTranslation } from 'react-i18next';
@@ -297,6 +298,19 @@ export default function Dashboard() {
                     <Grid container spacing={3}>
                         <Grid item xs={12} md={12} lg={12}>
                             <Pricing />
+                        </Grid>
+                    </Grid>
+                    <Box pt={4}>
+                        <Copyright />
+                    </Box>
+                </Container>
+            </Route>
+            <Route path={`${path}/settings`}>
+                <div className={classes.appBarSpacer} />
+                <Container maxWidth="xl" className={classes.container}>
+                    <Grid container spacing={3}>
+                        <Grid item xs={12} md={12} lg={12}>
+                            <Settings />
                         </Grid>
                     </Grid>
                     <Box pt={4}>
