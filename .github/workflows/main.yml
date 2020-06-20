@@ -1,0 +1,17 @@
+name: Kinesya
+
+on:
+  pull_request:
+    branches: [ master, develop ]
+
+jobs:
+  build_and_test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: server
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v1.4.2
+    - run: npm test
+    - run: npm start
