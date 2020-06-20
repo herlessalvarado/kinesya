@@ -142,7 +142,7 @@ export default function Home() {
                         getOptionLabel={(option) => option}
                         onChange={handleSelected}
                         renderInput={(params) => {
-                            return <TextField {...params} placeholder="Search..." />
+                            return <TextField {...params} placeholder="Buscando..." />
                         }}
                     />
                 </div>
