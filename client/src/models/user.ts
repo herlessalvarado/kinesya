@@ -1,13 +1,14 @@
-import { Photo } from "../components/UploadImage"
-
+import { Photo } from "../components/photo/UploadImage"
+import { DEFAULT_PHOTO, DATE_FORMAT } from "../commons/constants"
+import { format, subYears } from "date-fns"
 export const NullUser: UserViewModel = {
-    bannerPhoto: Array<Photo>(),
+    bannerPhoto: [{file:"NONE",url:DEFAULT_PHOTO}],
     height: "",
     weight: "",
     eyes: "",
     hair: "",
     fakeBoobs: false,
-    birthday: "",
+    birthday: format(subYears(new Date(), 18), DATE_FORMAT),
     birthPlace: "",
     zodiac: "",
     measurements: "",
@@ -19,7 +20,7 @@ export const NullUser: UserViewModel = {
     price: "",
     phone: "",
     location: "",
-    profilePhoto: Array<Photo>(),
+    profilePhoto: Array<Photo>({file:"",url:DEFAULT_PHOTO}),
     referencePhotos: Array<Photo>(),
     tags: Array<string>(),
 }
