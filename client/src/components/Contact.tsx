@@ -1,5 +1,5 @@
 import React, { useState, ChangeEvent } from "react"
-import Grid from "@material-ui/core/Grid"
+import { Grid } from "@material-ui/core"
 import Typography from "@material-ui/core/Typography"
 import TextField from "@material-ui/core/TextField"
 import { DISTRICTS, SERVICES, MAX_STEPS_PROFILE } from "../utils/constants"
@@ -14,10 +14,7 @@ import {
     Button,
 } from "@material-ui/core"
 import Autocomplete from "@material-ui/lab/Autocomplete"
-import {
-    priceValidatorResult,
-    phoneValidatorResult,
-} from "../helpers/field_validators"
+import { priceValidatorResult, phoneValidatorResult } from "../helpers/field_validators"
 import { UserStateProps } from "../models/user"
 
 const theme = createMuiTheme({

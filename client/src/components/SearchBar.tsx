@@ -1,6 +1,6 @@
-import React, { useState, ChangeEvent } from "react"
+import React, { useState } from "react"
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles"
-import { CssBaseline, fade, Input, TextField } from "@material-ui/core"
+import { CssBaseline, fade, TextField } from "@material-ui/core"
 import Toolbar from "@material-ui/core/Toolbar"
 import SearchIcon from "@material-ui/icons/Search"
 import Autocomplete from "@material-ui/lab/Autocomplete"
