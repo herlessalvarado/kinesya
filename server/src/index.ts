@@ -35,7 +35,7 @@ app.use(express.static(path.join(__dirname, "../src/build")))
 // )
 app.use(cookieParser())
 
-app.use(/* "/api", */ userRouter(userController))
+app.use("/api", userRouter(userController))
 app.get("*", function (req, res) {
     res.sendFile(path.join(__dirname, "../src/build", "index.html"))
 })
