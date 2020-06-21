@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import UserDetails from '../../../components/user/UserDetails';
-import { getUserByUsername } from '../../../network/userService';
+import { getUserByUsername } from '../../../network/UserService';
 import { UserDTO } from '../../../dto/user';
 import { UserViewModel } from '../../../models/user';
 import { mapUserDTOToViewModel } from '../../../commons/user_mapper';

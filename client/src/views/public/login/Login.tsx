@@ -12,7 +12,7 @@ import { AxiosError } from 'axios'
 import Toast from '../../../components/toast/Toast'
 import {Link} from  "react-router-dom"
 // import Logo from '../../../assets/logo.png'
-import { logInUser } from '../../../network/userService'
+import { logInUser } from '../../../network/UserService'
 import { ReactComponent as Logo } from '../../../assets/logo/kinesya.svg'
 import { useTranslation } from 'react-i18next'
 
