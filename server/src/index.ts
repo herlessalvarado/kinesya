@@ -35,7 +35,7 @@ app.use(
 )
 app.use(cookieParser())
 
-app.use(userRouter(userController))
+app.use("/api", userRouter(userController))
 app.get("*", function (req, res) {
     res.sendFile(path.join(__dirname, "../src/build", "index.html"))
 })
