@@ -1,0 +1,143 @@
+{
+    "header":{
+        "login": "Log In",
+        "register": "Sign Up",
+        "logout": "Log Out",
+        "dashboard": "Dashboard",
+        "profile": "Profile",
+        "language": "Language"
+    },
+    "footer": {
+        "brand": "Kinesya",
+        "copyright": "Copyright © "
+    },
+    "home": {
+        "search": "Search..."
+    },
+    "register": {
+        "title": "Sign Up",
+        "username": "Username",
+        "email": "Email",
+        "password": "Password",
+        "signup": "Sign Up",
+        "haveAccount": "Have an account? Log in"
+    },
+    "login": {
+        "email": "Email",
+        "password": "Password",
+        "enter": "Log In",
+        "dontHaveAccount": "Don't have an account? Sign up"
+    },
+    "toast": {
+        "register": "There is already a registered user with "
+    },
+    "user": {
+        "orientation": "Orientation:",
+        "district": "District:",
+        "gender": "Gender:",
+        "female": "Female",
+        "birthplace": "Birthplace:",
+        "age": "Age:",
+        "zodiacSign": "Zodiac sign:",
+        "eyes": "Eyes:",
+        "measurements": "Measurements:",
+        "height": "Height:",
+        "weight": "Weight:",
+        "ethnicity": "Ethnicity:",
+        "hair": "Hair color:",
+        "fakeTits": "Fake tits:",
+        "yes": "Yes",
+        "no": "No",
+        "price": "Price: S/.",
+        "phone": "Phone:",
+        "services": "Principal services:"
+    },
+    "dashboard": {
+        "menu": {
+            "dashboard": "Dashboard",
+            "profile": "Profile",
+            "pricing": "Pricing",
+            "settings": "Settings"
+        },
+        "home":{
+            "welcome": "Welcome",
+            "billing": "Billing",
+            "soon": "Soon",
+            "date": "You will see your billing",
+            "pricing": "More info"
+        },
+        "profile":{
+            "stepper": {
+                "profile": "Profile",
+                "personalData": "Personal data",
+                "physics": "Physical body",
+                "contact": "Contact and services",
+                "photos": "Photos"
+            },
+            "personal": {
+                "name": "Name",
+                "description": "Description",
+                "birthdate": "Birthdate"
+            },
+            "physics": {
+                "weight": "Weight",
+                "height": "Height",
+                "hair": "Hair",
+                "eyes": "Eyes",
+                "fakeTits": "Fake tits",
+                "birthplace": "Birthplace",
+                "zodiac": "Zodiac",
+                "measurements": "Measurements",
+                "sexualOrientation": "Sexual orientation",
+                "ethnicity": "Ethnicity"
+            },
+            "contact": {
+                "price": "Price",
+                "phone": "Phone",
+                "district": "District",
+                "services": "Services"
+            },
+            "image": {
+                "cover": "Cover photo",
+                "profile": "Profile photo",
+                "featured": "Featured",
+                "upload": "Add",
+                "save": "Save"
+            },
+            "continue": {
+                "next": "Next",
+                "confirm": "Confirm",
+                "back": "Back"
+            },
+            "finish": {
+                "thanks": "Thank you for completing your profile.",
+                "message": "Your profile will go through a process of truthfulness of the information and photos. Once verified, you will be sent an email with the confirmation and everyone will be able to see your profile."
+            }
+        },
+        "pricing": {
+            "title": "Pricing",
+            "description": "Soon you will be able to show your profile as top",
+            "weekly": {
+                "title": "7 days",
+                "price": "S/. 99",
+                "info": "Show your profile as top for one week"
+            },
+            "biweekly": {
+                "title": "15 days",
+                "price": "S/. 149",
+                "info": "Show your profile as top for two weeks"
+            },
+            "monthly": {
+                "title": "30 days",
+                "price": "S/. 199",
+                "subheader": "Most popular",
+                "info": "Show your profile as top for one month"
+            },
+            "button": "Get started"
+        },
+        "settings": {
+            "title": "Settings",
+            "language": "Language"
+        }
+    }
+}
