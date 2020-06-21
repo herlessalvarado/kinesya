@@ -2,7 +2,7 @@ import { config } from "dotenv"
 import express from "express"
 import cors from "cors"
 import cookieParser from "cookie-parser"
-import static_compress from "express-static-gzip"
+// import static_compress from "express-static-gzip"
 import http from 'http';
 import https from 'https';
 import fs from 'fs';
@@ -25,14 +25,14 @@ const credentials = {
 };
 app.use(cors({ origin: "*",credentials: true}));
 app.use(express.json())
-app.use(express.static(__dirname, { dotfiles: 'allow' } ))
+// app.use(express.static(__dirname, { dotfiles: 'allow' } ))
 app.use(express.static(process.env.PhotosFolder!))
 app.use(express.static(path.join(__dirname, '../src/build')))
-app.use(
-    static_compress(path.join(__dirname, "../src/build"), {
-        enableBrotli: true,
-    })
-)
+// app.use(
+//     static_compress(path.join(__dirname, "../src/build"), {
+//         enableBrotli: true,
+//     })
+// )
 app.use(cookieParser())
 
 app.use("/api", userRouter(userController))
