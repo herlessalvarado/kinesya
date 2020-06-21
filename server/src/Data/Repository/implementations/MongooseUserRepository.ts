@@ -7,37 +7,28 @@ import { User } from "../../Entities/User"
 import { UserSchema } from "../../Schema/UserSchema"
 import { fromSchemaToEntity, fromEntityToSchema } from "../../Mapper/UserMapper"
 import UserNotFoundException from "../../Exceptions/RepositoryException"
-import { Query } from "../../Helper/query"
+import { Criteria } from "../../Helper/query"
 
 @injectable()
 export default class MongooseUserRepository implements UserRepository {
-    async findOne(query: Query): Promise<User> {
-        const _query = UserModel.findOne()
-        query.where.forEach((criteria) => {
-            _query.$where(criteria)
-        })
+    async findOne(criteria: Criteria): Promise<User> {
+        const _query = applyCriteria(UserModel.findOne(), criteria)
         const _user = await _query.exec()
         if (_user === null) throw new UserNotFoundException()
         return fromSchemaToEntity(_user)
     }
-    async findOneOrNull(query: Query): Promise<User | null> {
-        const _query = UserModel.findOne()
-        query.where.forEach((criteria) => {
-            _query.$where(criteria)
-        })
+    async findOneOrNull(criteria: Criteria): Promise<User | null> {
+        const _query = applyCriteria(UserModel.findOne(), criteria)
         const _user = await _query.exec()
 
         return _user === null ? _user : fromSchemaToEntity(_user)
     }
 
-    async findAll(query: Query): Promise<User[]> {
-        const _query = UserModel.find({ isPublic: true })
-        query.where.forEach((criteria) => {
-            _query.$where(criteria)
-        })
-        if (!!query.paginator) _query.skip(query.paginator.page).limit(query.paginator.limit)
+    async findAll(criteria: Criteria): Promise<User[]> {
+        const _query = applyCriteria(UserModel.find({ isPublic: true }), criteria)
+
         const users = await _query.exec()
-        return users.map((u) => fromSchemaToEntity(u))
+        return users.map((u: any) => fromSchemaToEntity(u))
     }
 
     async update(user: User): Promise<void> {
@@ -154,3 +145,13 @@ const userSchema = new Schema({
 export type UserDocument = UserSchema & Document
 
 const UserModel = model<UserDocument>("User", userSchema)
+
+function applyCriteria(query: any, criteria: Criteria) {
+    criteria?.where.forEach((v) => {
+        if (!!v.eq) query.where(v.property).equals(v.eq)
+        if (!!v.range) query.where(v.property).gt(v.range.lower).lt(v.range.upper)
+        if (!!v.in) query.where(v.property).in(v.in)
+    })
+    if (!!criteria.paginator) query.skip(criteria.paginator.page).limit(criteria.paginator.limit)
+    return query
+}

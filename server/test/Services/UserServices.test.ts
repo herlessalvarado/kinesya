@@ -9,11 +9,11 @@ import { AuthDTO } from "../../src/Application/DTO/AuthDTO";
 import dotenv from "dotenv"
 import bcrypt from "bcryptjs"
 
-import { Query, equals } from "../../src/Data/Helper/query";
 import "reflect-metadata"
 import container, { TYPES } from "../../src/ioc/container";
 import MongooseUserRepository from "../../src/Data/Repository/implementations/MongooseUserRepository"
 import UserDTO from "../../src/Application/DTO/UserDTO";
+import { Criteria } from "../../src/Data/Helper/query";
 dotenv.config()
 
 describe('UserService tests', () => {
@@ -67,9 +67,11 @@ describe('UserService tests', () => {
                 location: "Chorrillos"
             }
             ]
-            MongooseUserRepository.prototype.findAll = jest.fn().mockResolvedValue(usersDB.filter((v) => v.isPublic === true))
+            MongooseUserRepository.prototype.findAll = jest.fn().mockResolvedValue(usersDB.filter((v) => v.location === "Chorrillos"))
 
-            const users = await _userService.getAll(1, 5, "Chorrillos");
+            const users = await _userService.getAll({
+                location:"Chorrillos"
+            });
 
             expect(users).toEqual(expectedUsers)
 
@@ -77,15 +79,13 @@ describe('UserService tests', () => {
 
         test("valid query builder", async () => {
             MongooseUserRepository.prototype.findAll = jest.fn().mockResolvedValue(usersDB)
-            const expectedQuery: Query = {
-                where: [equals("location", "Chorrillos")],
-                paginator: {
-                    page: 0,
-                    limit: 5
-                }
+            const expectedQuery: Criteria = {
+                where: [{property:"location",eq:"Chorrillos"}],
             }
 
-            await _userService.getAll(1, 5, "Chorrillos");
+            await _userService.getAll({
+                location:"Chorrillos"
+            });
 
             expect(MongooseUserRepository.prototype.findAll).toHaveBeenCalledWith(expectedQuery)
 

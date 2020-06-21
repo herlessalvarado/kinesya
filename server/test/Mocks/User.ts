@@ -12,13 +12,13 @@ export const usersDB: User[] = [
     .setPassword("123")
     .setEmail("Fabiola@gmail.com")
     .setPublic(false)
-    .setLocation("Chorrillos")
+    .setLocation("Barranco")
     .setUsername("Fabiola"),
     new User().setId("3")
     .setPassword("123")
     .setEmail("Luciana@gmail.com")
     .setPublic(false)
-    .setLocation("Chorrillos")
+    .setLocation("Barranco")
     .setUsername("Luciana"),
     new User().setId("4")
     .setPassword("123")

@@ -34,3 +34,18 @@ export default interface UserDTO {
     ethnicity?: string
     tags?: string[]
 }
+export interface UserFiltersDTO {
+    location?: string
+    hair?: string
+    eyes?: string
+    fakeBoobs?: string
+    zodiac?: string
+    sexualOrientation?: string
+    ethnicity?: string
+    services?: string[]
+    birthPlace?: string
+    lowerPrice?: number
+    upperPrice?: number
+    page?: number
+    limit?: number
+}
