@@ -12,7 +12,9 @@
         "copyright": "Copyright © "
     },
     "home": {
-        "search": "Search..."
+        "filter": "Filters",
+        "search": "Search...",
+        "filterSearch": "Search"
     },
     "register": {
         "title": "Sign Up",
@@ -92,6 +94,8 @@
                 "ethnicity": "Ethnicity"
             },
             "contact": {
+                "min": "Min",
+                "max": "Max",
                 "price": "Price",
                 "phone": "Phone",
                 "district": "District",

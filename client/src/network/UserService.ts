@@ -66,6 +66,27 @@ export async function getUsersByDistrict(district: string): Promise<any> {
         })
 }
 
+export async function getUsersByFilter(eyes: string, hair: string, birthPlace: string, orientation: string, ethnicity: string, lowerPrice: string, upperPrice: string, tags: string[]): Promise<any> {
+    var params = new URLSearchParams();
+    for (let i of tags) {
+        params.append("services", i);   
+    }
+    params.append("eyes", eyes);
+    params.append("hair", hair);
+    params.append("birthPlace", birthPlace);
+    params.append("orientation", orientation);
+    params.append("ethnicity", ethnicity);
+    params.append("lowerPrice", lowerPrice);
+    params.append("upperPrice", upperPrice);
+    return axios
+        .get("/users", {
+            params: params
+        })
+        .then((response) => {
+            return response.data
+        })
+}
+
 export async function getUsersByPaginator(page: Number, limit: Number) {
     return axios
         .get("/users", {

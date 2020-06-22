@@ -12,7 +12,9 @@
         "copyright": "Copyright © "
     },
     "home": {
-        "search": "Buscar..."
+        "filter": "Filtros",
+        "search": "Buscar...",
+        "filterSearch": "Buscar"
     },
     "register": {
         "title": "Registro",
@@ -92,6 +94,8 @@
                 "ethnicity": "Etnia"
             },
             "contact": {
+                "min": "Min",
+                "max": "Max",
                 "price": "Precio",
                 "phone": "Teléfono",
                 "district": "Distrito",
