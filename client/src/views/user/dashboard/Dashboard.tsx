@@ -171,27 +171,27 @@ export default function Dashboard() {
     <div className={classes.root}>
         <AppBar position="absolute"  className={clsx(classes.appBar, open && classes.appBarShift)}>
             <Toolbar className={classes.toolbar}>
-            <IconButton
-                edge="start"
-                aria-label="open drawer"
-                onClick={handleDrawerOpen}
-                className={clsx(classes.menuButton, open && classes.menuButtonHidden)}
-            >
-                <MenuIcon />
-            </IconButton>
-            <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
-                <Logo />
-            </Typography>
-            <Link to="/" style={{ color: "inherit", textDecoration: "inherit" }}>
-            <IconButton>
-                <HomeIcon />
-            </IconButton>
-            </Link> 
-            <Link to="/login" style={{ color: "inherit", textDecoration: "inherit" }}>
-            <IconButton onClick={()=>{AuthOff()}}>      
-                <ExitToAppIcon  />
-            </IconButton>
-            </Link>
+              <IconButton
+                  edge="start"
+                  aria-label="open drawer"
+                  onClick={handleDrawerOpen}
+                  className={clsx(classes.menuButton, open && classes.menuButtonHidden)}
+              >
+                  <MenuIcon />
+              </IconButton>
+              <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
+                  <Logo />
+              </Typography>
+              <Link to="/" style={{ color: "inherit", textDecoration: "inherit" }}>
+              <IconButton>
+                  <HomeIcon />
+              </IconButton>
+              </Link> 
+              <Link to="/login" style={{ color: "inherit", textDecoration: "inherit" }}>
+              <IconButton onClick={()=>{AuthOff()}}>      
+                  <ExitToAppIcon  />
+              </IconButton>
+              </Link>
             </Toolbar>
         </AppBar>
     <Router>
