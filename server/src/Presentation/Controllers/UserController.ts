@@ -1,17 +1,16 @@
 import { UserCreateValidator } from "../Validators/UserValidator"
 import { OK, CREATED } from "http-status-codes"
-import UserDTO, { UserCreateDTO, UserLoginDTO } from "../../Application/DTO/UserDTO"
+import UserDTO, { UserCreateDTO, UserLoginDTO, UserFiltersDTO } from "../../Application/DTO/UserDTO"
 import { Router, Request, Response } from "express"
 import { UserService } from "../../Application/Services/UserService"
 import { handlerExceptions } from "../Handlers/HandlerExceptions"
-import { Paginator } from "../../Data/Helper/query"
 import { trackPhotos } from "../../utils/fileManager"
 import { auth } from "../Middleware/auth"
 import { upload } from "../Middleware/upload"
 
 export interface HttpRequest {
     body: any
-    query?: { location: string } & Paginator
+    query?: any
     params?: any
     files?: any
 }
@@ -102,14 +101,18 @@ export class UserController {
     async getAllUsers(req: HttpRequest): Promise<HttpResponse> {
         const resp: HttpResponse = { body: "", status: OK }
         try {
-            const users = await this.service.getAll(
-                req.query?.page,
-                req.query?.limit,
-                req.query?.location
-            )
+            const filters = req.query as UserFiltersDTO
+            if (!!req.query.services) {
+                filters.services =
+                    req.query.services instanceof Object
+                        ? [...req.query.services]
+                        : [req.query.services]
+            }
+            const users = await this.service.getAll(filters)
             resp.status = OK
             resp.body = JSON.stringify(users)
         } catch (err) {
+            console.log(err)
             handlerExceptions(err, resp)
         }
         return resp
@@ -153,6 +156,7 @@ export class UserController {
 
     async updateUser(req: HttpRequest): Promise<HttpResponse> {
         const resp: HttpResponse = { body: "", status: OK }
+
         const user = req.body as UserDTO
         if (!!req.files) trackPhotos(user, req.files)
         try {
@@ -168,7 +172,7 @@ export class UserController {
     async getCurrentUser(req: HttpRequest): Promise<HttpResponse> {
         const resp: HttpResponse = { body: "", status: OK }
         try {
-            const _user = await this.service.getCurrentUser(req.body.refreshToken)
+            const _user = await this.service.getCurrentUser(req.body.token)
             resp.status = OK
             resp.body = JSON.stringify(_user)
         } catch (err) {

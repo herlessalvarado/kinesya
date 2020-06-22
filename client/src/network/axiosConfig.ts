@@ -1,5 +1,5 @@
-import { getJWT, AuthOff } from "../cache/CookieManager"
-import { AxiosError } from "axios"
+import { getJWT, AuthOff } from '../cache/cookies/cookieManager'
+import { AxiosError } from 'axios'
 
 export default () => ({ headers: { Authorization: `Bearer ${getJWT()}` } })
 export function handlerLogOutError(err: AxiosError) {

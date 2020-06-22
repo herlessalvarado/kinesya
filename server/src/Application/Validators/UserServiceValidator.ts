@@ -1,7 +1,6 @@
 import UserRepository from "../../Data/Repository/UserRepository"
 import { UserCreateDTO } from "../DTO/UserDTO"
 import UserServiceException from "../Exceptions/UserServiceException"
-import { equals } from "../../Data/Helper/query"
 
 abstract class UserValidator {
     protected readonly errors: string[]
@@ -39,15 +38,16 @@ export class CreateUserValidator extends UserValidator {
 
     private async validUniqueEmail() {
         if (
-            (await this.repository.findOneOrNull({ where: [equals("email", this.user.email)] })) !==
-            null
+            (await this.repository.findOneOrNull({
+                where: [{ property: "email", eq: this.user.email }],
+            })) !== null
         )
             this.errors.push("This email already exists")
     }
     private async validUniqueUsername() {
         if (
             (await this.repository.findOneOrNull({
-                where: [equals("username", this.user.username)],
+                where: [{ property: "username", eq: this.user.username }],
             })) !== null
         )
             this.errors.push("this username already exists")

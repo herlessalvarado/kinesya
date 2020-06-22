@@ -1,6 +1,6 @@
-import React from "react"
-import { Redirect, Route, RouteProps } from "react-router-dom"
-import { getJWT, getRefreshToken } from "../cache/CookieManager"
+import React from 'react'
+import { Redirect, Route, RouteProps } from 'react-router-dom'
+import { getJWT, getRefreshToken } from '../cache/cookies/cookieManager'
 
 interface PrivateRoutes extends RouteProps {
     redirect: any

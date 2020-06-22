@@ -12,6 +12,7 @@ export interface UserLoginDTO {
 export default interface UserDTO {
     username: string
     name?: string
+    description?: string
     email: string
     price?: string
     age?: string
@@ -32,4 +33,19 @@ export default interface UserDTO {
     orientation?: string
     ethnicity?: string
     tags?: string[]
+}
+export interface UserFiltersDTO {
+    location?: string
+    hair?: string
+    eyes?: string
+    fakeBoobs?: string
+    zodiac?: string
+    sexualOrientation?: string
+    ethnicity?: string
+    services?: string[]
+    birthPlace?: string
+    lowerPrice?: number
+    upperPrice?: number
+    page?: number
+    limit?: number
 }

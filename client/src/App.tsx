@@ -1,40 +1,44 @@
-import React, { lazy, Suspense } from "react"
+import React, { lazy, Suspense } from 'react'
+import axios from 'axios'
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import PrivateRoute from './routing/PrivateRoute'
+import { withTranslation } from 'react-i18next';
+import "croppie/croppie.css";
+import LoadingScreen from './components/progress/LoadingScreen';
+const Home = lazy(() => import('./views/public/home/Home'))
+const Login = lazy(()=>import('./views/public/login/Login'))
+const Register = lazy(()=>import('./views/public/register/Register'))
+const User = lazy(()=>import('./views/public/user/User'));
+const Dashboard = lazy(()=>import('./views/user/dashboard/Dashboard')) 
 
-import PrivateRoute from "./routing/PrivateRoute"
-import "croppie/croppie.css"
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom"
-const Profile = lazy(() => import("./views/Profile"))
-const Home = lazy(() => import("./views/Home"))
-const Login = lazy(() => import("./views/Login"))
-const Register = lazy(() => import("./views/Register"))
-const UpdateProfile = lazy(() => import("./views/UpdateProfile"))
+axios.defaults.baseURL = process.env.REACT_APP_API_URL
+// axios.defaults.withCredentials = true
 
 function App() {
+
     return (
         <Router>
-            <Suspense fallback={<div>Loading...</div>}>
-                <Switch>
-                    <Route exact path="/">
-                        <Home />
-                    </Route>
-                    <Route path="/login">
-                        <Login />
-                    </Route>
-                    <Route path="/register">
-                        <Register />
-                    </Route>
-                    <Route path="/user/:username">
-                        <Profile />
-                    </Route>
-
-                    <PrivateRoute path="/dashboard" redirect="/login">
-                        {/* <Dashboard /> */}
-                        <UpdateProfile />
-                    </PrivateRoute>
-                </Switch>
+            <Suspense fallback={<LoadingScreen />}>
+            <Switch>
+                <Route exact path="/">
+                    <Home />
+                </Route>
+                <Route path="/login">
+                    <Login />
+                </Route>
+                <Route path="/register">
+                    <Register />
+                </Route>
+                <Route path="/user/:username">
+                    <User />
+                </Route>
+                <PrivateRoute path="/dashboard" redirect="/login">
+                    <Dashboard />
+                </PrivateRoute>
+            </Switch>
             </Suspense>
         </Router>
     )
 }
 
-export default App
+export default withTranslation('common')(App);

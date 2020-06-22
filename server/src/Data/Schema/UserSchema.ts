@@ -17,6 +17,7 @@ export interface UserSchema {
     email: string
     password: string
     username: string
+    description?: string
     name?: string
     price?: string
     age?: number
