@@ -3,8 +3,8 @@ import express from "express"
 import cors from "cors"
 import cookieParser from "cookie-parser"
 import http from "http"
-// import https from "https"
-// import fs from "fs"
+import https from "https"
+import fs from "fs"
 import path from "path"
 import "reflect-metadata"
 import { userRouter } from "./Presentation/Controllers/UserController"
@@ -14,14 +14,14 @@ config()
 
 const PORT = process.env.PORT
 const app = express()
-// const privateKey = fs.readFileSync("/etc/letsencrypt/live/kinesya.com/privkey.pem", "utf8")
-// const certificate = fs.readFileSync("/etc/letsencrypt/live/kinesya.com/cert.pem", "utf8")
-// const ca = fs.readFileSync("/etc/letsencrypt/live/kinesya.com/chain.pem", "utf8")
-// const credentials = {
-//     key: privateKey,
-//     cert: certificate,
-//     ca: ca,
-// }
+const privateKey = fs.readFileSync("/etc/letsencrypt/live/kinesya.com/privkey.pem", "utf8")
+const certificate = fs.readFileSync("/etc/letsencrypt/live/kinesya.com/cert.pem", "utf8")
+const ca = fs.readFileSync("/etc/letsencrypt/live/kinesya.com/chain.pem", "utf8")
+const credentials = {
+    key: privateKey,
+    cert: certificate,
+    ca: ca,
+}
 app.use(cors({ origin: "*", credentials: true }))
 app.use(express.json())
 app.use(express.static(process.env.PhotosFolder!))
@@ -33,13 +33,13 @@ app.get("*", function (req, res) {
     res.sendFile(path.join(__dirname, "../src/build", "index.html"))
 })
 const httpServer = http.createServer(app)
-// const httpsServer = https.createServer(credentials, app)
+const httpsServer = https.createServer(credentials, app)
 DBManager.connect()
 
 httpServer.listen(PORT, () => {
     console.log(`HTTP running on ${PORT}`)
 })
 
-// httpsServer.listen(443, () => {
-//     console.log("HTTPS Server running on port 443")
-// })
+httpsServer.listen(443, () => {
+    console.log("HTTPS Server running on port 443")
+})
