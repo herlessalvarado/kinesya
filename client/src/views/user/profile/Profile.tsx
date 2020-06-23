@@ -20,7 +20,7 @@ import { getUser } from "../../../cache/cookies/cookieManager"
 import { useTranslation } from 'react-i18next'
 
 interface ProfileProps {
-    callback: () => void
+    callback: (parentPath:string) => void
 }
 
 export default function Profile(props: ProfileProps) {
@@ -105,7 +105,7 @@ export default function Profile(props: ProfileProps) {
                         setToastMessage(message)
                     })
                     .catch((err: AxiosError) => {
-                        props.callback();
+                        props.callback("/login");
                     })
             }
         }

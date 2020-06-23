@@ -12,7 +12,6 @@ const User = lazy(()=>import('./views/public/user/User'));
 const Dashboard = lazy(()=>import('./views/user/dashboard/Dashboard')) 
 
 axios.defaults.baseURL = process.env.REACT_APP_API_URL
-// axios.defaults.withCredentials = true
 
 function App() {
 

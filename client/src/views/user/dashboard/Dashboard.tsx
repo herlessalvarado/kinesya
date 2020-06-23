@@ -152,10 +152,7 @@ export default function Dashboard() {
             .then((res) => {
                 const  _user =  mapUserDTOToViewModel(res as UserDTO)
                 setUser(_user)
-                if (_user.name.length > 0)
-                {
-                  setCurrentUser(_user)
-                }
+                setCurrentUser(_user)
                 
             })
             .catch(() => {
@@ -258,7 +255,7 @@ export default function Dashboard() {
                                 onClick={() => preventDefault}
                                 name={user.name}
                                 location={user.location}
-                                image={user.bannerPhoto[0].url ||  DEFAULT_PHOTO }
+                                image={user.bannerPhoto[0].srcUrl ||  DEFAULT_PHOTO }
                                 phone={Number(user.phone)}
                             ></HomeCard>
                         </Grid>
@@ -286,7 +283,7 @@ export default function Dashboard() {
             </Route>
             <Route path={`${path}/profile`}>
                 <div className={classes.appBarSpacer} />
-                        <Profile callback={() => {history.push("/login")}} />
+                        <Profile callback={(parentPath:string) => {history.push(parentPath)}} />
                     <Box pt={4}>
                         <Copyright />
                     </Box>

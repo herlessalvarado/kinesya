@@ -25,14 +25,10 @@ const credentials = {
 }
 app.use(cors({ origin: "*", credentials: true }))
 app.use(express.json())
-// app.use(express.static(__dirname, { dotfiles: 'allow' } ))
+
 app.use(express.static(process.env.PhotosFolder!))
 app.use(express.static(path.join(__dirname, "../src/build")))
-// app.use(
-//     static_compress(path.join(__dirname, "../src/build"), {
-//         enableBrotli: true,
-//     })
-// )
+
 app.use(cookieParser())
 
 app.use("/api", userRouter(userController))
