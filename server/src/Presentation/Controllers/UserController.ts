@@ -158,6 +158,10 @@ export class UserController {
         const resp: HttpResponse = { body: "", status: OK }
 
         const user = req.body as UserDTO
+        user.referencePhotos = []
+        if(!!req.body.references)
+            user.referencePhotos = [...req.body.references]
+        
         if (!!req.files) trackPhotos(user, req.files)
         try {
             await this.service.updateUserByToken(req.body.token, user)

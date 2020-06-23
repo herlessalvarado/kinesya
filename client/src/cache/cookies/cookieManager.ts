@@ -6,10 +6,7 @@ export function getJWT() {
 }
 
 export function setUser(user:UserViewModel){
-    if (user.name.length === 0 )
-        localStorage.setItem("user",JSON.stringify(NullUser))   
-    else
-        localStorage.setItem("user",JSON.stringify(user))
+    localStorage.setItem("user",JSON.stringify(user))
 }
 
 export function getUser():UserViewModel{
