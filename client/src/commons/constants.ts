@@ -1,3 +1,6 @@
+import { Photo } from "../components/photo/Photo";
+import avatar from "../assets/avatar.jpg"
+
 export const DISTRICTS = [
     "Breña",
     "La Victoria",
@@ -61,7 +64,6 @@ export const SERVICES = [
 ]
 
 export const Zodiac = [
-    "",
     "Aries",
     "Tauro",
     "Géminis",
@@ -76,14 +78,25 @@ export const Zodiac = [
     "Piscis",
 ]
 
-export const Ethnicities = ["", "Andinas", "Morenas", "Piel Blanca", "Trigueña"]
+function createDefaultPhotos(){
+    const photos = new Array<Photo>()
+    for (let index = 0; index < IMAGE_LIMITS; index++) {
+        photos.push({
+            file: "",
+            srcUrl: DEFAULT_PHOTO,
+        });
+    }
+    return photos
+}
 
-export const Orientations = ["", "Heterosexual", "Homosexual", "Bisexual", "Trans"]
+export const Ethnicities = ["Andinas", "Morenas", "Piel Blanca", "Trigueña"]
+
+export const Orientations = ["Heterosexual", "Homosexual", "Bisexual", "Trans"]
 export const IMAGE_LIMITS = 4
 export const MAX_AGE = 99
 export const MIN_PRICE = 0.0
 // export const MIN_AGE = moment().subtract(18, "years").toDate()
-export const DEFAULT_PHOTO =
-    "https://www.travelcontinuously.com/wp-content/uploads/2018/04/empty-avatar.png"
+export const DEFAULT_PHOTO = avatar
 export const MAX_STEPS_PROFILE = 3
 export const DATE_FORMAT = "MM/dd/yyyy"
+export const DEFAULT_PHOTOS = createDefaultPhotos()
