@@ -123,14 +123,14 @@ export default function UserDetails(props: UserByUsernameProps) {
             <div className={classes.cover}>
                 <CardMedia
                     component="img"
-                    image={props.user.bannerPhoto[0].url}
+                    image={props.user.bannerPhoto[0].srcUrl}
                     className={classes.coverPhoto}
                 />
             </div>
             <div className={classes.profile}>
                 <CardMedia
                     component="img"
-                    image={props.user.profilePhoto[0].url}
+                    image={props.user.profilePhoto[0].srcUrl}
                     className={classes.profilePhoto}
                 />
             </div>
@@ -437,8 +437,8 @@ export default function UserDetails(props: UserByUsernameProps) {
             </div>
             <div className={classes.container3}>
                 {props.user.referencePhotos?.map((reference, index) => (
-                    <div key={reference.url} className={classes.box2}>
-                        <img key={index} alt="complex" src={reference.url} />
+                    <div key={reference.srcUrl} className={classes.box2}>
+                        <img key={index} alt="complex" src={reference.srcUrl} />
                     </div>
                 ))}
             </div>

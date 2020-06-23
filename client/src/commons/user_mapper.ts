@@ -2,31 +2,25 @@ import { UserDTO } from "../dto/user"
 import { UserViewModel } from "../models/user"
 import { format, parse, differenceInCalendarYears, subYears } from "date-fns"
 import { Photo } from "../components/photo/UploadImage"
-import { DATE_FORMAT } from "../commons/constants"
+import { DATE_FORMAT, IMAGE_LIMITS, DEFAULT_PHOTO } from "../commons/constants"
 
 export function mapUserDTOToViewModel(user: UserDTO) {
     const result: UserViewModel = {
+        username:user.username,
         age: user.age?.toString() || "",
-        referencePhotos: !!user.referencePhotos
-            ? user.referencePhotos.map(
-                  (url): Photo => ({
-                      file: "",
-                      url: process.env.REACT_APP_PHOTO_URL + url,
-                  })
-              )
-            : Array<Photo>(),
+        referencePhotos: referencesDefaultPhoto(user.referencePhotos),
         profilePhoto: !!user.profilePhoto
-            ? Array<Photo>({
+            ? new  Array<Photo>({
                   file: "",
-                  url: process.env.REACT_APP_PHOTO_URL + user.profilePhoto,
+                  srcUrl: process.env.REACT_APP_PHOTO_URL + user.profilePhoto,
               })
-            : Array<Photo>(),
+            : new Array<Photo>({file:"",srcUrl:DEFAULT_PHOTO}),
         bannerPhoto: !!user.bannerPhoto
-            ? Array<Photo>({
+            ? new  Array<Photo>({
                   file: "",
-                  url: process.env.REACT_APP_PHOTO_URL + user.bannerPhoto,
+                  srcUrl: process.env.REACT_APP_PHOTO_URL + user.bannerPhoto,
               })
-            : Array<Photo>(),
+            : new Array<Photo>({file:"",srcUrl:DEFAULT_PHOTO}),
         name: user.name || "",
         description: user.description || "",
         price: user.price?.toString() || "",
@@ -50,16 +44,26 @@ export function mapUserDTOToViewModel(user: UserDTO) {
     return result
 }
 
+function setFileName(user:string,prefix:string,index:number,file:File){
+    return new File([file as Blob],user+prefix+index+"."+file.name.split('.').pop(),{
+        type:(file as Blob).type
+    })
+}
+
+
 export function mapViewModelToUserRequest(user: UserViewModel) {
     let formData = new FormData()
-    user.referencePhotos?.forEach((photo) => {
-        if (!!photo.file) formData.append("references", photo.file)
+    user.referencePhotos?.forEach((photo,index:number) => {
+        if (!!photo.file) formData.append("references", setFileName(user.username,"references",index,photo.file))
+        else
+            if (photo.srcUrl?.includes(process.env.REACT_APP_PHOTO_URL!))
+                formData.append("references",photo.srcUrl!)
     })
-    user.profilePhoto?.forEach((photo) => {
-        if (!!photo.file) formData.append("profile", photo.file)
+    user.profilePhoto?.forEach((photo,index:number) => {
+        if (!!photo.file) formData.append("profile", setFileName(user.username,"profile",index,photo.file) )
     })
-    user.bannerPhoto?.forEach((photo) => {
-        if (!!photo.file) formData.append("banner", photo.file)
+    user.bannerPhoto?.forEach((photo,index:number) => {
+        if (!!photo.file) formData.append("banner", setFileName(user.username,"banner",index,photo.file))
     })
     formData.append("name", user.name!)
     formData.append(
@@ -89,4 +93,21 @@ export function mapViewModelToUserRequest(user: UserViewModel) {
     formData.append("ethnicity",user.ethnicity)
     formData.append("birthday",user.birthday)
     return formData
+}
+export function referencesDefaultPhoto(references:Array<string>){
+    const photos = new Array<Photo>()
+    for (let index = 0; index < IMAGE_LIMITS; index++) {
+        photos.push({
+            file: "",
+            srcUrl: DEFAULT_PHOTO,
+        });
+    }
+    for (let index = 0; index < references.length; index++) {
+        photos[index] = {
+            file:"",
+            srcUrl : (references[index].includes(process.env.REACT_APP_PHOTO_URL!)) ? references[index] : process.env.REACT_APP_PHOTO_URL! + references[index]
+            }
+    }
+
+return photos
 }
