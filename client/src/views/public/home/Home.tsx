@@ -3,7 +3,7 @@ import { CssBaseline, Container, Grid, Button } from '@material-ui/core'
 import { useStyles } from './styles'
 import Header from '../../../components/header/Header'
 import Toolbar from '@material-ui/core/Toolbar'
-import SearchIcon from '@material-ui/icons/Search'
+import LocationOnIcon from '@material-ui/icons/LocationOn';
 import { Profile } from './schema'
 import InfiniteScroll from 'react-infinite-scroller'
 import HomeCard from '../../../components/card/homeCard/HomeCard'
@@ -124,23 +124,18 @@ export default function Home() {
           <Container maxWidth="lg">
             <Header />
             <Toolbar className={classes.root}>
-              <div className={classes.search}>
-                <div className={classes.searchIcon}>
-                  <SearchIcon />
-                </div>
-                <Autocomplete
-                  id="search"
-                  freeSolo
-                  size="small"
-                  options={DISTRICTS}
-                  getOptionLabel={(option) => option}
-                  fullWidth
-                  onChange={handleSelected}
-                  renderInput={(params) => (     
-                      <TextField {...params} className={classes.inputInput} variant="standard" />
-                  )}
-                />
-              </div>
+              <LocationOnIcon />
+              <Autocomplete
+                id="search"
+                freeSolo
+                options={DISTRICTS}
+                getOptionLabel={(option) => option}
+                fullWidth
+                onChange={handleSelected}
+                renderInput={(params) => (     
+                    <TextField {...params} label={t("home.search")} variant="standard" />
+                )}
+              />
               <Button onClick={handleOpenDialog}>
                 {t("home.filter")}
               </Button>
