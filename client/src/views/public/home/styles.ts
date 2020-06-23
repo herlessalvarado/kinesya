@@ -3,7 +3,8 @@ import { createStyles, fade, Theme, makeStyles } from '@material-ui/core/styles'
 export const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
-            flexGrow: 1,
+            justifyContent: 'space-between',
+            overflowX: 'auto',
         },
         menuButton: {
             marginRight: theme.spacing(2),
@@ -46,12 +47,13 @@ export const useStyles = makeStyles((theme: Theme) =>
             padding: theme.spacing(1, 1, 1, 0),
             paddingLeft: `calc(1em + ${theme.spacing(3)}px)`,
             transition: theme.transitions.create("width"),
-            [theme.breakpoints.up("sm")]: {
-                width: "30ch",
-                "&:focus": {
-                    width: "40ch",
-                },
-            },
+            width: "30ch"
+            // [theme.breakpoints.up("sm")]: {
+            //     width: "30ch",
+            //     "&:focus": {
+            //         width: "40ch",
+            //     },
+            // },
         },
         input: {
             padding: theme.spacing(1, 1, 1, 0),
@@ -77,7 +79,7 @@ export const useStyles = makeStyles((theme: Theme) =>
             gridGap: "2vh",
         },
         paper: {
-            marginTop: theme.spacing(8),
+            marginTop: "10%",
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
