@@ -1,5 +1,5 @@
 import Cookie from 'js-cookie'
-import { UserViewModel, NullUser } from '../../models/user'
+import { UserViewModel} from '../../models/user'
 
 export function getJWT() {
     return Cookie.get(process.env.REACT_APP_JWT_KEY!)

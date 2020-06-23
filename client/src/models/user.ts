@@ -1,4 +1,4 @@
-import { Photo } from "../components/photo/UploadImage"
+import { Photo } from "../components/photo/Photo"
 import { DEFAULT_PHOTO, DATE_FORMAT } from "../commons/constants"
 import { format, subYears } from "date-fns"
 import { referencesDefaultPhoto } from "../commons/user_mapper"

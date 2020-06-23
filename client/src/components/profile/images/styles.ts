@@ -58,6 +58,24 @@ createStyles({
     },
     root:{
         overflow: "scroll"
+    },
+    coverSize:{
+        [theme.breakpoints.down("xs")]:{
+            width: "200px"
+        },
+        width:"400px"
+    },
+    profileSize:{
+        [theme.breakpoints.down("xs")]:{
+            width: "150px"
+        },
+        width:"300px"
+    },
+    referencesSize:{
+        display: "flex",
+		justifyContent: "center",
+		flexWrap: "wrap",
+        width:"300px"
     }
 })
 )

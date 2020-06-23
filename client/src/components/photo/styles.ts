@@ -2,29 +2,32 @@ import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
 export const useStyles = makeStyles((theme: Theme) =>
 createStyles({
     root: {
+        position:"relative",
+        "&:hover":{
+            opacity:0.85
+        },
+        
+    },
+    input:{
+        top:0,
+        left:0,
         width: "100%",
         height: "100%",
-
-        alignItems: "center",
-        "& span": {
-            marginLeft: "1vw",
-            color: "#BF953F",
-        },
-        backgroundColor: "white",
-        color: "#BF953F",
-        display: "flex",
-        "&:hover": {
-            cursor: "pointer",
-        },
-        justifyContent: "center",
-        "& input": {
-            width: "0.1px",
-            height: "0.1px",
-            opacity: "0",
-            overflow: "hidden",
-            position: "absolute",
-            zIndex: "-1",
-        },
+        opacity: "0",
+        overflow: "hidden",
+        position: "absolute",
+        cursor:"pointer"
+       
     },
+    img:{
+        width:"100%",
+        height:"100%",
+        border:"none",
+        borderRadius:"8px",
+        objectFit:"cover",
+        
+        
+    }
+
 })
 )
