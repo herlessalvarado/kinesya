@@ -1,12 +1,12 @@
 import Croppie from "croppie"
 import React, { useEffect, useRef, useState } from "react"
-import { Photo } from "../../photo/UploadImage"
+import { Photo } from "../../photo/Photo"
 import { Button } from "@material-ui/core"
 import { useTranslation } from "react-i18next";
 
 export type ImageRatio = "1:1" | "16:9"
 
-interface CropperProps {
+export interface CropperProps {
     onChange: (photo: Photo) => void
     origin: Photo
     ratio: ImageRatio
