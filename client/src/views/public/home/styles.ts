@@ -77,12 +77,20 @@ export const useStyles = makeStyles((theme: Theme) =>
             gridGap: "2vh",
         },
         paper: {
-            position: 'absolute',
-            width: 400,
-            backgroundColor: theme.palette.background.paper,
-            border: '2px solid #000',
-            boxShadow: theme.shadows[5],
-            padding: theme.spacing(2, 4, 3),
-        }
+            marginTop: theme.spacing(8),
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+        },
+        appBar: {
+            position: 'relative',
+          },
+        form: {
+            width: "100%",
+            marginTop: theme.spacing(3),
+        },
+        submit: {
+            margin: theme.spacing(3, 0, 2),
+        },
     })
 )
