@@ -58,7 +58,7 @@ export const CropperPhoto = forwardRef<HTMLInputElement,CropperPhoto>((props:Cro
     return (
         <React.Fragment>
              <div className={classes.root}>
-            <input ref={ref} type="file" title=" " className={classes.input} onChange={setImage}/>
+            <input ref={ref} type="file" title= " " className={classes.input} onChange={setImage}/>
             <img  className={classes.img} alt="" src={props.value.srcUrl}/>
              </div>
              <Dialog

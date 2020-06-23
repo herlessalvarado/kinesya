@@ -141,7 +141,7 @@ export default function Photos(props: UserStateProps) {
 							<Typography variant="h6">
 								{t("dashboard.profile.image.featured")}
 							</Typography>
-						</Grid>{}
+						</Grid>
 						<Grid item>
 						<FileButton {...{onChange:handleReferences,text:t("dashboard.profile.image.upload")}} />
 					</Grid>

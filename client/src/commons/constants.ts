@@ -89,7 +89,11 @@ function createDefaultPhotos(){
     return photos
 }
 
+<<<<<<< HEAD
 export const Ethnicities = ["Andinas", "Morenas", "Piel Blanca", "Trigueña"]
+=======
+export const Ethnicities = ["", "Andinas", "Morenas", "Piel Blanca", "Trigueña"]
+>>>>>>> 92250718d1b0c0e192bdffe0008681fd9280acc8
 
 export const Orientations = ["Heterosexual", "Homosexual", "Bisexual", "Trans"]
 export const IMAGE_LIMITS = 4

@@ -11,8 +11,8 @@ export function FileButton({text,onChange}:FileProps){
 
     return (
         <label className={classes.root} >
-                {text.toUpperCase()}
-        <input type="file"  multiple onChange={onChange} />
+                {text}
+        <input type="file" multiple onChange={onChange} />
                     </label>
     )
 }
