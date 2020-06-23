@@ -1,8 +1,8 @@
 import { UserDTO } from "../dto/user"
 import { UserViewModel } from "../models/user"
 import { format, parse, differenceInCalendarYears, subYears } from "date-fns"
-import { Photo } from "../components/photo/UploadImage"
-import { DATE_FORMAT, IMAGE_LIMITS, DEFAULT_PHOTO } from "../commons/constants"
+import { Photo } from "../components/photo/Photo"
+import { DATE_FORMAT, IMAGE_LIMITS, DEFAULT_PHOTO, DEFAULT_PHOTOS } from "../commons/constants"
 
 export function mapUserDTOToViewModel(user: UserDTO) {
     const result: UserViewModel = {
@@ -95,13 +95,7 @@ export function mapViewModelToUserRequest(user: UserViewModel) {
     return formData
 }
 export function referencesDefaultPhoto(references:Array<string>){
-    const photos = new Array<Photo>()
-    for (let index = 0; index < IMAGE_LIMITS; index++) {
-        photos.push({
-            file: "",
-            srcUrl: DEFAULT_PHOTO,
-        });
-    }
+    const photos = [...DEFAULT_PHOTOS]
     for (let index = 0; index < references.length; index++) {
         photos[index] = {
             file:"",
