@@ -15,7 +15,6 @@ jobs:
     - uses: actions/setup-node@v1.4.2
     - run: npm install
     - run: npm test
-    - run: npm start
     env:
        JWT_KEY : jwt
        R_JWT_KEY: refresh
