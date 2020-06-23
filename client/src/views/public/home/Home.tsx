@@ -124,23 +124,23 @@ export default function Home() {
           <Container maxWidth="lg">
             <Header />
             <Toolbar className={classes.root}>
-              <Autocomplete
-                id="search"
-                freeSolo
-                size="small"
-                options={DISTRICTS}
-                getOptionLabel={(option) => option}
-                fullWidth
-                onChange={handleSelected}
-                renderInput={(params) => (
-                  <div className={classes.search}>
-                    <div className={classes.searchIcon}>
-                        <SearchIcon />
-                    </div>
-                    <TextField {...params} className={classes.inputInput} variant="standard" />
-                  </div>
-                )}
-              />
+              <div className={classes.search}>
+                <div className={classes.searchIcon}>
+                  <SearchIcon />
+                </div>
+                <Autocomplete
+                  id="search"
+                  freeSolo
+                  size="small"
+                  options={DISTRICTS}
+                  getOptionLabel={(option) => option}
+                  fullWidth
+                  onChange={handleSelected}
+                  renderInput={(params) => (     
+                      <TextField {...params} className={classes.inputInput} variant="standard" />
+                  )}
+                />
+              </div>
               <Button onClick={handleOpenDialog}>
                 {t("home.filter")}
               </Button>
