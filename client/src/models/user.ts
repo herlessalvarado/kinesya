@@ -1,8 +1,10 @@
 import { Photo } from "../components/photo/UploadImage"
 import { DEFAULT_PHOTO, DATE_FORMAT } from "../commons/constants"
 import { format, subYears } from "date-fns"
+import { referencesDefaultPhoto } from "../commons/user_mapper"
 export const NullUser: UserViewModel = {
-    bannerPhoto: [{file:"NONE",url:DEFAULT_PHOTO}],
+    username:"",
+    bannerPhoto: [{file:"NONE",srcUrl:DEFAULT_PHOTO}],
     height: "",
     weight: "",
     eyes: "",
@@ -20,8 +22,8 @@ export const NullUser: UserViewModel = {
     price: "",
     phone: "",
     location: "",
-    profilePhoto: Array<Photo>({file:"",url:DEFAULT_PHOTO}),
-    referencePhotos: Array<Photo>(),
+    profilePhoto: Array<Photo>({file:"",srcUrl:DEFAULT_PHOTO}),
+    referencePhotos: referencesDefaultPhoto([]),
     tags: Array<string>(),
 }
 
@@ -32,6 +34,7 @@ export interface UserStateProps {
 }
 
 export interface UserViewModel {
+    username:string
     bannerPhoto: Array<Photo>
     height: string
     weight: string

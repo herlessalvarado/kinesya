@@ -28,7 +28,7 @@ export default (props: CropperProps) => {
                     type: data.type,
                 })
 
-                props.onChange({ file, url: window.URL.createObjectURL(file) })
+                props.onChange({ file, srcUrl: window.URL.createObjectURL(file) })
             })
     }
 
@@ -48,7 +48,7 @@ export default (props: CropperProps) => {
             })
         }
         _croppie.bind({
-            url: props.origin.url!,
+            url: props.origin.srcUrl!,
             zoom: 0,
         })
         return _croppie

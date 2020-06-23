@@ -18,7 +18,7 @@ interface UploadImageProps {
 }
 
 export interface Photo {
-    url?: string
+    srcUrl?: string
     file?: any
 }
 
@@ -31,7 +31,7 @@ export default ({ text, onChange, value, type }: UploadImageProps) => {
         if (!!event.target.files && event.target.files.length > 0) {
             const _photo: Photo = {
                 file: event.target.files[0] as File,
-                url: window.URL.createObjectURL(event.target.files[0]),
+                srcUrl: window.URL.createObjectURL(event.target.files[0]),
             }
             onChange(_photo)
             setDialog(true)
@@ -45,7 +45,7 @@ export default ({ text, onChange, value, type }: UploadImageProps) => {
                         <Grid item style={{ width: "30vw", marginTop: "0.5vw" }}>
                             <CardMedia
                                 component="img"
-                                image={value.length > 0 ? value[0].url : DEFAULT_PHOTO}
+                                image={value.length > 0 ? value[0].srcUrl : DEFAULT_PHOTO}
                             />
                         </Grid>
                     </Grid>
@@ -56,7 +56,7 @@ export default ({ text, onChange, value, type }: UploadImageProps) => {
                         <Grid item style={{ width: "20vw", marginTop: "0.5vw" }}>
                             <CardMedia
                                 component="img"
-                                image={value.length > 0 ? value[0].url : DEFAULT_PHOTO}
+                                image={value.length > 0 ? value[0].srcUrl : DEFAULT_PHOTO}
                             />
                         </Grid>
                     </Grid>

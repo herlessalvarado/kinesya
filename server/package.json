@@ -26,7 +26,8 @@
 	},
 	"scripts": {
 		"test": "jest",
-		"start": "npm run format && tsc && node dist/index.js",
+		"start": "npm run format && tsc && node dist/index.prod.js",
+		"dev":"tsc && node dist/index.dev.js ",
 		"format": "prettier --write src/**/*.ts"
 	},
 	"keywords": [],

@@ -1,5 +1,6 @@
 
 export interface UserDTO {
+    username:string,
     bannerPhoto: string
     name?: string
     age?: number
@@ -8,7 +9,7 @@ export interface UserDTO {
     phone?: number
     location?: string
     profilePhoto?: string
-    referencePhotos?: Array<string>
+    referencePhotos: Array<string>
     tags?: Array<string>
     height?: string
     weight?: string
