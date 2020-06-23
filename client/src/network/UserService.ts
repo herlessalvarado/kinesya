@@ -74,7 +74,7 @@ export async function getUsersByFilter(eyes: string, hair: string, birthPlace: s
     params.append("eyes", eyes);
     params.append("hair", hair);
     params.append("birthPlace", birthPlace);
-    params.append("orientation", orientation);
+    params.append("sexualOrientation", orientation);
     params.append("ethnicity", ethnicity);
     params.append("lowerPrice", lowerPrice);
     params.append("upperPrice", upperPrice);
