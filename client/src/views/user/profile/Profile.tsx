@@ -110,7 +110,7 @@ export default function Profile(props: ProfileProps) {
                         loading ? 
                         <div>
                             <Typography variant="h5" gutterBottom>
-                                {t('dashboard.profile.finish.thanks')}
+                                {t('dashboard.profile.finish.loading')}
                             </Typography>
                             <LoadingScreen />
                         </div> 
