@@ -17,6 +17,7 @@ import Toast from "../../../components/toast/Toast"
 import {useStyles} from "./styles"
 import { StepContent, Hidden } from "@material-ui/core"
 import { getUser } from "../../../cache/cookies/cookieManager"
+import LoadingScreen from '../../../components/progress/LoadingScreen'
 import { useTranslation } from 'react-i18next'
 
 interface ProfileProps {
@@ -29,6 +30,7 @@ export default function Profile(props: ProfileProps) {
     const [activeStep, setActiveStep] = React.useState(0)
     const [openToast, setOpenToast] = useState(false)
     const [user, setUser] = useState<UserViewModel>(getUser())
+    const [loading, setLoading] = useState(false)
     const [toastMessage, setToastMessage] = useState("")
 
     const steps = [t('dashboard.profile.stepper.personalData'), t('dashboard.profile.stepper.physics'), t('dashboard.profile.stepper.contact'), t('dashboard.profile.stepper.photos')]
@@ -85,9 +87,13 @@ export default function Profile(props: ProfileProps) {
                     <Typography variant="h5" gutterBottom>
                         {t('dashboard.profile.finish.thanks')}
                     </Typography>
-                    <Typography variant="subtitle1">
-                        {t('dashboard.profile.finish.message')}
-                    </Typography>
+                    {
+                        loading ? 
+                        <LoadingScreen /> : 
+                        <Typography variant="subtitle1">
+                            {t('dashboard.profile.finish.message')}
+                        </Typography>
+                    }
                 </React.Fragment>
                 )
         }
@@ -98,9 +104,11 @@ export default function Profile(props: ProfileProps) {
         let subscribe = true
         if (subscribe) {
             if (activeStep > MAX_STEPS_PROFILE) {
+                setLoading(true)
                 const userRequest = mapViewModelToUserRequest(user)
                 updateUser(userRequest)
                     .then((message) => {
+                        setLoading(false)
                         setOpenToast(true)
                         setToastMessage(message)
                     })
