@@ -114,6 +114,7 @@
                 "back": "Atrás"
             },
             "finish": {
+                "loading": "Estamos actualizando tu información...",
                 "thanks": "Gracias por completar tu perfil.",
                 "message": "Tu perfil pasará por un proceso de veracidad de la información y fotos; una vez comprobado, se te enviará un correo con la confirmación y todos podran ver tu perfil."
             }

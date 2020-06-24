@@ -32,5 +32,10 @@ createStyles({
         marginTop: theme.spacing(3),
         marginLeft: theme.spacing(1),
     },
+    loading: {
+        marginTop: theme.spacing(4),
+        marginBottom: theme.spacing(4),
+        textAlign: "center"
+    }
 })
 )
