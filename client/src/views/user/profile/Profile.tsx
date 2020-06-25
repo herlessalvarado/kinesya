@@ -18,25 +18,11 @@ import {useStyles} from "./styles"
 import { StepContent, Hidden } from "@material-ui/core"
 import { getUser } from "../../../cache/cookies/cookieManager"
 import { useTranslation } from 'react-i18next'
-import styled, { keyframes } from 'styled-components';
-import { ReactComponent as Logo } from '../../../assets/logo/kinesya.svg';
+import Loading from '../../../components/progress/Loading'
 
 interface ProfileProps {
     callback: (parentPath:string) => void
 }
-
-const rotate = keyframes`
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-`;
-
-const StyledLogo = styled(Logo)`
-animation: ${rotate} infinite 2s linear;
-`
 
 export default function Profile(props: ProfileProps) {
     const classes = useStyles()
@@ -48,14 +34,6 @@ export default function Profile(props: ProfileProps) {
     const [toastMessage, setToastMessage] = useState("")
 
     const steps = [t('dashboard.profile.stepper.personalData'), t('dashboard.profile.stepper.physics'), t('dashboard.profile.stepper.contact'), t('dashboard.profile.stepper.photos')]
-
-    function LoadingScreen() {
-        return(
-            <div className={classes.loading}>
-                <StyledLogo />
-            </div>
-        )
-    }
 
     function stepContentFactory() {
         switch (activeStep) {
@@ -112,7 +90,7 @@ export default function Profile(props: ProfileProps) {
                             <Typography variant="h5" gutterBottom>
                                 {t('dashboard.profile.finish.loading')}
                             </Typography>
-                            <LoadingScreen />
+                            <Loading />
                         </div> 
                         : 
                         <div>
