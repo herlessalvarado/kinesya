@@ -2,6 +2,7 @@
 import {useStyles} from "./styles"
 import React, {  useState, forwardRef } from "react";
 import { DialogContent, Dialog } from "@material-ui/core"
+import imageCompression from 'browser-image-compression';
 import CropperImage, {  ImageRatio } from "../profile/images/CropperImage";
 
 export interface PhotoProps {
@@ -19,13 +20,26 @@ export interface Photo {
 export default ({value,onChange,index}:PhotoProps)=>{
     const classes = useStyles();
 
-    function setImage(event:React.ChangeEvent<HTMLInputElement>) {
+    const options = {
+        maxSizeMB: 1,
+        maxWidthOrHeight: 1920,
+        useWebWorker: true
+    }
+
+    async function setImage(event:React.ChangeEvent<HTMLInputElement>) {
         if (!!event.target.files) {
-            const _photo: Photo = {
-                file: (event.target.files[0] as File),
-                srcUrl: window.URL.createObjectURL(event.target.files[0]),
-            }
-            onChange(_photo,index)
+            try {
+                const compressedFile = await imageCompression(event.target.files[0], options);
+                console.log('compressedFile instanceof Blob', compressedFile instanceof Blob); // true
+                console.log(`compressedFile size ${compressedFile.size / 1024 / 1024} MB`); // smaller than maxSizeMB
+                const _photo: Photo = {
+                    file: (compressedFile as File),
+                    srcUrl: window.URL.createObjectURL(compressedFile),
+                }
+                onChange(_photo, index)
+              } catch (error) {
+                console.log(error);
+              }
         }
     }
 

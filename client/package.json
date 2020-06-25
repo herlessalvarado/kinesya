@@ -25,6 +25,7 @@
     "@types/recharts": "^1.8.12",
     "@types/styled-components": "^5.1.0",
     "axios": "^0.19.2",
+    "browser-image-compression": "^1.0.12",
     "croppie": "^2.6.4",
     "date-fns": "^2.14.0",
     "env-cmd": "^10.1.0",
@@ -61,5 +62,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/browser-image-compression": "^1.0.1"
   }
 }
