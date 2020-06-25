@@ -105,7 +105,7 @@ export default function Home() {
     getUsersByPaginator(page, limit).then((res: Profile[]) => {
       if (res.length === 0) setHasMore(false)
       else {
-        setUsers(users.concat(res))
+        setUsers(users.concat(res).filter((v,i,a)=>a.findIndex(t=>(t.username === v.username))===i))
       }
     })
   }
