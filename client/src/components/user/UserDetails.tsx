@@ -7,7 +7,12 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Container from '@material-ui/core/Container';
 import Header from '../header/Header';
 import Toolbar from '@material-ui/core/Toolbar'
-import Button from '@material-ui/core/Button'
+import Button from '@material-ui/core/Button';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import Fab from '@material-ui/core/Fab'
+import WhatsAppIcon from '@material-ui/icons/WhatsApp'
+import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 import { UserViewModel } from '../../models/user';
 import { useTranslation } from 'react-i18next';
 
@@ -57,13 +62,6 @@ const useStyles = makeStyles((theme: Theme) =>
                 width: "100%",
             },
         },
-        box: {
-            border: `1px solid #DF6F7F`,
-            borderRadius: `1px`,
-        },
-        info: {
-            textAlign: "left",
-        },
         container3: {
             width: "100%",
             columns: "4",
@@ -72,7 +70,7 @@ const useStyles = makeStyles((theme: Theme) =>
                 columns: "1",
             },
         },
-        box2: {
+        box: {
             width: "100%",
             padding: "10px",
             overflow: "hidden",
@@ -86,21 +84,16 @@ const useStyles = makeStyles((theme: Theme) =>
                 padding: "5px",
             },
         },
-        button: {
-            margin: theme.spacing(1),
-            border: `1px solid`
-            // border: `1px solid #BF953F`,
-            // backgroundColor: "black",
-            // color: "#BF953F",
-            // "&:hover": {
-            //     backgroundColor: "#BF953F",
-            //     color: "black",
-            // },
-        },
         root: {
             "& > *": {
                 margin: theme.spacing(1),
             },
+        },
+        margin: {
+            margin: theme.spacing(1),
+        },
+        extendedIcon: {
+            marginRight: theme.spacing(1),
         },
     })
 )
@@ -141,15 +134,20 @@ export default function UserDetails(props: UserByUsernameProps) {
             </div>
             <Grid container spacing={3} className={classes.grid}>
                 <Grid item xs={12} sm={6} md={4} >
-                    <Typography
-                        style={{ color: "black", textAlign: "justify" }}
-                        gutterBottom
-                    >
-                        {props.user.description}
-                    </Typography>
+                    <Card>
+                        <CardContent>
+                            <Typography
+                                style={{ color: "black", textAlign: "justify" }}
+                                gutterBottom
+                            >
+                                {props.user.description}
+                            </Typography>
+                        </CardContent>
+                    </Card>
                 </Grid>
                 <Grid item xs={12} sm={6} md={4} >
-                    <div className={classes.info}>
+                    <Card>
+                    <CardContent>
                         <div>
                             <Typography
                                 style={{
@@ -283,10 +281,12 @@ export default function UserDetails(props: UserByUsernameProps) {
                                 {props.user.eyes}
                             </Typography>
                         </div>
-                    </div>
+                        </CardContent>
+                    </Card>
                 </Grid>
                 <Grid item xs={12} sm={6} md={4} >
-                    <div className={classes.info}>
+                    <Card>
+                        <CardContent>
                         <div>
                             <Typography
                                 style={{
@@ -401,20 +401,23 @@ export default function UserDetails(props: UserByUsernameProps) {
                                 {props.user.fakeBoobs ? t("user.yes") : t("user.no")}
                             </Typography>
                         </div>
-                    </div>
+                        </CardContent>
+                    </Card>
                 </Grid>
             </Grid>
             <div className={classes.container}>
             <Grid container spacing={3} className={classes.grid}>
-                <Grid item xs={6}>
-                    <Button className={classes.button} color="primary">
+                <Grid item xs={12} sm={6}>
+                    <Fab variant="extended" color="primary" aria-label="add" className={classes.margin}>
+                        <AttachMoneyIcon className={classes.extendedIcon} />
                         {t("user.price")} {props.user.price}
-                    </Button>
+                    </Fab>
                 </Grid>
-                <Grid item xs={6}>
-                    <Button className={classes.button} color="primary">
+                <Grid item xs={12} sm={6}>
+                    <Fab variant="extended" color="primary" aria-label="add" className={classes.margin}>
+                        <WhatsAppIcon className={classes.extendedIcon} />
                         {t("user.phone")} {props.user.phone}
-                    </Button>
+                    </Fab>
                 </Grid>
             </Grid>
             <Grid container spacing={3} className={classes.grid}>
@@ -437,7 +440,7 @@ export default function UserDetails(props: UserByUsernameProps) {
             </div>
             <div className={classes.container3}>
                 {props.user.referencePhotos?.map((reference, index) => (
-                    <div key={reference.srcUrl} className={classes.box2}>
+                    <div key={reference.srcUrl} className={classes.box}>
                         <img key={index} alt="complex" src={reference.srcUrl} />
                     </div>
                 ))}
