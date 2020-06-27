@@ -47,7 +47,6 @@ export const DISTRICTS = [
     "Villa María del Triunfo",
 ]
 export const SERVICES = [
-    "Seleccionar",
     "Trato de pareja",
     "Sexo oral",
     "Sexo anal",
@@ -76,6 +75,25 @@ export const Zodiac = [
     "Capricornio",
     "Acuario",
     "Piscis",
+]
+
+export const Eyes = [
+    "Marrón",
+    "Ambar",
+    "Avellana",
+    "Verde",
+    "Azul",
+    "Gris",
+    "Negro",
+]
+
+export const Hair = [
+    "Negro",
+    "Castaño",
+    "Rubio",
+    "Pelirrojo",
+    "Blanco",
+    "Gris",
 ]
 
 function createDefaultPhotos(){
