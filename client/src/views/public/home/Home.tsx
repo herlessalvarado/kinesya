@@ -20,15 +20,10 @@ import { TransitionProps } from '@material-ui/core/transitions';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import Box from '@material-ui/core/Box'
-import CircularProgress from '@material-ui/core/CircularProgress';
 import Footer from '../../../components/footer/Footer'
 import { FormControlLabel, Checkbox, InputAdornment, Chip } from '@material-ui/core'
-import { DISTRICTS, SERVICES, Orientations, Ethnicities, Eyes, Hair } from '../../../commons/constants'
+import { DISTRICTS, SERVICES, Orientations, Ethnicities } from '../../../commons/constants'
 import { priceValidatorResult } from "../../../commons/field_validators"
-
-interface CountryType {
-  name: string;
-}
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & { children?: React.ReactElement },
@@ -55,24 +50,21 @@ export default function Home() {
   const [tags, setTags] = React.useState(new Array<string>())
   const [validLowerPrice, setValidLowerPrice] = React.useState(priceValidatorResult.validator(""))
   const [validUpperPrice, setValidUpperPrice] = React.useState(priceValidatorResult.validator(""))
-  const [openPlace, setOpenPlace] = React.useState(false);
-  const [options, setOptions] = React.useState<CountryType[]>([]);
-  const loading = open && options.length === 0;
   const limit = 4
 
   const path = process.env.REACT_APP_PHOTO_URL!
 
-  const handleEyes = (value: string) => {
-    setEyes(value)
+  const handleEyes = (event: ChangeEvent<HTMLInputElement>) => {
+    setEyes(event.target.value)
   }
-  const handleHair = (value: string) => {
-      setHair(value)
+  const handleHair = (event: ChangeEvent<HTMLInputElement>) => {
+      setHair(event.target.value)
   }
   const handleFakeBoobs = (value: boolean) => {
       setBoobs(value)
   }
-  const handleBirthPlace = (value: string) => {
-    setBirthPlace(value)
+  const handleBirthPlace = (event: ChangeEvent<HTMLInputElement>) => {
+      setBirthPlace(event.target.value)
   }
   const handleOrientation = (value: string) => {
       setOrientation(value)
@@ -125,33 +117,6 @@ export default function Home() {
   const handleCloseDialog = () => {
     setOpen(false);
   };
-
-  React.useEffect(() => {
-    let active = true;
-
-    if (!loading) {
-      return undefined;
-    }
-
-    (async () => {
-      const response = await fetch('https://country.register.gov.uk/records.json?page-size=5000');
-      const countries = await response.json();
-
-      if (active) {
-        setOptions(Object.keys(countries).map((key) => countries[key].item[0]) as CountryType[]);
-      }
-    })();
-
-    return () => {
-      active = false;
-    };
-  }, [loading]);
-
-  React.useEffect(() => {
-    if (!openPlace) {
-      setOptions([]);
-    }
-  }, [openPlace]);
   
     return (
         <React.Fragment>
@@ -260,42 +225,20 @@ export default function Home() {
                           />
                       </Grid>
                       <Grid item xs={12} sm={6}>
-                        <Autocomplete
-                          id="hair"
-                          selectOnFocus
-                          value={hair}
-                          onChange={(event: any) => {
-                            handleHair(event.target.textContent)
-                          }}
-                          options={Hair}
-                          getOptionLabel={(options) => options}
-                          renderInput={(params) => (
-                              <TextField
-                                  {...params}
-                                  variant="standard"
-                                  label={t("dashboard.profile.physics.hair")}
-                              />
-                          )}
+                        <TextField
+                            value={hair}
+                            onChange={handleHair}
+                            fullWidth
+                            label={t("dashboard.profile.physics.hair")}
                         />
                       </Grid>
                       <Grid item xs={12} sm={6}>
-                        <Autocomplete
-                          id="eyes"
-                          selectOnFocus
-                          value={eyes}
-                          onChange={(event: any) => {
-                            handleEyes(event.target.textContent)
-                          }}
-                          options={Eyes}
-                          getOptionLabel={(options) => options}
-                          renderInput={(params) => (
-                              <TextField
-                                  {...params}
-                                  variant="standard"
-                                  label={t("dashboard.profile.physics.eyes")}
-                              />
-                          )}
-                        />                          
+                          <TextField
+                              value={eyes}
+                              onChange={handleEyes}
+                              fullWidth
+                              label={t("dashboard.profile.physics.eyes")}
+                          />
                       </Grid>
                       <Grid item xs={12} sm={6}>
                         <FormControlLabel
@@ -313,40 +256,12 @@ export default function Home() {
                         />
                       </Grid>
                       <Grid item xs={12} sm={6}>
-                        <Autocomplete
-                          id="birthplace"
-                          selectOnFocus
-                          open={openPlace}
-                          onOpen={() => {
-                              setOpenPlace(true);
-                          }}
-                          onClose={() => {
-                              setOpenPlace(false);
-                          }}
-                          onChange={(event: any) => {
-                              handleBirthPlace(event.target.textContent)
-                          }}
-                          getOptionSelected={(option, value) => option.name === value.name}
-                          getOptionLabel={(option) => option.name}
-                          options={options}
-                          loading={loading}
-                          renderInput={(params) => (
-                              <TextField
-                              {...params}
+                          <TextField
+                              value={birthPlace}
+                              onChange={handleBirthPlace}
+                              fullWidth
                               label={t("dashboard.profile.physics.birthplace")}
-                              variant="standard"
-                              InputProps={{
-                                  ...params.InputProps,
-                                  endAdornment: (
-                                  <React.Fragment>
-                                      {loading ? <CircularProgress color="inherit" size={20} /> : null}
-                                      {params.InputProps.endAdornment}
-                                  </React.Fragment>
-                                  ),
-                              }}
-                              />
-                          )}
-                        />                          
+                          />
                       </Grid>
                       <Grid item xs={12} sm={12}>
                         <Autocomplete
