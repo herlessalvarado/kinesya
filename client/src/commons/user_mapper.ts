@@ -2,7 +2,7 @@ import { UserDTO } from "../dto/user"
 import { UserViewModel } from "../models/user"
 import { format, parse, differenceInCalendarYears, subYears } from "date-fns"
 import { Photo } from "../components/photo/Photo"
-import { DATE_FORMAT, IMAGE_LIMITS, DEFAULT_PHOTO, DEFAULT_PHOTOS } from "../commons/constants"
+import { DATE_FORMAT, DEFAULT_PHOTO, DEFAULT_PHOTOS } from "../commons/constants"
 
 export function mapUserDTOToViewModel(user: UserDTO) {
     const result: UserViewModel = {
