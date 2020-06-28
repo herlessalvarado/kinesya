@@ -108,9 +108,8 @@ export default function Home() {
     getUsersByPaginator(page, limit).then((res: Profile[]) => {
       if (res.length === 0) setHasMore(false)
       else {
-        const _users = res.filter((v,i,a)=>a.findIndex(t=>(t.username === v.username))===i)
-        users.push(..._users)
-        setUsers([...users])
+        users.push(...res)
+        setUsers(users.filter((v,i,a)=>a.findIndex(t=>(t.username === v.username))===i))
       }
     })
   }
@@ -153,7 +152,7 @@ export default function Home() {
                     <Typography variant="h6" className={classes.title}>
                       {t("home.filter")}
                     </Typography>
-                    <Button autoFocus color="inherit" onClick={handleFilter}>
+                    <Button autoFocus color="inherit" onClick={ handleFilter}>
                       {t("home.filterSearch")}
                     </Button>
                   </Toolbar>
