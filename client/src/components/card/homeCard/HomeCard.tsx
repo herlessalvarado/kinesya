@@ -4,6 +4,7 @@ import CardMedia from '@material-ui/core/CardMedia'
 import WhatsAppIcon from '@material-ui/icons/WhatsApp'
 import { IconButton } from '@material-ui/core'
 import { useStyles } from './styles'
+import { PREFIX_NUMBER } from '../../../commons/constants'
 
 interface CardProps {
     name?: string
@@ -16,7 +17,7 @@ interface CardProps {
 export default function SmallCard(props: CardProps) {
     const classes = useStyles()
     const whatsappMessage = (number: Number) => {
-        var url = `https://api.whatsapp.com/send?phone=${number}&text=Hola!%20Vi%20su%20anuncio%20en%20Kinesya,%20estoy%20interesado%20en%20su%20servicio.`
+        var url = `https://api.whatsapp.com/send?phone=${PREFIX_NUMBER} ${number}&text=Hola!%20Vi%20su%20anuncio%20en%20Kinesya,%20estoy%20interesado%20en%20su%20servicio.`
         var win = window.open(url, "_blank")
         win!.focus()
     }

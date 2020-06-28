@@ -440,8 +440,8 @@ export default function UserDetails(props: UserByUsernameProps) {
             </div>
             <div className={classes.container3}>
                 {props.user.referencePhotos?.map((reference, index) => (
-                    <div key={reference.srcUrl} className={classes.box}>
-                        <img key={index} alt="complex" src={reference.srcUrl} />
+                    <div key={index} className={classes.box}>
+                        <img alt="complex" src={reference.srcUrl} />
                     </div>
                 ))}
             </div>

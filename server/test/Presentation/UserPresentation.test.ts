@@ -66,7 +66,7 @@ describe("User Presentation Test",()=>{
             userService.generateToken.mockResolvedValueOnce({refreshToken:"refresh_token",token:"token"})
             const expectedResponse = <HttpResponse>{body:{refreshToken:"refresh_token",token:"token"},status:OK}
 
-            const response = await userController.generateRefreshToken({body:{refreshToken:"refresh_token"}});
+            const response = await userController.generateToken({body:{refreshToken:"refresh_token"}});
             
             expect(response).toEqual(expectedResponse)
         })
@@ -77,7 +77,7 @@ describe("User Presentation Test",()=>{
             })
             const expectedResponse = <HttpResponse>{body:"RefreshToken has been expired",status:UNAUTHORIZED}
 
-            const response = await userController.generateRefreshToken({body:{refreshToken:"invalid_token"}});
+            const response = await userController.generateToken({body:{refreshToken:"invalid_token"}});
             
             expect(response).toEqual(expectedResponse)
         })

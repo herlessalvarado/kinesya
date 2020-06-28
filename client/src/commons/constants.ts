@@ -113,8 +113,13 @@ export const Orientations = ["Heterosexual", "Homosexual", "Bisexual", "Trans"]
 export const IMAGE_LIMITS = 4
 export const MAX_AGE = 99
 export const MIN_PRICE = 0.0
+export const API_COUNTRIES = "https://country.register.gov.uk/records.json?page-size=5000"
+
+
 // export const MIN_AGE = moment().subtract(18, "years").toDate()
 export const DEFAULT_PHOTO = avatar
 export const MAX_STEPS_PROFILE = 3
 export const DATE_FORMAT = "MM/dd/yyyy"
 export const DEFAULT_PHOTOS = createDefaultPhotos()
+export const PREFIX_NUMBER = "+51"
+
