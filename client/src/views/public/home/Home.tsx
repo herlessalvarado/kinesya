@@ -66,8 +66,8 @@ export default function Home() {
   const handleFakeBoobs = (value: boolean) => {
       setBoobs(value)
   }
-  const handleBirthPlace = (event: ChangeEvent<HTMLInputElement>) => {
-      setBirthPlace(event.target.value)
+  const handleBirthPlace = (value:string) => {
+      setBirthPlace(value)
   }
   const handleOrientation = (value: string) => {
       setOrientation(value)
@@ -263,6 +263,7 @@ export default function Home() {
                           id="birthplace"
                           selectOnFocus
                           open={openPlace}
+                          value={{name:birthPlace}}
                           onOpen={() => {
                               setOpenPlace(true);
                           }}

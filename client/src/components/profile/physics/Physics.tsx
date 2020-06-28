@@ -180,7 +180,7 @@ export default function Physics(props: UserStateProps) {
                             onChange={(event: any) => {
                                 handleBirthPlace(event.target.textContent)
                             }}
-                            getOptionSelected={(option, value) => {
+                            getOptionSelected={(option, value) => { 
                                 return option.name === value.name
                             }}
                             getOptionLabel={(option) => option.name}
