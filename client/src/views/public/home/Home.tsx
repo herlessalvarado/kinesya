@@ -57,11 +57,11 @@ export default function Home() {
 
   const path = process.env.REACT_APP_PHOTO_URL!
 
-  const handleEyes = (event: ChangeEvent<HTMLInputElement>) => {
-    setEyes(event.target.value)
+  const handleEyes = (value:string) => {
+    setEyes(value)
   }
-  const handleHair = (event: ChangeEvent<HTMLInputElement>) => {
-      setHair(event.target.value)
+  const handleHair = (value:string) => {
+      setHair(value)
   }
   const handleFakeBoobs = (value: boolean) => {
       setBoobs(value)
@@ -108,7 +108,9 @@ export default function Home() {
     getUsersByPaginator(page, limit).then((res: Profile[]) => {
       if (res.length === 0) setHasMore(false)
       else {
-        setUsers(users.concat(res).filter((v,i,a)=>a.findIndex(t=>(t.username === v.username))===i))
+        const _users = res.filter((v,i,a)=>a.findIndex(t=>(t.username === v.username))===i)
+        users.push(..._users)
+        setUsers([...users])
       }
     })
   }
@@ -228,20 +230,42 @@ export default function Home() {
                           />
                       </Grid>
                       <Grid item xs={12} sm={6}>
-                        <TextField
-                            value={hair}
-                            onChange={handleHair}
-                            fullWidth
-                            label={t("dashboard.profile.physics.hair")}
+                      <Autocomplete
+                          id="hair"
+                          selectOnFocus
+                          value={hair}
+                          onChange={(event: any) => {
+                            handleHair(event.target.textContent)
+                          }}
+                          options={Hair}
+                          getOptionLabel={(options) => options}
+                          renderInput={(params) => (
+                              <TextField
+                                  {...params}
+                                  variant="standard"
+                                  label={t("dashboard.profile.physics.hair")}
+                              />
+                          )}
                         />
                       </Grid>
                       <Grid item xs={12} sm={6}>
-                          <TextField
-                              value={eyes}
-                              onChange={handleEyes}
-                              fullWidth
-                              label={t("dashboard.profile.physics.eyes")}
-                          />
+                      <Autocomplete
+                          id="eyes"
+                          selectOnFocus
+                          value={eyes}
+                          onChange={(event: any) => {
+                            handleEyes(event.target.textContent)
+                          }}
+                          options={Eyes}
+                          getOptionLabel={(options) => options}
+                          renderInput={(params) => (
+                              <TextField
+                                  {...params}
+                                  variant="standard"
+                                  label={t("dashboard.profile.physics.eyes")}
+                              />
+                          )}
+                        /> 
                       </Grid>
                       <Grid item xs={12} sm={6}>
                         <FormControlLabel

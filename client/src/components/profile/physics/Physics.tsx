@@ -1,7 +1,7 @@
 import React, { useState, ChangeEvent } from "react"
 import Grid from "@material-ui/core/Grid"
 import TextField from "@material-ui/core/TextField"
-import { Zodiac, Orientations, Ethnicities, MAX_STEPS_PROFILE } from "../../../commons/constants"
+import { Zodiac, Orientations, Ethnicities, MAX_STEPS_PROFILE, Hair, Eyes } from "../../../commons/constants"
 import { textLengthValidatorResult, decimalValidatorResult } from "../../../commons/field_validators"
 import {
     FormControlLabel,
@@ -54,13 +54,13 @@ export default function Physics(props: UserStateProps) {
         setValidWeight(decimalValidatorResult.validator(event.target.value))
     }
 
-    const handleEyes = (event: ChangeEvent<HTMLInputElement>) => {
-        setEyes(event.target.value)
-        setValidEyes(textLengthValidatorResult.validator(event.target.value))
+    const handleEyes = (value:string) => {
+        setEyes(value)
+        setValidEyes(textLengthValidatorResult.validator(value))
     }
-    const handleHair = (event: ChangeEvent<HTMLInputElement>) => {
-        setHair(event.target.value)
-        setValidHair(textLengthValidatorResult.validator(event.target.value))
+    const handleHair = (value:string) => {
+        setHair(value)
+        setValidHair(textLengthValidatorResult.validator(value))
     }
     const handleFakeBoobs = (value: boolean) => {
         setBoobs(value)
@@ -131,24 +131,42 @@ export default function Physics(props: UserStateProps) {
                         />
                     </Grid>
                     <Grid item xs={12} sm={6}>
-                        <TextField
-                            value={hair}
-                            onChange={handleHair}
-                            fullWidth
-                            label={t("dashboard.profile.physics.hair")}
-                            error={!validHair}
-                            helperText={!validHair ? textLengthValidatorResult.message : ""}
+                    <Autocomplete
+                          id="hair"
+                          selectOnFocus
+                          value={hair}
+                          onChange={(event: any) => {
+                            handleHair(event.target.textContent)
+                          }}
+                          options={Hair}
+                          getOptionLabel={(options) => options}
+                          renderInput={(params) => (
+                              <TextField
+                                  {...params}
+                                  variant="standard"
+                                  label={t("dashboard.profile.physics.hair")}
+                              />
+                          )}
                         />
                     </Grid>
                     <Grid item xs={12} sm={6}>
-                        <TextField
-                            value={eyes}
-                            onChange={handleEyes}
-                            fullWidth
-                            label={t("dashboard.profile.physics.eyes")}
-                            error={!validEyes}
-                            helperText={!validEyes ? textLengthValidatorResult.message : ""}
-                        />
+                    <Autocomplete
+                          id="eyes"
+                          selectOnFocus
+                          value={eyes}
+                          onChange={(event: any) => {
+                            handleEyes(event.target.textContent)
+                          }}
+                          options={Eyes}
+                          getOptionLabel={(options) => options}
+                          renderInput={(params) => (
+                              <TextField
+                                  {...params}
+                                  variant="standard"
+                                  label={t("dashboard.profile.physics.eyes")}
+                              />
+                          )}
+                        /> 
                     </Grid>
                     <Grid item xs={12} sm={6}>
                         <FormControlLabel
