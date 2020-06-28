@@ -40,6 +40,16 @@ export function userRouter(userController: UserController) {
         res.status(response.status).send(response.body)
     })
 
+    router.put("/users", [upload, auth], async (req: Request, res: Response) => {
+        const response = await userController.updateUser(req as HttpRequest)
+        res.status(response.status).send(response.body)
+    })
+
+    router.post("/users/token",  async (req: Request, res: Response) => {
+        const response = await userController.generateToken(req as HttpRequest)
+        res.status(response.status).send(response.body)
+    })
+
     router.post("/users/me/logout", async (req: Request, res: Response) => {
         const response = await userController.logout(req as HttpRequest)
         res.status(response.status).send(response.body)
@@ -55,10 +65,7 @@ export function userRouter(userController: UserController) {
         res.status(response.status).send(response.body)
     })
 
-    router.put("/users", [upload, auth], async (req: Request, res: Response) => {
-        const response = await userController.updateUser(req as HttpRequest)
-        res.status(response.status).send(response.body)
-    })
+  
 
     return router
 }
@@ -130,7 +137,7 @@ export class UserController {
         return resp
     }
 
-    async generateRefreshToken(req: HttpAuthRequest): Promise<HttpResponse> {
+    async generateToken(req: HttpAuthRequest): Promise<HttpResponse> {
         const resp: HttpResponse = { body: "", status: OK }
         try {
             const auth = await this.service.generateToken(req.body?.refreshToken)
@@ -168,6 +175,8 @@ export class UserController {
             resp.status = OK
             resp.body = "User details updated successfully"
         } catch (err) {
+
+            console.log(err)
             handlerExceptions(err, resp)
         }
         return resp

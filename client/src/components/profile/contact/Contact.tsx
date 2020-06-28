@@ -1,7 +1,7 @@
 import React, { useState, ChangeEvent } from "react"
 import { Grid } from "@material-ui/core"
 import TextField from "@material-ui/core/TextField"
-import { DISTRICTS, SERVICES, MAX_STEPS_PROFILE } from "../../../commons/constants"
+import { DISTRICTS, SERVICES, MAX_STEPS_PROFILE, PREFIX_NUMBER } from "../../../commons/constants"
 import {
     InputAdornment,
     Chip,
@@ -84,7 +84,7 @@ export default function Contact(props: UserStateProps) {
                             helperText={!validPhone ? phoneValidatorResult.message : ""}
                             InputProps={{
                                 startAdornment: (
-                                    <InputAdornment position="start">+51</InputAdornment>
+                                <InputAdornment position="start">{PREFIX_NUMBER}</InputAdornment>
                                 ),
                             }}
                         />

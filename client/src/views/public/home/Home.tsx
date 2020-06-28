@@ -22,8 +22,9 @@ import CloseIcon from '@material-ui/icons/Close';
 import Box from '@material-ui/core/Box'
 import Footer from '../../../components/footer/Footer'
 import { FormControlLabel, Checkbox, InputAdornment, Chip } from '@material-ui/core'
-import { DISTRICTS, SERVICES, Orientations, Ethnicities } from '../../../commons/constants'
+import { DISTRICTS, SERVICES, Orientations, Ethnicities, Eyes, Hair, API_COUNTRIES } from '../../../commons/constants'
 import { priceValidatorResult } from "../../../commons/field_validators"
+import { useCountries } from '../../../hooks/useCountries'
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & { children?: React.ReactElement },
@@ -50,6 +51,8 @@ export default function Home() {
   const [tags, setTags] = React.useState(new Array<string>())
   const [validLowerPrice, setValidLowerPrice] = React.useState(priceValidatorResult.validator(""))
   const [validUpperPrice, setValidUpperPrice] = React.useState(priceValidatorResult.validator(""))
+  const [openPlace, setOpenPlace] = React.useState(false);
+  const options = useCountries()
   const limit = 4
 
   const path = process.env.REACT_APP_PHOTO_URL!
@@ -256,12 +259,30 @@ export default function Home() {
                         />
                       </Grid>
                       <Grid item xs={12} sm={6}>
-                          <TextField
-                              value={birthPlace}
-                              onChange={handleBirthPlace}
-                              fullWidth
+                        <Autocomplete
+                          id="birthplace"
+                          selectOnFocus
+                          open={openPlace}
+                          onOpen={() => {
+                              setOpenPlace(true);
+                          }}
+                          onClose={() => {
+                              setOpenPlace(false);
+                          }}
+                          onChange={(event: any) => {
+                              handleBirthPlace(event.target.textContent)
+                          }}
+                          getOptionSelected={(option, value) => option.name === value.name}
+                          getOptionLabel={(option) => option.name}
+                          options={options}
+                          renderInput={(params) => (
+                              <TextField
+                              {...params}
                               label={t("dashboard.profile.physics.birthplace")}
-                          />
+                              variant="standard"
+                              />
+                          )}
+                        />                          
                       </Grid>
                       <Grid item xs={12} sm={12}>
                         <Autocomplete

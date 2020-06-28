@@ -1,5 +1,4 @@
 import React, { useState, ChangeEvent } from "react"
-import fetch from 'cross-fetch'
 import Grid from "@material-ui/core/Grid"
 import TextField from "@material-ui/core/TextField"
 import { Zodiac, Orientations, Ethnicities, MAX_STEPS_PROFILE } from "../../../commons/constants"
@@ -10,15 +9,12 @@ import {
     InputAdornment,
     Button,
 } from "@material-ui/core"
-import CircularProgress from '@material-ui/core/CircularProgress';
 import { Autocomplete } from "@material-ui/lab"
 import { UserStateProps } from "../../../models/user"
 import {useStyles} from "./styles"
 import { useTranslation } from "react-i18next";
+import { useCountries } from "../../../hooks/useCountries"
 
-interface CountryType {
-    name: string;
-}
 
 export default function Physics(props: UserStateProps) {
     const classes = useStyles()
@@ -35,8 +31,7 @@ export default function Physics(props: UserStateProps) {
     const [boobs, setBoobs] = useState(props.user.fakeBoobs)
 
     const [open, setOpen] = useState(false);
-    const [options, setOptions] = useState<CountryType[]>([]);
-    const loading = open && options.length === 0;
+    const options = useCountries();
 
     const [validHair, setValidHair] = useState(textLengthValidatorResult.validator(props.user.hair))
     const [validHeight, setValidHeight] = useState(
@@ -104,33 +99,6 @@ export default function Physics(props: UserStateProps) {
             zodiac !== ""
         )
     }
-
-    React.useEffect(() => {
-        let active = true;
-    
-        if (!loading) {
-          return undefined;
-        }
-    
-        (async () => {
-          const response = await fetch('https://country.register.gov.uk/records.json?page-size=5000');
-          const countries = await response.json();
-    
-          if (active) {
-            setOptions(Object.keys(countries).map((key) => countries[key].item[0]) as CountryType[]);
-          }
-        })();
-    
-        return () => {
-          active = false;
-        };
-      }, [loading]);
-    
-      React.useEffect(() => {
-        if (!open) {
-          setOptions([]);
-        }
-      }, [open]);
 
     return (
         <React.Fragment>
@@ -202,6 +170,7 @@ export default function Physics(props: UserStateProps) {
                             id="asynchronous-demo"
                             selectOnFocus
                             open={open}
+                            value={{name:birthPlace}}
                             onOpen={() => {
                                 setOpen(true);
                             }}
@@ -211,24 +180,16 @@ export default function Physics(props: UserStateProps) {
                             onChange={(event: any) => {
                                 handleBirthPlace(event.target.textContent)
                             }}
-                            getOptionSelected={(option, value) => option.name === value.name}
+                            getOptionSelected={(option, value) => {
+                                return option.name === value.name
+                            }}
                             getOptionLabel={(option) => option.name}
                             options={options}
-                            loading={loading}
                             renderInput={(params) => (
                                 <TextField
                                 {...params}
                                 label={t("dashboard.profile.physics.birthplace")}
                                 variant="standard"
-                                InputProps={{
-                                    ...params.InputProps,
-                                    endAdornment: (
-                                    <React.Fragment>
-                                        {loading ? <CircularProgress color="inherit" size={20} /> : null}
-                                        {params.InputProps.endAdornment}
-                                    </React.Fragment>
-                                    ),
-                                }}
                                 />
                             )}
                             />
