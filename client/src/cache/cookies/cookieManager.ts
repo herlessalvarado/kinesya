@@ -28,3 +28,7 @@ export function AuthOff() {
     Cookie.remove(process.env.REACT_APP_REFRESH_TOKEN_KEY!)
     Cookie.remove(process.env.REACT_APP_JWT_KEY!)
 }
+
+export function isPolicyAccepted(){
+    return (localStorage.getItem("accepted-policy") === null) ? true : false
+}
