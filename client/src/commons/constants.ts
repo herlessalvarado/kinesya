@@ -123,4 +123,5 @@ export const MAX_STEPS_PROFILE = 3
 export const DATE_FORMAT = "MM/dd/yyyy"
 export const DEFAULT_PHOTOS = createDefaultPhotos()
 export const PREFIX_NUMBER = "+51"
+export const ACCEPTED_TERMS = "accepted-policy"
 
