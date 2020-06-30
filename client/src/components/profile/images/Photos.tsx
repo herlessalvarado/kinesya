@@ -59,11 +59,7 @@ export default function Photos(props: UserStateProps) {
 }
 
 	function areAllValid() {
-		return (
-			profilePhoto.length > 0 &&
-			bannerPhoto.length > 0 &&
-			referencePhotos.length > 0
-		);
+		return !!profilePhoto[0].file && !!bannerPhoto[0].file
 	}
 
 	return (
