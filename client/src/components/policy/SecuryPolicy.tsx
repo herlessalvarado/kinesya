@@ -6,6 +6,7 @@ import DialogActions from "@material-ui/core/DialogActions/DialogActions";
 import Button from "@material-ui/core/Button/Button";
 import Link from "@material-ui/core/Link/Link";
 import { ACCEPTED_TERMS } from "../../commons/constants";
+import { useTranslation } from 'react-i18next';
 
 interface DialogProps {
 	open: boolean;
@@ -13,6 +14,8 @@ interface DialogProps {
 }
 
 export default function ({ open, setOpen }: DialogProps) {
+	const { t } = useTranslation('common')
+
 	function handleClose() {
 		localStorage.setItem(ACCEPTED_TERMS, "true");
 		setOpen(false);
@@ -27,38 +30,25 @@ export default function ({ open, setOpen }: DialogProps) {
 			scroll="paper"
 			open={open}
 		>
-			<DialogTitle id="SecurityPolicy">Politicas de Seguridad</DialogTitle>
+			<DialogTitle id="SecurityPolicy">{t("terms.main.title")}</DialogTitle>
 			<DialogContent dividers>
 				<ul>
-					<li>Tengo m&aacute;s de 18 a&ntilde;os</li>
+					<li>{t("terms.main.first")}</li>
 					<li>
-						No se permite la publicaci&oacute;n de ning&uacute;n anuncio que
-						contenga referencias sobre servicios sexuales a cambio de dinero
+						{t("terms.main.second")}
 					</li>
 					<li>
-						No se permite adjuntar im&aacute;genes pornogr&aacute;ficas que
-						muestren &oacute;rganos genitales expl&iacute;citamente
+						{t("terms.main.third")}
 					</li>
 					<li>
-						La inserci&oacute;n de material ped&oacute;filo, incluidos todos los
-						datos de acceso, se comunicar&aacute; inmediatamente a las
-						autoridades competentes a fin de llegar a los responsables
-						implicados
+						{t("terms.main.fourth")}
 					</li>
 					<li>
-						Al publicar el anuncio en Kinesya, el Usuario certifica que puede
-						acceder al contenido con todos los derechos y tambi&eacute;n declara
-						que las im&aacute;genes pertenecen a personas mayores de edad
-						(mayores de 18 a&ntilde;os), que han dado su consentimiento para
-						publicarlas en Kinesya.
+						{t("terms.main.fifth")}
 					</li>
 				</ul>
 				<p>
-					Al hacer clic en el bot&oacute;n &ldquo;aceptar&rdquo;, el usuario
-					declara se mayor de 18 a&ntilde;os y exime de toda responsabilidad a
-					los proveedores de estos servicios, propietarios y creadores de
-					Kinesya.com sobre los contenidos y sobre el uso que se haga de la
-					secci&oacute;n.
+					{t("terms.main.sixth")}
 				</p>
 			</DialogContent>
 			<DialogActions>
