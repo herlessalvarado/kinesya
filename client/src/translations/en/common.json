@@ -63,6 +63,8 @@
         },
         "home":{
             "welcome": "Welcome",
+            "profile": "Profile",
+            "complete": "Complete your profile",
             "billing": "Billing",
             "soon": "Soon",
             "date": "You will see your billing",

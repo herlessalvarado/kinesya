@@ -63,6 +63,8 @@
         },
         "home":{
             "welcome": "Bienvenida",
+            "profile": "Perfil",
+            "complete": "Termina de completar tu perfil",
             "billing": "Facturación",
             "soon": "Próximamente",
             "date": "Podrás ver tu facturación",

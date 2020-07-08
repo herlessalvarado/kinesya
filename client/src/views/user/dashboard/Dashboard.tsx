@@ -246,36 +246,58 @@ export default function Dashboard() {
             <Route exact path={path}>
                 <div className={classes.appBarSpacer} />
                 <Container maxWidth="xl" className={classes.container}>
-                    <Typography component="h1" variant="h5"  color="textPrimary" gutterBottom>
-                      { t('dashboard.home.welcome') } {user.name}
-                    </Typography>
-                    <Grid container spacing={3}>
-                        <Grid item xs={12} md={8} lg={9}>
-                            <HomeCard
-                                onClick={() => preventDefault}
-                                name={user.name}
-                                location={user.location}
-                                image={user.bannerPhoto[0].srcUrl ||  DEFAULT_PHOTO }
-                                phone={Number(user.phone)}
-                            ></HomeCard>
-                        </Grid>
+                  {user.name === "" ? 
+                    <div>
+                      <Grid container spacing={3}>
                         <Grid item xs={12} md={4} lg={3}>
                             <Paper className={fixedHeightPaper}>
                                 <Typography component="h2" variant="h6" color="primary" gutterBottom>
-                                  { t('dashboard.home.billing') }
-                                </Typography>
-                                <Typography component="p" variant="h6">
-                                  { t('dashboard.home.soon') }
+                                  { t('dashboard.home.profile') }
                                 </Typography>
                                 <Typography color="textSecondary" className={classes.depositContext}>
-                                  { t('dashboard.home.date') }
+                                  { t('dashboard.home.complete') }
                                 </Typography>
-                                <Link to={`${url}/pricing`} style={{ color: "inherit", textDecoration: "inherit" }}>
+                                <Link to={`${url}/profile`} style={{ color: "inherit", textDecoration: "inherit" }}>
                                   { t('dashboard.home.pricing') }
                                 </Link>
                             </Paper>
-                        </Grid>  
-                    </Grid>
+                          </Grid> 
+                      </Grid>
+                    </div>
+                    :
+                    <div>
+                      <Typography component="h1" variant="h5"  color="textPrimary" gutterBottom>
+                        { t('dashboard.home.welcome') } {user.name}
+                      </Typography>
+                      <Grid container spacing={3}>
+                          <Grid item xs={12} md={8} lg={9}>
+                              <HomeCard
+                                  onClick={() => preventDefault}
+                                  name={user.name}
+                                  location={user.location}
+                                  image={user.bannerPhoto[0].srcUrl ||  DEFAULT_PHOTO }
+                                  phone={Number(user.phone)}
+                              ></HomeCard>
+                          </Grid>
+                          <Grid item xs={12} md={4} lg={3}>
+                              <Paper className={fixedHeightPaper}>
+                                  <Typography component="h2" variant="h6" color="primary" gutterBottom>
+                                    { t('dashboard.home.billing') }
+                                  </Typography>
+                                  <Typography component="p" variant="h6">
+                                    { t('dashboard.home.soon') }
+                                  </Typography>
+                                  <Typography color="textSecondary" className={classes.depositContext}>
+                                    { t('dashboard.home.date') }
+                                  </Typography>
+                                  <Link to={`${url}/pricing`} style={{ color: "inherit", textDecoration: "inherit" }}>
+                                    { t('dashboard.home.pricing') }
+                                  </Link>
+                              </Paper>
+                          </Grid>  
+                      </Grid>
+                    </div>
+                  }
                     <Box pt={4}>
                         <Copyright />
                     </Box>
