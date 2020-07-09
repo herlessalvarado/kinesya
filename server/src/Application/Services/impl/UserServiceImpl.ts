@@ -97,8 +97,8 @@ export default class UserServiceImpl implements UserService {
             paginator:
                 !!filters.page && !!filters.limit
                     ? {
-                          page: filters.page > 0 ? (filters.page - 1) * filters.limit : 0,
-                          limit: filters.page * filters.limit,
+                          page: (filters.page - 1) * parseInt(filters.limit),
+                          limit: parseInt(filters.limit),
                       }
                     : undefined,
         }
@@ -126,6 +126,7 @@ export default class UserServiceImpl implements UserService {
             criteria.where.push({ property: "characteristics.birthPlace", eq: filters.birthPlace })
         if (!!filters.services) criteria.where.push({ property: "tags", in: filters.services })
         if (!!filters.location) criteria.where.push({ property: "location", eq: filters.location })
+        console.log(criteria)
         return criteria
     }
 }

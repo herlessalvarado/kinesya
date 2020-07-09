@@ -152,6 +152,7 @@ function applyCriteria(query: any, criteria: Criteria) {
         if (!!v.range) query.where(v.property).gt(v.range.lower).lt(v.range.upper)
         if (!!v.in) query.where(v.property).in(v.in)
     })
+    console.log(criteria)
     if (!!criteria.paginator) query.skip(criteria.paginator.page).limit(criteria.paginator.limit)
     return query
 }
