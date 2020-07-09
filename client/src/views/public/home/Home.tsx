@@ -22,7 +22,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import Box from '@material-ui/core/Box'
 import Footer from '../../../components/footer/Footer'
 import { FormControlLabel, Checkbox, InputAdornment, Chip } from '@material-ui/core'
-import { DISTRICTS, SERVICES, Orientations, Ethnicities, Eyes, Hair, API_COUNTRIES } from '../../../commons/constants'
+import { DISTRICTS, SERVICES, Orientations, Ethnicities, Eyes, Hair } from '../../../commons/constants'
 import { priceValidatorResult } from "../../../commons/field_validators"
 import { useCountries } from '../../../hooks/useCountries'
 

@@ -9,6 +9,7 @@ import PrivacyPolicy from "../../../components/policy/PrivacyPolicy"
 import TermsConditions from "../../../components/policy/TermsConditions"
 import Header from '../../../components/header/Header';
 import { useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -54,6 +55,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 export default function SimpleTabs() {
   const classes = useStyles();
+  const { t } = useTranslation('common')
   const location = useLocation()
   const [value, setValue] = React.useState(getCurrentTab());
   
@@ -87,8 +89,8 @@ export default function SimpleTabs() {
           textColor="primary"
           variant="fullWidth"
           aria-label="Info tabs" >
-          <Tab label="Privacy Policy"  {...a11yProps(0)} />
-          <Tab label="Terms and Conditions" {...a11yProps(1)} />
+          <Tab label={t("terms.policy.title")}  {...a11yProps(0)} />
+          <Tab label={t("terms.conditions.title")} {...a11yProps(1)} />
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0}>
