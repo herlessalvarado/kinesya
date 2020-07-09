@@ -107,9 +107,9 @@ export default function Home() {
   function loadItems(page: Number) {
     getUsersByPaginator(page, limit).then((res: Profile[]) => {
       if (res.length === 0) setHasMore(false)
-      else {
+      else { 
         users.push(...res)
-        setUsers(users.filter((v,i,a)=>a.findIndex(t=>(t.username === v.username))===i))
+        setUsers([...users])
       }
     })
   }
