@@ -47,5 +47,5 @@ export interface UserFiltersDTO {
     lowerPrice?: number
     upperPrice?: number
     page?: number
-    limit?: number
+    limit?: string
 }
