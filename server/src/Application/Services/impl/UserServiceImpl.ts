@@ -126,7 +126,6 @@ export default class UserServiceImpl implements UserService {
             criteria.where.push({ property: "characteristics.birthPlace", eq: filters.birthPlace })
         if (!!filters.services) criteria.where.push({ property: "tags", in: filters.services })
         if (!!filters.location) criteria.where.push({ property: "location", eq: filters.location })
-        console.log(criteria)
         return criteria
     }
 }

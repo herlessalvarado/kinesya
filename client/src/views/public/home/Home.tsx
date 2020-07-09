@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from 'react'
+import React, { ChangeEvent, useEffect } from 'react'
 import { CssBaseline, Container, Grid, Button } from '@material-ui/core'
 import { useStyles } from './styles'
 import Header from '../../../components/header/Header'
@@ -7,7 +7,7 @@ import LocationOnIcon from '@material-ui/icons/LocationOn';
 import { Profile } from './schema'
 import InfiniteScroll from 'react-infinite-scroller'
 import HomeCard from '../../../components/card/homeCard/HomeCard'
-import { getUsersByPaginator, getUsersByDistrict, getUsersByFilter } from '../../../network/UserService'
+import { getUsersByPaginator, getUsersByDistrict, getUsersByFilter, getUsers } from '../../../network/UserService'
 import { useHistory } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import Autocomplete from '@material-ui/lab/Autocomplete'
@@ -54,6 +54,7 @@ export default function Home() {
   const [openPlace, setOpenPlace] = React.useState(false);
   const options = useCountries()
   const limit = 4
+  const [visibleUsers,setVisibleUsers] = React.useState(0)
 
   const path = process.env.REACT_APP_PHOTO_URL!
 
@@ -104,14 +105,12 @@ export default function Home() {
     })
     handleCloseDialog()
   }
-  function loadItems(page: Number) {
-    getUsersByPaginator(page, limit).then((res: Profile[]) => {
-      if (res.length === 0) setHasMore(false)
-      else { 
-        users.push(...res)
-        setUsers([...users])
-      }
-    })
+ function loadItems(page: number) {
+    if ( limit * (page-1) > users.length ){
+      setHasMore(false)
+    }else{
+      setVisibleUsers(page * limit)
+    }
   }
 
   const handleOpenDialog = () => {
@@ -121,6 +120,33 @@ export default function Home() {
   const handleCloseDialog = () => {
     setOpen(false);
   };
+  function loadUsers(){
+    const visibles = users.slice(0,visibleUsers) 
+    return (visibles?.map((user) => (
+      <Grid item key={user.username} xs={12} sm={6} md={4} lg={3}>
+        <HomeCard
+            onClick={() => {
+                handleOpen(user.username)
+            }}
+            name={user.name}
+            location={user.location}
+            image={path + user.profilePhoto}
+            phone={user.phone}
+        ></HomeCard>
+      </Grid>
+    ))
+    )
+  }
+
+  useEffect(()=>{
+    let susbcribe = true
+    if (susbcribe){
+      getUsers().then((res:Profile[])=>{
+        setUsers(res)
+      })
+    }
+    return ()=>{susbcribe = false}
+  },[])
   
     return (
         <React.Fragment>
@@ -346,24 +372,17 @@ export default function Home() {
               </Dialog>
             </Toolbar>
             <main>
-            <Container maxWidth="lg">
-                <InfiniteScroll pageStart={0} loadMore={loadItems} hasMore={hasMore}>
+            <Container maxWidth="lg">{
+              users.length > 0 && 
+              <InfiniteScroll pageStart={0} loadMore={loadItems} hasMore={hasMore}>
                   <Grid container spacing={4}>
-                        {users?.map((user) => (
-                          <Grid item key={user.username} xs={12} sm={6} md={4} lg={3}>
-                            <HomeCard
-                                onClick={() => {
-                                    handleOpen(user.username)
-                                }}
-                                name={user.name}
-                                location={user.location}
-                                image={path + user.profilePhoto}
-                                phone={user.phone}
-                            ></HomeCard>
-                          </Grid>
-                        ))}
+                        {
+                          loadUsers()
+                        }
                   </Grid>
                 </InfiniteScroll>
+            }
+                
             </Container>
             </main>
           </Container>
