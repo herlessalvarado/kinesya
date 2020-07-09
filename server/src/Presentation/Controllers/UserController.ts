@@ -45,7 +45,7 @@ export function userRouter(userController: UserController) {
         res.status(response.status).send(response.body)
     })
 
-    router.post("/users/token",  async (req: Request, res: Response) => {
+    router.post("/users/token", async (req: Request, res: Response) => {
         const response = await userController.generateToken(req as HttpRequest)
         res.status(response.status).send(response.body)
     })
@@ -64,8 +64,6 @@ export function userRouter(userController: UserController) {
         const response = await userController.getByUsername(req as HttpRequest)
         res.status(response.status).send(response.body)
     })
-
-  
 
     return router
 }
@@ -166,16 +164,14 @@ export class UserController {
 
         const user = req.body as UserDTO
         user.referencePhotos = []
-        if(!!req.body.references)
-            user.referencePhotos = [...req.body.references]
-        
+        if (!!req.body.references) user.referencePhotos = [...req.body.references]
+
         if (!!req.files) trackPhotos(user, req.files)
         try {
             await this.service.updateUserByToken(req.body.token, user)
             resp.status = OK
             resp.body = "User details updated successfully"
         } catch (err) {
-
             console.log(err)
             handlerExceptions(err, resp)
         }
