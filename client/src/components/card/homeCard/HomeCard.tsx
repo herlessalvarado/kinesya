@@ -18,7 +18,6 @@ const MOBILE_SCREEN_LIMIT = 700
 
 function openWSPForMobile(number:Number){
     var url = `https://wa.me/${PREFIX_NUMBER}${number}?text=Hola!%20Vi%20su%20anuncio%20en%20Kinesya,%20estoy%20interesado%20en%20su%20servicio.`
-    console.log(url)
     var win = window.open(url, "_blank")
     win!.focus()
 }
