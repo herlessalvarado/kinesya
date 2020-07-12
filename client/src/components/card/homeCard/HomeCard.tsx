@@ -13,13 +13,29 @@ interface CardProps {
     phone?: Number
     onClick: () => void
 }
+const MOBILE_SCREEN_LIMIT = 700
+
+
+function openWSPForMobile(number:Number){
+    var url = `https://wa.me/${PREFIX_NUMBER}${number}?text=Hola!%20Vi%20su%20anuncio%20en%20Kinesya,%20estoy%20interesado%20en%20su%20servicio.`
+    console.log(url)
+    var win = window.open(url, "_blank")
+    win!.focus()
+}
+function openWSPForDesktop(number:Number){
+    var url = `https://api.whatsapp.com/send?phone=${PREFIX_NUMBER} ${number}&text=Hola!%20Vi%20su%20anuncio%20en%20Kinesya,%20estoy%20interesado%20en%20su%20servicio.` 
+    window.open(url, "_blank")
+}
+
+
 
 export default function SmallCard(props: CardProps) {
     const classes = useStyles()
     const whatsappMessage = (number: Number) => {
-        var url = `https://api.whatsapp.com/send?phone=${PREFIX_NUMBER} ${number}&text=Hola!%20Vi%20su%20anuncio%20en%20Kinesya,%20estoy%20interesado%20en%20su%20servicio.`
-        var win = window.open(url, "_blank")
-        win!.focus()
+        if (window.screen.width < MOBILE_SCREEN_LIMIT)
+            openWSPForMobile(number)
+        else
+            openWSPForDesktop(number)
     }
 
     return (
