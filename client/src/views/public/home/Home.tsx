@@ -33,6 +33,14 @@ const Transition = React.forwardRef(function Transition(
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
+const PAGINATOR_CHUNK_SIZE = 12
+function shuffle(users:Profile[]){
+  for (let i = users.length - 1; i > 0; i--) {
+    let j = Math.floor(Math.random() * (i + 1)); 
+    [users[i], users[j]] = [users[j], users[i]];
+  }
+}
+
 export default function Home() {
   const classes = useStyles()
   const history = useHistory()
@@ -53,8 +61,6 @@ export default function Home() {
   const [validUpperPrice, setValidUpperPrice] = React.useState(priceValidatorResult.validator(""))
   const [openPlace, setOpenPlace] = React.useState(false);
   const options = useCountries()
-  const limit = 4
-  const [visibleUsers,setVisibleUsers] = React.useState(0)
 
   const path = process.env.REACT_APP_PHOTO_URL!
 
@@ -105,12 +111,15 @@ export default function Home() {
     })
     handleCloseDialog()
   }
- function loadItems(page: number) {
-    if ( limit * (page-1) > users.length ){
-      setHasMore(false)
-    }else{
-      setVisibleUsers(page * limit)
-    }
+  function loadItems(page: Number) {
+    getUsersByPaginator(page, PAGINATOR_CHUNK_SIZE).then((res: Profile[]) => {
+      if (res.length === 0) setHasMore(false)
+      else { 
+        shuffle(res)
+        users.push(...res)
+        setUsers([...users])
+      }
+    })
   }
 
   const handleOpenDialog = () => {
@@ -121,8 +130,7 @@ export default function Home() {
     setOpen(false);
   };
   function loadUsers(){
-    const visibles = users.slice(0,visibleUsers) 
-    return (visibles?.map((user) => (
+    return (users?.map((user) => (
       <Grid item key={user.username} xs={12} sm={6} md={4} lg={3}>
         <HomeCard
             onClick={() => {
@@ -148,6 +156,17 @@ export default function Home() {
     return ()=>{susbcribe = false}
   },[])
   
+  useEffect(()=>{
+    let suscribe = true
+    if (suscribe)
+      getUsersByPaginator(1,PAGINATOR_CHUNK_SIZE).then((res:Profile[])=>{
+        shuffle(res)
+        setUsers(res)
+      })
+    return ()=>{suscribe = false}
+
+  },[])
+
     return (
         <React.Fragment>
           <CssBaseline />
@@ -372,16 +391,15 @@ export default function Home() {
               </Dialog>
             </Toolbar>
             <main>
-            <Container maxWidth="lg">{
-              users.length > 0 && 
-              <InfiniteScroll pageStart={0} loadMore={loadItems} hasMore={hasMore}>
+            <Container maxWidth="lg">
+                <InfiniteScroll pageStart={1} initialLoad={false}  loadMore={loadItems} hasMore={hasMore}>
                   <Grid container spacing={4}>
                         {
                           loadUsers()
                         }
                   </Grid>
                 </InfiniteScroll>
-            }
+            
                 
             </Container>
             </main>
