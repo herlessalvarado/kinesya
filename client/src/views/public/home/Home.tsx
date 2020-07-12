@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from 'react'
+import React, { ChangeEvent, useEffect } from 'react'
 import { CssBaseline, Container, Grid, Button } from '@material-ui/core'
 import { useStyles } from './styles'
 import Header from '../../../components/header/Header'
@@ -33,6 +33,14 @@ const Transition = React.forwardRef(function Transition(
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
+const PAGINATOR_CHUNK_SIZE = 12
+function shuffle(users:Profile[]){
+  for (let i = users.length - 1; i > 0; i--) {
+    let j = Math.floor(Math.random() * (i + 1)); 
+    [users[i], users[j]] = [users[j], users[i]];
+  }
+}
+
 export default function Home() {
   const classes = useStyles()
   const history = useHistory()
@@ -53,7 +61,6 @@ export default function Home() {
   const [validUpperPrice, setValidUpperPrice] = React.useState(priceValidatorResult.validator(""))
   const [openPlace, setOpenPlace] = React.useState(false);
   const options = useCountries()
-  const limit = 4
 
   const path = process.env.REACT_APP_PHOTO_URL!
 
@@ -105,9 +112,10 @@ export default function Home() {
     handleCloseDialog()
   }
   function loadItems(page: Number) {
-    getUsersByPaginator(page, limit).then((res: Profile[]) => {
+    getUsersByPaginator(page, PAGINATOR_CHUNK_SIZE).then((res: Profile[]) => {
       if (res.length === 0) setHasMore(false)
       else { 
+        shuffle(res)
         users.push(...res)
         setUsers([...users])
       }
@@ -122,6 +130,17 @@ export default function Home() {
     setOpen(false);
   };
   
+  useEffect(()=>{
+    let suscribe = true
+    if (suscribe)
+      getUsersByPaginator(1,PAGINATOR_CHUNK_SIZE).then((res:Profile[])=>{
+        shuffle(res)
+        setUsers(res)
+      })
+    return ()=>{suscribe = false}
+
+  },[])
+
     return (
         <React.Fragment>
           <CssBaseline />
@@ -347,7 +366,7 @@ export default function Home() {
             </Toolbar>
             <main>
             <Container maxWidth="lg">
-                <InfiniteScroll pageStart={0} loadMore={loadItems} hasMore={hasMore}>
+                <InfiniteScroll pageStart={1} initialLoad={false}  loadMore={loadItems} hasMore={hasMore}>
                   <Grid container spacing={4}>
                         {users?.map((user) => (
                           <Grid item key={user.username} xs={12} sm={6} md={4} lg={3}>
