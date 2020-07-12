@@ -146,15 +146,7 @@ export default function Home() {
     )
   }
 
-  useEffect(()=>{
-    let susbcribe = true
-    if (susbcribe){
-      getUsers().then((res:Profile[])=>{
-        setUsers(res)
-      })
-    }
-    return ()=>{susbcribe = false}
-  },[])
+  
   
   useEffect(()=>{
     let suscribe = true
