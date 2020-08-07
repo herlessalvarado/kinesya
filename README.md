@@ -2,6 +2,8 @@
 
 Kinesya connects men with local women to have a great time
 
+Check it at: https://kinesya.com/
+
 Developers:
 
 - Herless Alvarado
