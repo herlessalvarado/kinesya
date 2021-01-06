@@ -24,7 +24,7 @@
     "@types/react-router-dom": "^5.1.5",
     "@types/recharts": "^1.8.12",
     "@types/styled-components": "^5.1.0",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "browser-image-compression": "^1.0.12",
     "croppie": "^2.6.4",
     "cross-fetch": "^3.0.5",
