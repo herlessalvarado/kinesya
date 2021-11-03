@@ -60,7 +60,7 @@
 		"prettier": "^2.0.4",
 		"reflect-metadata": "^0.1.13",
 		"uuid": "^8.1.0",
-		"validator": "^13.0.0"
+		"validator": "^13.7.0"
 	},
 	"devDependencies": {
 		"@types/dotenv": "^8.2.0",
